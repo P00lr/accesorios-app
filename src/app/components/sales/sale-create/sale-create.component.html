@@ -1,0 +1,81 @@
+<div class="container mt-4">
+  <div class="card shadow mx-auto" style="max-width: 700px;">
+    <div class="card-header bg-dark text-white">
+      <h5 class="mb-0">Crear Venta</h5>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="saleForm" (ngSubmit)="onSubmit()">
+
+        <!-- Cliente -->
+        <div class="mb-3">
+          <label class="form-label">Cliente ID</label>
+          <input type="number" class="form-control form-control-sm" formControlName="clientId" />
+          <div class="text-danger small" *ngIf="saleForm.get('clientId')?.invalid && saleForm.get('clientId')?.touched">
+            Cliente requerido.
+          </div>
+        </div>
+
+        <!-- Usuario -->
+        <div class="mb-4">
+          <label class="form-label">Usuario ID</label>
+          <input type="number" class="form-control form-control-sm" formControlName="userId" />
+          <div class="text-danger small" *ngIf="saleForm.get('userId')?.invalid && saleForm.get('userId')?.touched">
+            Usuario requerido.
+          </div>
+        </div>
+
+        <!-- Detalles -->
+        <h6 class="text-secondary">Detalles de Venta</h6>
+        <div formArrayName="saleDetails">
+          <div *ngFor="let detail of saleDetails.controls; let i = index" [formGroupName]="i"
+            class="border rounded p-3 mb-3 bg-light">
+            <div class="row g-2 align-items-end">
+              <div class="col-md-5">
+                <label class="form-label">Accesorio ID</label>
+                <input type="number" class="form-control form-control-sm" formControlName="accessoryId" />
+                <div class="text-danger small"
+                  *ngIf="detail.get('accessoryId')?.invalid && detail.get('accessoryId')?.touched">
+                  Requerido.
+                </div>
+              </div>
+              <div class="col-md-5">
+                <label class="form-label">Cantidad</label>
+                <input type="number" class="form-control form-control-sm" formControlName="quantityType" />
+                <div class="text-danger small"
+                  *ngIf="detail.get('quantityType')?.invalid && detail.get('quantityType')?.touched">
+                  Requerido. Mínimo 1.
+                </div>
+              </div>
+              <div class="col-md-2 d-grid">
+                <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeSaleDetail(i)"
+                  *ngIf="saleDetails.length > 1">
+                  Quitar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+
+          <a routerLink="/sales" class="btn btn-primary">
+            Volver
+          </a>
+
+          <button type="button" class="btn btn-sm btn-outline-primary" (click)="addSaleDetail()">
+            Agregar Detalle
+          </button>
+
+          <button type="submit" class="btn btn-sm btn-success px-4" [disabled]="saleForm.invalid">
+            Guardar Venta
+          </button>
+
+        </div>
+
+
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="container mt-4">
+  <div class="card shadow mx-auto" style="max-width: 500px;">
+    <div class="card-header bg-dark text-white">
+      <h5 class="mb-0">Crear Permiso</h5>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="permissionForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label class="form-label">Nombre del Permiso</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="name"
+            placeholder="Ej: create_user"
+          />
+          <div class="text-danger small" *ngIf="permissionForm.get('name')?.invalid && permissionForm.get('name')?.touched">
+            El nombre es obligatorio.
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <a routerLink="/permissions" class="btn btn-secondary">Volver</a>
+          <button type="submit" class="btn btn-success" [disabled]="permissionForm.invalid">
+            Crear
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,88 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0">Editar Cliente</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="edit-name" class="form-label">Nombre</label>
+                <input type="text" 
+                       id="edit-name" 
+                       name="name" 
+                       class="form-control" 
+                       formControlName="name" 
+                       autocomplete="name" />
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label for="edit-username" class="form-label">Usuario</label>
+                <input type="text" 
+                       id="edit-username" 
+                       name="username" 
+                       class="form-control" 
+                       formControlName="username" 
+                       autocomplete="username" />
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="edit-email" class="form-label">Correo</label>
+                <input type="email" 
+                       id="edit-email" 
+                       name="email" 
+                       class="form-control" 
+                       formControlName="email" 
+                       autocomplete="email" />
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="edit-fechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+                <input type="date" 
+                       id="edit-fechaNacimiento" 
+                       name="birthdate" 
+                       class="form-control" 
+                       formControlName="fechaNacimiento" 
+                       autocomplete="birthdate" />
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="edit-preferredTheme" class="form-label">Tema Preferido</label>
+                <select id="edit-preferredTheme" 
+                        name="preferredTheme" 
+                        class="form-control" 
+                        formControlName="preferredTheme" 
+                        autocomplete="off">
+                  <option value="light">Claro</option>
+                  <option value="dark">Oscuro</option>
+                </select>
+              </div>
+
+              <div class="col-md-6 mb-3 d-flex align-items-center">
+                <div class="form-check">
+                  <input type="checkbox" 
+                         id="edit-autoThemeByHour" 
+                         name="autoThemeByHour" 
+                         class="form-check-input" 
+                         formControlName="autoThemeByHour" 
+                         autocomplete="off" />
+                  <label for="edit-autoThemeByHour" class="form-check-label">
+                    Tema Automático por Hora
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-end">
+              <button type="submit" class="btn btn-primary">
+                <i class="bi bi-save"></i> Guardar Cambios
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

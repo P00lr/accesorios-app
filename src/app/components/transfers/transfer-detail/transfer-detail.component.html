@@ -1,0 +1,49 @@
+<div class="container mt-4" *ngIf="transfer; else loadingOrError">
+  <div class="card shadow">
+    <div class="card-header bg-dark text-white">
+      <h5 class="mb-0">Detalle del Traspaso #{{ transfer.id }}</h5>
+    </div>
+    <div class="card-body">
+      <p><strong>Fecha:</strong> {{ transfer.date | date:'medium' }}</p>
+      <p><strong>Descripción:</strong> {{ transfer.description }}</p>
+      <p><strong>Usuario:</strong> {{ transfer.userName }}</p>
+      <p><strong>Almacén Origen:</strong> {{ transfer.originWarehouse }}</p>
+      <p><strong>Almacén Destino:</strong> {{ transfer.destinationWarehouse }}</p>
+
+      <h6 class="mt-4">Accesorios Transferidos</h6>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover table-sm">
+          <thead class="table-light">
+            <tr>
+              <th>Accesorio</th>
+              <th>Cantidad</th>
+              <th>Stock Actual Del Almacen destino {{ transfer.destinationWarehouse }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let detail of transfer.details">
+              <td>{{ detail.accessoryName }}</td>
+              <td>{{ detail.quantity }}</td>
+              <td>{{ detail.currentStock }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="mt-3" routerLink="/transfers">
+          <button class="btn btn-primary">
+            Volver
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingOrError>
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p>Cargando traspaso...</p>
+  </div>
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+    {{ errorMessage }}
+  </div>
+</ng-template>

@@ -1,0 +1,57 @@
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">Editar Accesorio</h5>
+    </div>
+    <div class="card-body" *ngIf="!isLoading; else loading">
+      <form (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label>Nombre</label>
+          <input type="text" class="form-control" [(ngModel)]="accessory.name" name="name" required />
+        </div>
+
+        <div class="mb-3">
+          <label>Precio</label>
+          <input type="number" class="form-control" [(ngModel)]="accessory.price" name="price" required />
+        </div>
+
+        <div class="mb-3">
+          <label>Descripción</label>
+          <textarea class="form-control" [(ngModel)]="accessory.description" name="description" rows="3"></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label>Marca</label>
+          <input type="text" class="form-control" [(ngModel)]="accessory.brand" name="brand" />
+        </div>
+
+        <div class="mb-3">
+          <label>Modelo</label>
+          <input type="text" class="form-control" [(ngModel)]="accessory.model" name="model" />
+        </div>
+
+        <div class="mb-3">
+          <label>Categoría</label>
+          <select class="form-select" [(ngModel)]="accessory.categoryId" name="categoryId" required>
+            <option [ngValue]="undefined" disabled>Seleccione una categoría</option>
+            <option *ngFor="let category of categories" [ngValue]="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-success">Actualizar</button>
+        <a class="btn btn-secondary ms-2" routerLink="/accessories">Cancelar</a>
+
+        <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
+      </form>
+    </div>
+
+    <ng-template #loading>
+      <div class="text-center p-4">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-2">Cargando accesorio...</p>
+      </div>
+    </ng-template>
+  </div>
+</div>

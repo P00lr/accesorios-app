@@ -1,0 +1,38 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0">Crear Categoría</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="name" class="form-label">Nombre de la Categoría</label>
+              <input
+                type="text"
+                id="name"
+                class="form-control"
+                formControlName="name"
+                placeholder="Ej. Cargadores, Fundas, Auriculares"
+              />
+              <div *ngIf="categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched" class="text-danger">
+                El nombre es obligatorio y debe tener al menos 3 caracteres.
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a routerLink="/categories" class="btn btn-outline-secondary">
+                  <i class="bi bi-arrow-left"></i> Volver
+                </a>
+
+                <button type="submit" class="btn btn-sm btn-outline-primary" [disabled]="categoryForm.invalid">
+                <i class="bi bi-save"></i> Guardar Categoría
+              </button>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

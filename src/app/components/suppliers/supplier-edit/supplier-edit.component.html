@@ -1,0 +1,31 @@
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-dark text-white">
+      <h5 class="mb-0">Editar Proveedor</h5>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="supplierForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="name" class="form-label">Nombre</label>
+          <input type="text" id="name" class="form-control" formControlName="name" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="address" class="form-label">Dirección</label>
+          <input type="text" id="address" class="form-control" formControlName="address" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Correo Electrónico</label>
+          <input type="email" id="email" class="form-control" formControlName="email" required>
+        </div>
+
+        <div class="d-flex justify-content-end">
+          <button type="submit" class="btn btn-sm btn-outline-primary" [disabled]="supplierForm.invalid">
+            <i class="bi bi-pencil-square"></i> Guardar Cambios
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

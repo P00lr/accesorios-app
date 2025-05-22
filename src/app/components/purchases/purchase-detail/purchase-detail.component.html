@@ -1,0 +1,41 @@
+<div class="container mt-5">
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-2">Cargando compra...</p>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger text-center">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && purchase" class="card mx-auto shadow" style="max-width: 700px;">
+    <div class="card-header bg-dark text-white">
+      <h4 class="mb-0">Detalle de la Compra #{{ purchase.id }}</h4>
+    </div>
+
+    <div class="card-body">
+      <p><strong>Fecha:</strong> {{ purchase.purchaseDate | date:'short' }}</p>
+      <p><strong>Proveedor:</strong> {{ purchase.supplierName }} ({{ purchase.supplierEmail }})</p>
+      <p><strong>Usuario que registró:</strong> {{ purchase.userName }}</p>
+      <p><strong>Total Cantidad:</strong> {{ purchase.totalQuantity }}</p>
+      <p><strong>Total Monto:</strong> {{ purchase.totalAmount | number:'1.2-2' }} Bs</p>
+
+      <h5 class="mt-4 mb-3">Accesorios Comprados:</h5>
+      <ul class="list-group">
+        <li *ngFor="let detail of purchase.purchaseDetails" class="list-group-item">
+          <div><strong>Accesorio:</strong> {{ detail.accessoryName }} (ID: {{ detail.accessoryId }})</div>
+          <div><strong>Precio Unitario:</strong> {{ detail.price | number:'1.2-2' }} Bs</div>
+          <div><strong>Cantidad:</strong> {{ detail.quantityType }}</div>
+          <div><strong>Monto:</strong> {{ detail.amountType | number:'1.2-2' }} Bs</div>
+          <div><strong>Almacén:</strong> {{ detail.warehouseName }}</div>
+        </li>
+      </ul>
+    </div>
+    <div class="m-3" routerLink="/purchases">
+      <button class="btn btn-primary">
+        Volver
+      </button>
+    </div>
+  </div>
+  
+</div>

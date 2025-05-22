@@ -1,0 +1,42 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0">Editar Cliente</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="warehouseForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="edit-name" class="form-label">Nombre</label>
+                <input type="text" 
+                       id="edit-name" 
+                       name="name" 
+                       class="form-control" 
+                       formControlName="name" 
+                       autocomplete="name" />
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label for="edit-address" class="form-label">Direccion</label>
+                <input type="text" 
+                       id="edit-address" 
+                       name="address" 
+                       class="form-control" 
+                       formControlName="address" 
+                       autocomplete="address" />
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-end">
+              <button type="submit" class="btn btn-primary">
+                <i class="bi bi-save"></i> Guardar Cambios
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,162 @@
+<div class="container mt-4">
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">Crear Ajuste</h5>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="adjustmentForm" (ngSubmit)="onSubmit()">
+
+        <!-- Fecha -->
+        <div class="mb-3">
+          <label for="date" class="form-label">Fecha</label>
+          <input
+            id="date"
+            type="datetime-local"
+            class="form-control"
+            formControlName="date"
+          />
+          <div
+            class="text-danger"
+            *ngIf="adjustmentForm.get('date')?.invalid && adjustmentForm.get('date')?.touched"
+          >
+            Fecha requerida.
+          </div>
+        </div>
+
+        <!-- Tipo -->
+        <div class="mb-3">
+          <label class="form-label">Tipo</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="type"
+            placeholder="Ejemplo: Return, Increase, Decrease"
+          />
+          <div
+            class="text-danger"
+            *ngIf="adjustmentForm.get('type')?.invalid && adjustmentForm.get('type')?.touched"
+          >
+            Tipo requerido.
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <div class="mb-3">
+          <label class="form-label">Descripción</label>
+          <textarea
+            class="form-control"
+            formControlName="description"
+            rows="2"
+          ></textarea>
+          <div
+            class="text-danger"
+            *ngIf="adjustmentForm.get('description')?.invalid && adjustmentForm.get('description')?.touched"
+          >
+            Descripción requerida.
+          </div>
+        </div>
+
+        <!-- Usuario ID -->
+        <div class="mb-3">
+          <label class="form-label">Usuario ID</label>
+          <input
+            type="number"
+            class="form-control"
+            formControlName="userId"
+          />
+          <div
+            class="text-danger"
+            *ngIf="adjustmentForm.get('userId')?.invalid && adjustmentForm.get('userId')?.touched"
+          >
+            Usuario requerido.
+          </div>
+        </div>
+
+        <!-- Detalles -->
+        <h6>Detalles del Ajuste</h6>
+        <div formArrayName="adjustmentDetails">
+          <div
+            *ngFor="let detail of adjustmentDetails.controls; let i = index"
+            [formGroupName]="i"
+            class="border p-3 rounded mb-3 bg-light"
+          >
+            <div class="row g-2 align-items-end">
+              <div class="col-md-6">
+                <label class="form-label">Detalle de Bodega ID</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  formControlName="warehouseDetailId"
+                />
+                <div
+                  class="text-danger"
+                  *ngIf="
+                    detail.get('warehouseDetailId')?.invalid &&
+                    detail.get('warehouseDetailId')?.touched
+                  "
+                >
+                  Requerido.
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Cantidad</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  formControlName="quantity"
+                />
+                <div
+                  class="text-danger"
+                  *ngIf="
+                    detail.get('quantity')?.invalid &&
+                    detail.get('quantity')?.touched
+                  "
+                >
+                  Requerido. Mínimo 1.
+                </div>
+              </div>
+              <div class="col-md-2 d-grid">
+                <button
+                  type="button"
+                  class="btn btn-outline-danger"
+                  (click)="removeAdjustmentDetail(i)"
+                  *ngIf="adjustmentDetails.length > 1"
+                >
+                  Quitar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botón agregar detalle -->
+        <div class="mb-3">
+          <button
+            type="button"
+            class="btn btn-outline-primary"
+            (click)="addAdjustmentDetail()"
+          >
+            Agregar Detalle
+          </button>
+        </div>
+
+        <!-- Mostrar mensaje de error general -->
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+
+        <!-- Botón guardar -->
+        <div class="d-grid">
+          <button
+            type="submit"
+            class="btn btn-success"
+            [disabled]="adjustmentForm.invalid"
+          >
+            Crear Ajuste
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

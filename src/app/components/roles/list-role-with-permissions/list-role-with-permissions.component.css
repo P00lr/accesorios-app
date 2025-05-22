@@ -1,0 +1,6 @@
+.card-custom-height {
+  min-height: 350px; /*minimo */
+  max-height: 400px; /* maximo */
+  overflow-y: auto; /* si hay mucho contenido, aparece scroll vertical */
+  padding: 1rem;
+}
