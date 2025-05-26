@@ -9,6 +9,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Observable, startWith, map } from 'rxjs';
+import { AccessoryService } from '../../../services/accessory.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-purchase-cart',
@@ -36,40 +38,52 @@ export class PurchaseCartComponent implements OnInit {
   selectedAccessoryName: string = '';
   quantity: number | null = null;
 
-  cart: { warehouseDetailId: number; accessoryName: string; quantity: number }[] = [];
+  cart: { accessoryId: number; accessoryName: string; quantity: number }[] = [];
+
 
   constructor(
     private warehouseService: WarehouseService,
-    private purchaseService: PurchaseService
+    private purchaseService: PurchaseService,
+    private accessoriesServices: AccessoryService
   ) { }
 
   ngOnInit(): void {
+    // Cargar almacenes
     this.warehouseService.getWarehouses(0).subscribe((page) => {
       this.warehouses = page.content;
     });
 
+    // Cargar todos los WarehouseDetails (contienen accessory + warehouse info)
     this.warehouseService.getWarehouseDetails().subscribe((details) => {
       this.warehouseDetails = details;
+      // Asignamos todos los warehouseDetails a accessoryOptions para autocompletado
+      this.accessoryOptions = details;
+
+      // Aquí cargas todos los accesorios desde la base de datos con AccessoryService
+      this.accessoriesServices.getAccesories(0).subscribe((page) => {
+        // Mapea los accesorios a WarehouseDetail para que encaje con accessoryOptions
+        this.accessoryOptions = page.content.map(accessory => ({
+          id: accessory.id,                  // usar id del accesorio para warehouseDetailId provisional
+          warehouseId: 0,                   // valor dummy porque no depende de almacén
+          warehouseName: '',
+          accessoryId: accessory.id,
+          accessoryName: accessory.name,
+          stock: 0,                        // no tienes stock aquí, pon 0 o ajusta si tienes otro dato
+          state: 'AVAILABLE'
+        }));
+      });
+
+      // Inicializar el filtro para el autocompletado
+      this.filteredAccessories$ = this.accessoryControl.valueChanges.pipe(
+        startWith(''),
+        map(value => {
+          const filterValue = value?.toLowerCase() || '';
+          return this.accessoryOptions.filter(option =>
+            option.accessoryName.toLowerCase().includes(filterValue)
+          );
+        })
+      );
     });
-
-    this.filteredAccessories$ = this.accessoryControl.valueChanges.pipe(
-      startWith(''),
-      map(value => {
-        const filterValue = value?.toLowerCase() || '';
-        return this.accessoryOptions.filter(option =>
-          option.accessoryName.toLowerCase().includes(filterValue)
-        );
-      })
-    );
-  }
-
-  onWarehouseChange(): void {
-    this.accessoryOptions = this.warehouseDetails.filter(
-      wd => wd.warehouseId === this.selectedWarehouseId
-    );
-    this.accessoryControl.setValue('');
-    this.selectedAccessoryName = '';
-    this.quantity = null;
   }
 
   onAccessorySelected(name: string): void {
@@ -81,7 +95,7 @@ export class PurchaseCartComponent implements OnInit {
     if (!detail) return;
 
     this.cart.push({
-      warehouseDetailId: detail.id,
+      accessoryId: detail.accessoryId, // ← si viene anidado
       accessoryName: detail.accessoryName,
       quantity: this.quantity!,
     });
@@ -91,21 +105,50 @@ export class PurchaseCartComponent implements OnInit {
     this.quantity = null;
   }
 
-  registrarCompra(): void {
-    const payload: CreatePurchase = {
-      supplierId: 1,
-      userId: 2,
-      purchaseDetails: this.cart.map(item => ({
-        warehouseDetailId: item.warehouseDetailId,
-        quantityType: item.quantity,
-      })),
-    };
 
-    this.purchaseService.createPurchase(payload).subscribe(() => {
-      alert('Compra registrada correctamente');
-      this.cart = [];
+  registrarCompra(): void {
+  if (!this.selectedWarehouseId) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Almacén no seleccionado',
+      text: 'Selecciona un almacén antes de registrar la compra',
     });
+    return;
   }
+
+  const payload: CreatePurchase = {
+    supplierId: 1,
+    userId: 2,
+    warehouseId: this.selectedWarehouseId,
+    purchaseDetails: this.cart.map(item => ({
+      accessoryId: item.accessoryId,
+      quantityType: item.quantity,
+    })),
+  };
+
+  this.purchaseService.createPurchase(payload).subscribe({
+    next: () => {
+      Swal.fire({
+        icon: 'success',
+        title: '¡Compra registrada!',
+        showConfirmButton:false,
+        timer: 1450,
+        text: 'La compra se registró correctamente.',
+      });
+      this.cart = [];
+    },
+    error: (error) => {
+      console.error(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Ocurrió un error al registrar la compra.',
+      });
+    }
+  });
 }
+
+}
+
 
 

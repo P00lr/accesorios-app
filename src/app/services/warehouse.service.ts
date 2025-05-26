@@ -19,8 +19,8 @@ export class WarehouseService {
   }
 
   getWarehouseDetails(): Observable<WarehouseDetail[]> {
-  return this.http.get<WarehouseDetail[]>(`${this.apiUrl}/details`);
-}
+    return this.http.get<WarehouseDetail[]>(`${this.apiUrl}/details`);
+  }
 
 
   setWarehousesToLocalStorage(warehouses: Warehouse[]) {

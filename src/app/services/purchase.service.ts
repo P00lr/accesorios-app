@@ -26,6 +26,7 @@ export class PurchaseService {
   }
 
   createPurchase(purchase: CreatePurchase): Observable<any> {
+     console.log('Datos que se enviarán:', purchase);
     return this.http.post(this.apiUrl, purchase);
   }
 

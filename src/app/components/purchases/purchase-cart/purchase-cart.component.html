@@ -6,7 +6,7 @@
     <div class="col-md-6">
       <div class="mb-3">
         <label class="form-label">Seleccionar Almacén</label>
-        <select class="form-select" [(ngModel)]="selectedWarehouseId" (change)="onWarehouseChange()">
+        <select class="form-select" [(ngModel)]="selectedWarehouseId">
           <option [ngValue]="null">Seleccione un almacén</option>
           <option *ngFor="let warehouse of warehouses" [ngValue]="warehouse.id">
             {{ warehouse.name }}
@@ -14,16 +14,12 @@
         </select>
       </div>
 
+
       <div class="mb-3">
         <mat-form-field class="w-100 mb-3" appearance="fill">
           <mat-label>Accessory</mat-label>
-          <input
-            type="text"
-            matInput
-            [matAutocomplete]="auto"
-            [formControl]="accessoryControl"
-            [disabled]="!selectedWarehouseId"
-          />
+          <input type="text" matInput [matAutocomplete]="auto" [formControl]="accessoryControl"
+            [disabled]="!selectedWarehouseId" />
           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onAccessorySelected($event.option.value)">
             <mat-option *ngFor="let option of filteredAccessories$ | async" [value]="option.accessoryName">
               {{ option.accessoryName }}
@@ -34,19 +30,15 @@
 
       <div class="mb-3">
         <label class="form-label">Cantidad</label>
-        <input
-          type="number"
-          class="form-control"
-          [(ngModel)]="quantity"
-          placeholder="Ej. 10"
-          min="1"
-          [disabled]="!selectedAccessoryName"
-        />
+        <input type="number" class="form-control" [(ngModel)]="quantity" placeholder="Ej. 10" min="1"
+          [disabled]="!selectedAccessoryName" />
       </div>
 
-      <button class="btn btn-primary" (click)="agregarAlCarrito()" [disabled]="!quantity || !selectedAccessoryName">
+      <button class="btn btn-primary" (click)="agregarAlCarrito()"
+        [disabled]="!quantity || !selectedAccessoryName || !selectedWarehouseId">
         Agregar al carrito
       </button>
+
     </div>
 
     <!-- Carrito -->

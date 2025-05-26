@@ -1,74 +1,132 @@
-<div class="container mt-4">
-  <div class="card shadow-sm">
-    <div class="card-header bg-dark text-white">
-      <h5 class="mb-0">Crear Traspaso</h5>
+<div class="container py-4">
+  <h2 class="mb-4">Transferencia de Stock entre Almacenes</h2>
+
+  <div class="row g-4">
+    <!-- Formulario -->
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title mb-3">Datos de Transferencia</h5>
+
+          <!-- Almacén de Origen -->
+          <mat-form-field class="w-100 mb-3" appearance="fill">
+            <mat-label>Almacén de Origen</mat-label>
+            <input matInput type="text" [formControl]="originWarehouseControl" [matAutocomplete]="originAuto"
+              [disabled]="!warehouses.length" aria-label="Almacén de Origen" />
+
+            <mat-autocomplete #originAuto="matAutocomplete" (optionSelected)="onSelectOrigin($event)"
+              [displayWith]="displayWarehouse">
+              <mat-option *ngFor="let option of filteredWarehouses$ | async" [value]="option">
+                {{ option.name }}
+              </mat-option>
+            </mat-autocomplete>
+
+          </mat-form-field>
+
+          <!-- Almacén de Destino -->
+          <div class="mb-3">
+            <label class="form-label" for="destinationWarehouse">Almacén de Destino</label>
+            <select id="destinationWarehouse" class="form-select" [(ngModel)]="destinationWarehouseId"
+              name="destinationWarehouse" [disabled]="!warehouses.length">
+              <option [ngValue]="null" disabled selected>Seleccione destino</option>
+              <option *ngFor="let warehouse of warehouses" [ngValue]="warehouse.id"
+                [disabled]="warehouse.id === originWarehouseId">
+                {{ warehouse.name }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Accesorio -->
+          <mat-form-field class="w-100 mb-3" appearance="fill">
+            <mat-label>Buscar Accesorio</mat-label>
+            <input matInput type="text" [formControl]="accessoryControl" [matAutocomplete]="auto"
+              [disabled]="!originWarehouseId" aria-label="Buscar Accesorio" />
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectAccessory($event.option.value)">
+              <mat-option *ngFor="let option of filteredAccessories$ | async" [value]="option.accessoryName">
+                {{ option.accessoryName }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <!-- Cantidad -->
+          <!-- Cantidad -->
+          <div class="mb-3">
+            <label class="form-label" for="quantity">Cantidad</label>
+            <input type="number" class="form-control" id="quantity" [(ngModel)]="quantity" name="quantity"
+              placeholder="Ej. 10" min="1" [disabled]="!selectedAccessory" [max]="selectedAccessory?.stock || 0" />
+
+            <!-- Mostrar stock disponible si hay accesorio seleccionado -->
+            <small *ngIf="selectedAccessory" class="text-muted">
+              Stock disponible: {{ selectedAccessory.stock }}
+            </small>
+          </div>
+
+
+          <!-- Botón agregar -->
+          <button
+            class="btn btn-primary w-100"
+            (click)="agregarItem()"
+            [disabled]="
+              !selectedAccessory ||
+              !quantity ||
+              quantity <= 0 ||
+              quantity > selectedAccessory.stock
+            "
+          >
+            Agregar a transferencia
+          </button>
+
+        </div>
+      </div>
     </div>
-    <div class="card-body">
-      <form [formGroup]="transferForm" (ngSubmit)="onSubmit()">
 
-        <div class="mb-3">
-          <label class="form-label">Descripción</label>
-          <input type="text" class="form-control" formControlName="description">
+    <!-- Lista de Items -->
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title mb-3">Items a Transferir</h5>
+
+          <div *ngIf="transferItems.length; else noItems">
+            <table class="table table-bordered align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Accesorio</th>
+                  <th>Cantidad</th>
+                  <th style="width: 40px;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of transferItems; let i = index">
+                  <td>{{ item.accessoryName }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td class="text-center">
+                    <button class="btn btn-sm btn-danger" (click)="eliminarItem(i)" aria-label="Eliminar">
+                      &times;
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <ng-template #noItems>
+            <p class="text-muted">No hay items agregados.</p>
+          </ng-template>
+
+          <!-- Descripción -->
+          <div class="mb-3 mt-4">
+            <label class="form-label" for="description">Descripción</label>
+            <input type="text" class="form-control" id="description" [(ngModel)]="description" name="description"
+              placeholder="Ej. Traspaso semanal" />
+          </div>
+
+          <!-- Botón confirmar -->
+          <button class="btn btn-success w-100" (click)="confirmarTransferencia()"
+            [disabled]="!transferItems.length || !originWarehouseId || !destinationWarehouseId">
+            Confirmar Transferencia
+          </button>
         </div>
-
-        <div class="row">
-          <div class="col-md-4 mb-3">
-            <label class="form-label">Usuario</label>
-            <input type="number" class="form-control" formControlName="userId">
-          </div>
-          <div class="col-md-4 mb-3">
-            <label class="form-label">Almacén de Origen</label>
-            <input type="number" class="form-control" formControlName="originWarehouseId">
-          </div>
-          <div class="col-md-4 mb-3">
-            <label class="form-label">Almacén de Destino</label>
-            <input type="number" class="form-control" formControlName="destinationWarehouseId">
-          </div>
-        </div>
-
-        <div formArrayName="transferDetails">
-          <h6>Detalles del Traspaso</h6>
-          <div *ngFor="let detail of transferDetails.controls; let i = index" [formGroupName]="i"
-            class="border p-3 rounded mb-3">
-            <div class="row">
-              <div class="col-md-6 mb-2">
-                <label class="form-label">ID Accesorio (ID Detalle Almacén)</label>
-                <input type="number" class="form-control" formControlName="warehouseDetailId">
-              </div>
-              <div class="col-md-4 mb-2">
-                <label class="form-label">Cantidad</label>
-                <input type="number" class="form-control" formControlName="quantity">
-              </div>
-              <div class="col-md-2 d-flex align-items-end">
-                <button type="button" class="btn btn-danger w-100" (click)="removeTransferDetail(i)">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-          <!-- Botones finales -->
-<div class="mt-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
-
-  <!-- Botón Volver -->
-  <a routerLink="/transfers" class="btn btn-outline-secondary">
-    <i class="bi bi-arrow-left"></i> Volver
-  </a>
-
-  <!-- Botón Agregar Detalle -->
-  <button type="button" class="btn btn-outline-primary" (click)="addTransferDetail()">
-    <i class="bi bi-plus-circle"></i> Agregar Detalle
-  </button>
-
-  <!-- Botón Crear Traspaso -->
-  <button type="submit" class="btn btn-success">
-    <i class="bi bi-check-circle"></i> Crear Traspaso
-  </button>
-
-</div>
-
-
-        </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>

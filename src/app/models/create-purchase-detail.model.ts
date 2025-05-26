@@ -1,4 +1,4 @@
 export interface CreatePurchaseDetail {
-  warehouseDetailId: number;
+  accessoryId: number;
   quantityType: number;
 }

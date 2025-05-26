@@ -24,10 +24,8 @@ import { UserCreateComponent } from './components/users/user-create/user-create.
 import { UserEditComponent } from './components/users/user-edit/user-edit.component';
 import { PurchaseDetailComponent } from './components/purchases/purchase-detail/purchase-detail.component';
 import { PurchaseListComponent } from './components/purchases/purchase-list/purchase-list.component';
-import { PurchaseCreateComponent } from './components/purchases/purchase-create/purchase-create.component';
 import { SaleDetailComponent } from './components/sales/sale-detail/sale-detail.component';
 import { SaleListComponent } from './components/sales/sale-list/sale-list.component';
-import { SaleCreateComponent } from './components/sales/sale-create/sale-create.component';
 import { AdjustmentDetailComponent } from './components/adjustments/adjustment-detail/adjustment-detail.component';
 import { AdjustmentListComponent } from './components/adjustments/adjustment-list/adjustment-list.component';
 import { AdjustmentCreateComponent } from './components/adjustments/adjustment-create/adjustment-create.component';
