@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { Warehouse } from '../models/warehouse.model';
 import { Page } from '../models/page.model';
+import { WarehouseDetail } from '../models/warehouse-detail-model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,11 @@ export class WarehouseService {
       tap((response) => this.setWarehousesToLocalStorage(response.content))
     );
   }
+
+  getWarehouseDetails(): Observable<WarehouseDetail[]> {
+  return this.http.get<WarehouseDetail[]>(`${this.apiUrl}/details`);
+}
+
 
   setWarehousesToLocalStorage(warehouses: Warehouse[]) {
     localStorage.setItem('warehouses', JSON.stringify(warehouses));

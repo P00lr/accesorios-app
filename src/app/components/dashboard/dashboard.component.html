@@ -1,0 +1,33 @@
+<div class="dashboard-container">
+  <div class="stat-grid">
+    <div class="stat-card" *ngIf="data">
+      <h5>Clientes</h5>
+      <p class="stat-number blue">{{ data.totalClientes }}</p>
+    </div>
+
+    <div class="stat-card">
+      <h5>Ventas</h5>
+      <p class="stat-number green">{{ data.totalVentas }}</p>
+    </div>
+
+    <div class="stat-card">
+      <h5>Compras</h5>
+      <p class="stat-number yellow">{{ data.totalCompras }}</p>
+    </div>
+
+    <div class="stat-card">
+      <h5>Stock total</h5>
+      <p class="stat-number cyan">{{ data.productosEnStock }}</p>
+    </div>
+
+    <div class="stat-card">
+      <h5>Stock bajo</h5>
+      <p class="stat-number red">{{ data.productosBajosStock }}</p>
+    </div>
+
+    <div class="stat-card">
+      <h5>Ganancias del mes</h5>
+      <p class="stat-number green">{{ data.gananciasMes | number:'1.0-0' }} Bs</p>
+    </div>
+  </div>
+</div>

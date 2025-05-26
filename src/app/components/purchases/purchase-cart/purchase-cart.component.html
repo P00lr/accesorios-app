@@ -1,0 +1,75 @@
+<div class="container">
+  <h2 class="mb-4">Registrar Compra</h2>
+
+  <div class="row">
+    <!-- Formulario -->
+    <div class="col-md-6">
+      <div class="mb-3">
+        <label class="form-label">Seleccionar Almacén</label>
+        <select class="form-select" [(ngModel)]="selectedWarehouseId" (change)="onWarehouseChange()">
+          <option [ngValue]="null">Seleccione un almacén</option>
+          <option *ngFor="let warehouse of warehouses" [ngValue]="warehouse.id">
+            {{ warehouse.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <mat-form-field class="w-100 mb-3" appearance="fill">
+          <mat-label>Accessory</mat-label>
+          <input
+            type="text"
+            matInput
+            [matAutocomplete]="auto"
+            [formControl]="accessoryControl"
+            [disabled]="!selectedWarehouseId"
+          />
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onAccessorySelected($event.option.value)">
+            <mat-option *ngFor="let option of filteredAccessories$ | async" [value]="option.accessoryName">
+              {{ option.accessoryName }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Cantidad</label>
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="quantity"
+          placeholder="Ej. 10"
+          min="1"
+          [disabled]="!selectedAccessoryName"
+        />
+      </div>
+
+      <button class="btn btn-primary" (click)="agregarAlCarrito()" [disabled]="!quantity || !selectedAccessoryName">
+        Agregar al carrito
+      </button>
+    </div>
+
+    <!-- Carrito -->
+    <div class="col-md-6">
+      <h4>Carrito</h4>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Accesorio</th>
+            <th>Cantidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of cart">
+            <td>{{ item.accessoryName }}</td>
+            <td>{{ item.quantity }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button class="btn btn-success" (click)="registrarCompra()" [disabled]="!cart.length">
+        Confirmar Compra
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+<div class="container my-4">
+  <h2>Carrito de Compras</h2>
+
+  <ng-container *ngIf="cartItems$ | async as cartItems">
+    <div *ngIf="cartItems.length > 0; else emptyCart">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr>
+            <th>Accesorio</th>
+            <th>Precio Unitario</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of cartItems">
+            <td>{{ item.accessory.name }}</td>
+            <td>{{ item.accessory.price.toFixed(2) }} Bs</td>
+            <td>
+              <input type="number" min="0" class="form-control" style="width: 80px;" [value]="item.quantity"
+                (change)="changeQuantity(item.accessory.id, $event)" />
+            </td>
+            <td>{{ (item.accessory.price * item.quantity).toFixed(2) }} Bs</td>
+            <td>
+              <button class="btn btn-danger btn-sm" (click)="removeItem(item.accessory.id)">
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="d-flex justify-content-end">
+        <h5>Total ({{ totalItems }} items):{{ totalAmount.toFixed(2) }} Bs</h5>
+      </div>
+
+      <div class="d-flex justify-content-end my-3">
+        <div class="d-flex justify-content-end mt-3">
+          <button class="btn btn-success" (click)="onSubmit()" [disabled]="totalItems === 0">
+            Pagar
+          </button>
+        </div>
+
+
+      </div>
+
+    </div>
+  </ng-container>
+
+  <ng-template #emptyCart>
+    <p>Tu carrito está vacío.</p>
+  </ng-template>
+</div>

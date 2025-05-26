@@ -4,6 +4,7 @@ import { Observable, tap } from 'rxjs';
 import { Accessory } from '../models/accessory.model';
 import { Page } from '../models/page.model';
 import { CreateAccessory } from '../models/CreateAccessory.model';
+import { AccessoryCatalog } from '../models/accessory-catalog.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,13 @@ export class AccessoryService {
   getAccesories(page: number): Observable<Page<Accessory>> {
     return this.http.get<Page<Accessory>>(`${this.apiUrl}/page/${page}`).pipe(
       tap((response) => this.setAccesoriesToLocalStorage(response.content))
-    );
+    );  
   }
+
+  getAccessoriesCatalog(page: number): Observable<Page<AccessoryCatalog>> {
+    return this.http.get<Page<AccessoryCatalog>>(`${this.apiUrl}/page/catalog/${page}`);
+  }
+
 
   setAccesoriesToLocalStorage(accesories: Accessory[]): void {
     localStorage.setItem('accesories', JSON.stringify(accesories));

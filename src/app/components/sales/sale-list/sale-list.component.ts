@@ -41,7 +41,7 @@ export class SaleListComponent {
     });
   }
   viewDetails(id: number) {
-
+    
   }
 
   deletePurchase(id: number) {

@@ -5,7 +5,7 @@
     <h6 class="text-secondary text-uppercase fw-bold small mt-3">Módulos</h6>
     <ul class="nav flex-column mb-4">
       <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link text-white d-flex align-items-center" routerLink="/">
+        <a class="nav-link text-white d-flex align-items-center" routerLink="/dashboard">
           <i class="bi bi-house-door me-2"></i> Dashboard
         </a>
       </li>
@@ -30,6 +30,11 @@
         </a>
       </li>
 
+      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link text-white d-flex align-items-center" routerLink="/catalog-accessories">
+          <i class="bi bi-bag-check-fill me-2"></i> Catálogo
+        </a>
+      </li>
     </ul>
 
 
@@ -51,11 +56,11 @@
           <i class="bi bi-cash me-2"></i> Ventas
         </a>
       </li>
-      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <!-- <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
         <a class="nav-link text-white d-flex align-items-center" routerLink="/pagos">
           <i class="bi bi-credit-card me-2"></i> Pagos
         </a>
-      </li>
+      </li> -->
 
     </ul>
     <!-- Inventario -->
@@ -130,10 +135,15 @@
       </li>
 
 
-      <!-- Ajustes generales -->
+      <!-- solo son espacias para que no este pegado al final de la pagina-->
       <li class="nav-item">
         <a class="nav-link text-white d-flex align-items-center" routerLink="/ajustes">
-          <i class="bi bi-gear me-2"></i> No funka
+    
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white d-flex align-items-center" routerLink="/ajustes">
+          <i class="bi bi-gear me-2"></i>
         </a>
       </li>
     </ul>

@@ -40,9 +40,22 @@ import { PermissionCreateComponent } from './components/permissions/permission-c
 import { RoleListComponent } from './components/roles/role-list/role-list.component';
 import { RoleCreateComponent } from './components/roles/role-create/role-create.component';
 import { ListRoleWithPermissionsComponent } from './components/roles/list-role-with-permissions/list-role-with-permissions.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { HomeComponent } from './components/home/home.component';
+import { CatalogComponent } from './components/catalog/catalog.component';
+import { CartComponent } from './components/cart/cart.component';
+import { PurchaseCartComponent } from './components/purchases/purchase-cart/purchase-cart.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'clientes', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+
+  //CATALOG
+  { path: 'catalog-accessories', component: CatalogComponent},
+
+  //CART
+  //CATALOG
+  { path: 'cart', component: CartComponent},
+
   //CLIENT
   { path: 'clientes/detail/:id', component: ClientDetailComponent },
   { path: 'clientes', component: ClientListComponent },
@@ -79,12 +92,12 @@ export const routes: Routes = [
   //PURCHASES
   { path: 'purchases/detail/:id', component: PurchaseDetailComponent },
   { path: 'purchases', component: PurchaseListComponent },
-  { path: 'purchases/create', component: PurchaseCreateComponent },
+  { path: 'purchases/create', component: PurchaseCartComponent },
 
   //SALES
   { path: 'sales/detail/:id', component: SaleDetailComponent },
   { path: 'sales', component: SaleListComponent },
-  { path: 'sales/create', component: SaleCreateComponent },
+  { path: 'sales/create', component: CatalogComponent },
 
   //ADJUSTMENTS
   { path: 'adjustments/detail/:id', component: AdjustmentDetailComponent },
@@ -112,4 +125,14 @@ export const routes: Routes = [
   //{ path: 'sale-report/detail/:id', component: TransferDetailComponent },
   { path: 'sales-report', component: SaleReportComponent },
   //{ path: 'transfers/create', component: TransferCreateComponent },
+
+  //---------------DASHBOARD
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'roles-with-permissions', component: ListRoleWithPermissionsComponent },
+  { path: 'roles/create', component: RoleCreateComponent },
+
+  //---------------HOME
+  { path: 'home', component: HomeComponent },
+  { path: 'roles-with-permissions', component: ListRoleWithPermissionsComponent },
+  { path: 'roles/create', component: RoleCreateComponent },
 ];

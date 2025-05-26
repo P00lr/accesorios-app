@@ -1,4 +1,4 @@
 export interface CreateSaleDetail {
   accessoryId: number;
-  quantityType: number;
+  quantity: number; /* antes era Type */
 }
