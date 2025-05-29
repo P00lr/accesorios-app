@@ -1,1 +1,69 @@
-<p>sale-detail works!</p>
+<div *ngIf="loading" class="text-center my-5">
+  <div class="spinner-border text-primary" role="status"></div>
+</div>
+
+<div *ngIf="!loading && error" class="alert alert-danger text-center mt-4">
+  {{ error }}
+</div>
+
+<div *ngIf="!loading && sale" class="container mt-5">
+  <div class="card shadow">
+    <div class="card-header bg-dark text-white">
+      <h4 class="mb-0">Detalle de la Venta #{{ sale.id }}</h4>
+    </div>
+
+    <div class="card-body">
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <p><strong>Cliente:</strong> {{ sale.clientName }}</p>
+          <p><strong>Email:</strong> {{ sale.clientEmail }}</p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>Fecha:</strong> {{ sale.saleDate | date:'short' }}</p>
+          <p><strong>Vendedor:</strong> {{ sale.userName }}</p>
+        </div>
+      </div>
+
+      <h5 class="mb-3">Productos Vendidos</h5>
+
+      <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Accesorio</th>
+              <th>Precio (Bs)</th>
+              <th>Cantidad</th>
+              <th>Subtotal (Bs)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of sale.saleDetails">
+              <td>{{ item.accessoryName }}</td>
+              <td>{{ item.price | number:'1.2-2' }}</td>
+              <td>{{ item.quantityType }}</td>
+              <td>{{ item.amountType | number:'1.2-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+      <div class="row mt-4">
+        <!-- Botón Volver a la izquierda -->
+        <div class="col-md-6 text-start">
+          <a class="btn btn-primary" routerLink="/sales">
+            Volver
+          </a>
+        </div>
+
+        <!-- Totales a la derecha -->
+        <div class="col-md-6 text-end">
+          <p><strong>Total de Accesorios:</strong> {{ sale.totalQuantity }}</p>
+          <h5><strong>Total a Pagar:</strong> {{ sale.totalAmount | number:'1.2-2' }} Bs</h5>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>

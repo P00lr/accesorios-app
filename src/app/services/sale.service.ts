@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Page } from '../models/page.model';
 import { Sale } from '../models/list-sale.model';
 import { CreateSale } from '../models/create-sale.model';
+import { GetSale } from '../models/get-sale.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,10 @@ export class SaleService {
   constructor(private http: HttpClient) { }
 
   getSalesByPage(page: number): Observable<Page<Sale>> {
-    return this.http.get<Page<Sale>>(`${this.apiUrl}/page/${page}`);
+    return this.http.get<Page<Sale>>(`${this.apiUrl}/page/${page}`).pipe(
+      tap((response) => this.setSalesToLocalStorage(response.content))
+    );
+    
   }
 
   setSalesToLocalStorage(sales: Sale[]): void {
@@ -23,6 +27,14 @@ export class SaleService {
   }
 
   createSale(sale: CreateSale): Observable<any> {
-  return this.http.post(`${this.apiUrl}`, sale);
-}
+    return this.http.post(`${this.apiUrl}`, sale);
+  }
+
+  getSaleById(id: number): Observable<GetSale>  {
+    return this.http.get<GetSale>(`${this.apiUrl}/${id}`);
+  }
+
+  deleteSaleById(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }

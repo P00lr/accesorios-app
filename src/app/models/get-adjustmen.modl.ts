@@ -6,5 +6,6 @@ export interface GetAdjustment {
   type: string;
   description: string;
   userFullName: string;
+  warehouseName: string;
   details: GetAdjustmentDetail[];
 }

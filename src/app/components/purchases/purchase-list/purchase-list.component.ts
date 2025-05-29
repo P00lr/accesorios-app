@@ -59,7 +59,7 @@ export class PurchaseListComponent {
       confirmButtonText: "SI, Eliminar!"
     }).then((result) => {
       if (result.isConfirmed) {
-        this.purchaseService.deleteClient(id).subscribe(() => {
+        this.purchaseService.deletePurchase(id).subscribe(() => {
           this.purchases = this.purchases.filter(purchase => purchase.id !== id);
         });
         Swal.fire({

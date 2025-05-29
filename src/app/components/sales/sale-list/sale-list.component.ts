@@ -3,11 +3,13 @@ import { Sale } from '../../../models/list-sale.model';
 import { SaleService } from '../../../services/sale.service';
 import { Page } from '../../../models/page.model';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import Swal from 'sweetalert2';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-sale-list',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './sale-list.component.html',
   styleUrl: './sale-list.component.css'
 })
@@ -18,7 +20,10 @@ export class SaleListComponent {
   loading = true;
   error: string | null = null;
 
-  constructor(private saleService: SaleService) {}
+  constructor(
+    private saleService: SaleService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.loadSales(this.currentPage);
@@ -41,11 +46,32 @@ export class SaleListComponent {
     });
   }
   viewDetails(id: number) {
-    
+    this.router.navigate(['/sales/detail', id]);
   }
 
   deletePurchase(id: number) {
-
+    Swal.fire({
+      title: "Estas seguro que deseas eliminar?",
+      text: "Se eliminara de forma permanente!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "SI, Eliminar!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.saleService.deleteSaleById(id).subscribe(() => {
+          this.sales = this.sales.filter(sale => sale.id !== id);
+        });
+        Swal.fire({
+          title: "Eliminado!",
+          text: "Eliminado exitosamente.",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 800
+        });
+      }
+    });
   }
 
   goToPage(page: number): void {

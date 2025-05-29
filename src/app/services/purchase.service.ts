@@ -20,22 +20,22 @@ export class PurchaseService {
       tap((response) => this.setPurchasesToLocalStorage(response.content))
     );
   }
-
-  setPurchasesToLocalStorage(clients: Purchase[]): void {
-    localStorage.setItem('clients', JSON.stringify(clients));
+  //VERIFICAR QUE TODO ESTE BIEN
+  setPurchasesToLocalStorage(purchases: Purchase[]): void {
+    localStorage.setItem('purchases', JSON.stringify(purchases));
   }
 
   createPurchase(purchase: CreatePurchase): Observable<any> {
-     console.log('Datos que se enviarán:', purchase);
+    console.log('Datos que se enviarán:', purchase);
     return this.http.post(this.apiUrl, purchase);
   }
 
   getPurchaseById(id: number): Observable<GetPurchase> {
-  return this.http.get<GetPurchase>(`${this.apiUrl}/${id}`);
-}
+    return this.http.get<GetPurchase>(`${this.apiUrl}/${id}`);
+  }
 
 
-  deleteClient(id: number): Observable<void> {
+  deletePurchase(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

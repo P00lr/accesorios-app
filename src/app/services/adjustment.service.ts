@@ -26,6 +26,7 @@ export class AdjustmentService {
   }
 
   createAdjustment(adjustment: CreateAdjustment): Observable<any> {
+    console.log(adjustment);
     return this.http.post(`${this.apiUrl}`, adjustment);
 
   }

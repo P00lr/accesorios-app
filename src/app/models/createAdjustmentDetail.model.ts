@@ -1,4 +1,5 @@
 export interface CreateAdjustmentDetail {
-  warehouseDetailId: number;
+  accessoryId: number;
+  itemDescription?: string;
   quantity: number;
 }

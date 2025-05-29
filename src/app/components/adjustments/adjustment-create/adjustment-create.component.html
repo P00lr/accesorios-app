@@ -1,162 +1,121 @@
-<div class="container mt-4">
-  <div class="card shadow">
-    <div class="card-header bg-primary text-white">
-      <h5 class="mb-0">Crear Ajuste</h5>
+<div class="container py-4">
+  <h2 class="mb-4">Registro de Ajuste de Inventario</h2>
+
+  <div class="row g-4">
+    <!-- Formulario -->
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title mb-3">Datos del Ajuste</h5>
+
+          <!-- Tipo de Ajuste -->
+          <div class="mb-3">
+            <label class="form-label" for="type">Tipo</label>
+            <select class="form-select" id="type" [(ngModel)]="type" name="type">
+              <option value="INGRESO">Ingreso</option>
+              <option value="EGRESO">Egreso</option>
+            </select>
+          </div>
+
+          <!-- Almacén -->
+          <mat-form-field class="w-100 mb-3" appearance="fill">
+            <mat-label>Almacén</mat-label>
+            <input matInput type="text" [formControl]="warehouseControl" [matAutocomplete]="warehouseAuto"
+              [disabled]="!warehouses.length" aria-label="Almacén" />
+
+            <mat-autocomplete #warehouseAuto="matAutocomplete" (optionSelected)="onSelectWarehouse($event)"
+              [displayWith]="displayWarehouse">
+              <mat-option *ngFor="let option of filteredWarehouses$ | async" [value]="option">
+                {{ option.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <!-- Buscar Accesorio -->
+          <mat-form-field class="w-100 mb-3" appearance="fill">
+            <mat-label>Buscar Accesorio</mat-label>
+            <input matInput type="text" [formControl]="accessoryControl" [matAutocomplete]="auto"
+              [disabled]="!selectedWarehouse" aria-label="Buscar Accesorio" />
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectAccessory($event.option.value)">
+              <mat-option *ngFor="let option of filteredAccessories$ | async" [value]="option.name">
+                {{ option.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <!-- Cantidad -->
+          <div class="mb-3">
+            <label class="form-label" for="quantity">Cantidad</label>
+            <input type="number" class="form-control" id="quantity" [(ngModel)]="quantity" name="quantity"
+              placeholder="Ej. 5" min="1" [disabled]="!selectedAccessory" />
+          </div>
+
+          <!-- Descripción del ítem -->
+          <div class="mb-3">
+            <label class="form-label" for="itemDescription">Descripción del Ítem</label>
+            <input type="text" class="form-control" id="itemDescription" [(ngModel)]="itemDescription"
+              name="itemDescription" placeholder="Ej. Ajuste por daño" [disabled]="!selectedAccessory" />
+          </div>
+
+          <!-- Botón agregar -->
+          <button class="btn btn-primary w-100" (click)="agregarItem()"
+            [disabled]="!selectedAccessory || !quantity || quantity <= 0">
+            Agregar al Ajuste
+          </button>
+
+        </div>
+      </div>
     </div>
 
-    <div class="card-body">
-      <form [formGroup]="adjustmentForm" (ngSubmit)="onSubmit()">
+    <!-- Lista de Items -->
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title mb-3">Items del Ajuste</h5>
 
-        <!-- Fecha -->
-        <div class="mb-3">
-          <label for="date" class="form-label">Fecha</label>
-          <input
-            id="date"
-            type="datetime-local"
-            class="form-control"
-            formControlName="date"
-          />
-          <div
-            class="text-danger"
-            *ngIf="adjustmentForm.get('date')?.invalid && adjustmentForm.get('date')?.touched"
-          >
-            Fecha requerida.
+          <div *ngIf="adjustmentItems.length; else noItems">
+            <table class="table table-bordered align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Accesorio</th>
+                  <th>Cantidad</th>
+                  <th>Descripción</th>
+                  <th style="width: 40px;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of adjustmentItems; let i = index">
+                  <td>{{ item.accessoryName }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>{{ item.itemDescription }}</td>
+                  <td class="text-center">
+                    <button class="btn btn-sm btn-danger" (click)="eliminarItem(i)" aria-label="Eliminar">
+                      &times;
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-        </div>
 
-        <!-- Tipo -->
-        <div class="mb-3">
-          <label class="form-label">Tipo</label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="type"
-            placeholder="Ejemplo: Return, Increase, Decrease"
-          />
-          <div
-            class="text-danger"
-            *ngIf="adjustmentForm.get('type')?.invalid && adjustmentForm.get('type')?.touched"
-          >
-            Tipo requerido.
+          <ng-template #noItems>
+            <p class="text-muted">No hay items agregados.</p>
+          </ng-template>
+
+          <!-- Descripción general del ajuste -->
+          <div class="mb-3 mt-4">
+            <label class="form-label" for="description">Descripción del Ajuste</label>
+            <input type="text" class="form-control" id="description" [(ngModel)]="description" name="description"
+              placeholder="Ej. Ajuste mensual" />
           </div>
-        </div>
 
-        <!-- Descripción -->
-        <div class="mb-3">
-          <label class="form-label">Descripción</label>
-          <textarea
-            class="form-control"
-            formControlName="description"
-            rows="2"
-          ></textarea>
-          <div
-            class="text-danger"
-            *ngIf="adjustmentForm.get('description')?.invalid && adjustmentForm.get('description')?.touched"
-          >
-            Descripción requerida.
-          </div>
-        </div>
-
-        <!-- Usuario ID -->
-        <div class="mb-3">
-          <label class="form-label">Usuario ID</label>
-          <input
-            type="number"
-            class="form-control"
-            formControlName="userId"
-          />
-          <div
-            class="text-danger"
-            *ngIf="adjustmentForm.get('userId')?.invalid && adjustmentForm.get('userId')?.touched"
-          >
-            Usuario requerido.
-          </div>
-        </div>
-
-        <!-- Detalles -->
-        <h6>Detalles del Ajuste</h6>
-        <div formArrayName="adjustmentDetails">
-          <div
-            *ngFor="let detail of adjustmentDetails.controls; let i = index"
-            [formGroupName]="i"
-            class="border p-3 rounded mb-3 bg-light"
-          >
-            <div class="row g-2 align-items-end">
-              <div class="col-md-6">
-                <label class="form-label">Detalle de Bodega ID</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  formControlName="warehouseDetailId"
-                />
-                <div
-                  class="text-danger"
-                  *ngIf="
-                    detail.get('warehouseDetailId')?.invalid &&
-                    detail.get('warehouseDetailId')?.touched
-                  "
-                >
-                  Requerido.
-                </div>
-              </div>
-              <div class="col-md-4">
-                <label class="form-label">Cantidad</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  formControlName="quantity"
-                />
-                <div
-                  class="text-danger"
-                  *ngIf="
-                    detail.get('quantity')?.invalid &&
-                    detail.get('quantity')?.touched
-                  "
-                >
-                  Requerido. Mínimo 1.
-                </div>
-              </div>
-              <div class="col-md-2 d-grid">
-                <button
-                  type="button"
-                  class="btn btn-outline-danger"
-                  (click)="removeAdjustmentDetail(i)"
-                  *ngIf="adjustmentDetails.length > 1"
-                >
-                  Quitar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Botón agregar detalle -->
-        <div class="mb-3">
-          <button
-            type="button"
-            class="btn btn-outline-primary"
-            (click)="addAdjustmentDetail()"
-          >
-            Agregar Detalle
+          <!-- Botón confirmar -->
+          <button class="btn btn-success w-100" (click)="guardarAjuste()"
+            [disabled]="!adjustmentItems.length || !selectedWarehouse">
+            Confirmar Ajuste
           </button>
         </div>
-
-        <!-- Mostrar mensaje de error general -->
-        <div *ngIf="errorMessage" class="alert alert-danger">
-          {{ errorMessage }}
-        </div>
-
-        <!-- Botón guardar -->
-        <div class="d-grid">
-          <button
-            type="submit"
-            class="btn btn-success"
-            [disabled]="adjustmentForm.invalid"
-          >
-            Crear Ajuste
-          </button>
-        </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>

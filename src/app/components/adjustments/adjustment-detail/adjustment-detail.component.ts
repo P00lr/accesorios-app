@@ -44,4 +44,9 @@ export class AdjustmentDetailComponent {
       }
     });
   }
+
+  get totalQuantity(): number {
+  return this.adjustment?.details?.reduce((sum, detail) => sum + detail.quantity, 0) || 0;
+}
+
 }
