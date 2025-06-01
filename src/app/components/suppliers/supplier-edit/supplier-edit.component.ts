@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SupplierService } from '../../../services/supplier.service';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-supplier-edit',
@@ -39,10 +40,27 @@ export class SupplierEditComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.supplierForm.valid) {
-      this.supplierService.updateSupplier(this.supplierId, this.supplierForm.value).subscribe(() => {
-        this.router.navigate(['/proveedores']);
-      });
-    }
+  if (this.supplierForm.valid) {
+    this.supplierService.updateSupplier(this.supplierId, this.supplierForm.value).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Proveedor actualizado',
+          text: 'El proveedor se actualizó correctamente.',
+          confirmButtonText: 'Aceptar'
+        }).then(() => {
+          this.router.navigate(['/proveedores']);
+        });
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo actualizar el proveedor. Intenta nuevamente.',
+          confirmButtonText: 'Aceptar'
+        });
+      }
+    });
   }
+}
 }

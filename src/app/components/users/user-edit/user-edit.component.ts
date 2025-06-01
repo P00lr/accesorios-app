@@ -54,11 +54,27 @@ export class UserEditComponent {
   }
 
   onSubmit(): void {
-    this.userService.updateUser(this.userId, this.user).subscribe({
-      next: () => this.router.navigate(['/users']),
-      error: () => (this.error = 'No se pudo actualizar el usuario.')
-    });
-  }
+  this.userService.updateUser(this.userId, this.user).subscribe({
+    next: () => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Usuario actualizado',
+        text: 'El usuario se actualizó correctamente.',
+        confirmButtonText: 'Aceptar'
+      }).then(() => {
+        this.router.navigate(['/users']);
+      });
+    },
+    error: () => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudo actualizar el usuario. Intenta nuevamente.',
+        confirmButtonText: 'Aceptar'
+      });
+    }
+  });
+}
 
 
   onChangePassword(): void {

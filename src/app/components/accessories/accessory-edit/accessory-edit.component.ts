@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CategoryService } from '../../../services/category.service';
 import { Category } from '../../../models/category.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-accessory-edit',
@@ -65,9 +66,25 @@ export class AccessoryEditComponent {
   }
 
   onSubmit(): void {
-    this.accessoryService.updateAccessory(this.accessoryId, this.accessory as Accessory).subscribe({
-      next: () => this.router.navigate(['/accessories']),
-      error: () => (this.error = 'No se pudo actualizar el accesorio.')
-    });
-  }
+  this.accessoryService.updateAccessory(this.accessoryId, this.accessory as Accessory).subscribe({
+    next: () => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Accesorio actualizado',
+        text: 'El accesorio se actualizó correctamente.',
+        confirmButtonText: 'Aceptar'
+      }).then(() => {
+        this.router.navigate(['/accessories']);
+      });
+    },
+    error: () => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudo actualizar el accesorio. Intenta nuevamente.',
+        confirmButtonText: 'Aceptar'
+      });
+    }
+  });
+}
 }

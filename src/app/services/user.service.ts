@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Page } from '../models/page.model';
 import { User } from '../models/user.model';
 import { Observable, tap } from 'rxjs';
+import { UserWihtPermissions } from '../models/user-with-permissions.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,14 @@ export class UserService {
     return this.http.get<Page<User>>(`${this.apiUrl}/page/${page}`).pipe(
       tap((response) => this.setUsersToLocalStorage(response.content))
     );
+  }
+
+  getAllusers(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}`);
+  }
+
+  getUserWithPermissions(id: number): Observable<UserWihtPermissions> {
+    return this.http.get<UserWihtPermissions>(`${this.apiUrl}/with-permissions/${id}`);
   }
 
   setUsersToLocalStorage(users: User[]): void {

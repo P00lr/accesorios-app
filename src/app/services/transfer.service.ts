@@ -30,7 +30,11 @@ export class TransferService {
   }
 
   getTransferById(id: number): Observable<GetTransfer> {
-  return this.http.get<GetTransfer>(`${this.apiUrl}/${id}`);
-}
+    return this.http.get<GetTransfer>(`${this.apiUrl}/${id}`);
+  }
+
+  deleteTransfer(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 
 }

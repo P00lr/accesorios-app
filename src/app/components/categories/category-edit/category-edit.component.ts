@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CategoryService } from '../../../services/category.service';
 import { Category } from '../../../models/category.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-category-edit',
@@ -36,11 +37,28 @@ export class CategoryEditComponent {
   }
 
   onSubmit(): void {
-    if (this.categoryForm.valid) {
-      const updatedCategory = this.categoryForm.value;
-      this.categoryService.updateCategory(this.categoryId, updatedCategory).subscribe(() => {
-        this.router.navigate(['/categories']);
-      });
-    }
+  if (this.categoryForm.valid) {
+    const updatedCategory = this.categoryForm.value;
+    this.categoryService.updateCategory(this.categoryId, updatedCategory).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Categoría actualizada',
+          text: 'La categoría se actualizó correctamente.',
+          confirmButtonText: 'Aceptar'
+        }).then(() => {
+          this.router.navigate(['/categories']);
+        });
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo actualizar la categoría. Intenta nuevamente.',
+          confirmButtonText: 'Aceptar'
+        });
+      }
+    });
   }
+}
 }

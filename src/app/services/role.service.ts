@@ -4,7 +4,6 @@ import { Observable, tap } from 'rxjs';
 import { Page } from '../models/page.model';
 import { Role } from '../models/role.model';
 import { RoleWithPermissions } from '../models/role-with-permissions.model';
-import { RolePermissionAssignment } from '../models/assignment-permissions-to-role.mode';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +19,10 @@ export class RoleService {
     return this.http.get<Page<RoleWithPermissions>>(`${this.apiUrl}/with-permissions/page/${page}`);
   }
 
+  getAllRolesWithPermissions(): Observable<RoleWithPermissions[]> {
+    return this.http.get<RoleWithPermissions[]>(`${this.apiUrl}/with-permissions`);
+  }
+
 
   getPermissions(page: number): Observable<Page<Role>> {
     return this.http.get<Page<Role>>(`${this.apiUrl}/page/${page}`).pipe(
@@ -33,6 +36,10 @@ export class RoleService {
   getRoleById(id: number): Observable<Role> {
     return this.http.get<Role>(`${this.apiUrl}/${id}`);
   }
+
+  updateRole(id: number, roleData: Partial<Role>): Observable<void> {
+  return this.http.put<void>(`${this.apiUrl}/${id}`, roleData);
+}
 
   createRole(permission: { name: string }): Observable<Role> {
     return this.http.post<Role>(`${this.apiUrl}`, permission);

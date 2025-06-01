@@ -43,6 +43,10 @@ import { HomeComponent } from './components/home/home.component';
 import { CatalogComponent } from './components/catalog/catalog.component';
 import { CartComponent } from './components/cart/cart.component';
 import { PurchaseCartComponent } from './components/purchases/purchase-cart/purchase-cart.component';
+import { AssignPermissionsToRoleComponent } from './components/permissions/assign-permissions-to-role/assign-permissions-to-role.component';
+import { AssignPermissionsToUserComponent } from './components/permissions/assign-permissions-to-user/assign-permissions-to-user.component';
+import { PermissionEditComponent } from './components/permissions/permission-edit/permission-edit.component';
+import { RoleEditComponent } from './components/roles/role-edit/role-edit.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -111,9 +115,12 @@ export const routes: Routes = [
   //{ path: 'permissions/detail/:id', component: PermissionListComponent },
   { path: 'permissions', component: PermissionListComponent },
   { path: 'permissions/create', component: PermissionCreateComponent },
+  { path: 'permissions/edit/:id', component: PermissionEditComponent },
+  { path: 'assign/permissions-to-role', component: AssignPermissionsToRoleComponent },
+  { path: 'assign/permissions-to-user', component: AssignPermissionsToUserComponent },
 
   //ROLES
-  //{ path: 'permissions/detail/:id', component: PermissionListComponent },
+  { path: 'roles/edit/:id', component: RoleEditComponent },
   { path: 'roles', component: RoleListComponent },
   { path: 'roles-with-permissions', component: ListRoleWithPermissionsComponent },
   { path: 'roles/create', component: RoleCreateComponent },

@@ -1,0 +1,56 @@
+<mat-card class="card-container">
+  <h2 class="card-title">Asignar Permisos a Rol</h2>
+
+  <!-- Autocompletado de rol -->
+  <mat-form-field class="full-width mb-3" appearance="outline" floatLabel="always">
+    <mat-label>Selecciona un rol</mat-label>
+    <input
+      matInput
+      [formControl]="roleControl"
+      [matAutocomplete]="auto"
+      placeholder="Buscar por nombre..."
+    />
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      (optionSelected)="onSelectRole($event.option.value)">
+      <mat-option *ngFor="let role of filteredRoles" [value]="role">
+        {{ role.name }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <!-- Permisos agrupados por entidad -->
+  <div *ngIf="selectedRole">
+    <h3 class="section-title">
+      Permisos asignados al rol: <span class="role-name">{{ selectedRole.name }}</span>
+    </h3>
+
+    <div class="permissions-container">
+      <ng-container *ngFor="let group of groupedPermissions">
+        <h4 class="group-title">{{ group.entityName }}</h4>
+
+        <div class="permissions-grid">
+          <mat-checkbox
+            *ngFor="let permission of group.permissions"
+            [checked]="selectedPermissionIds.has(permission.id)"
+            (change)="togglePermission(permission.id)">
+            {{ permission.name }}
+          </mat-checkbox>
+        </div>
+
+        <mat-divider class="divider"></mat-divider>
+      </ng-container>
+    </div>
+
+    <div class="button-container d-flex gap-2">
+      <button mat-flat-button color="primary" (click)="onAssignPermissions()">
+        Asignar Permisos
+      </button>
+
+      <a mat-flat-button color="warn" routerLink="/permissions">
+        Cancelar
+      </a>
+    </div>
+
+  </div>
+</mat-card>

@@ -20,10 +20,11 @@
           <input type="email" id="email" class="form-control" formControlName="email" required>
         </div>
 
-        <div class="d-flex justify-content-end">
+        <div class="m-3">
           <button type="submit" class="btn btn-sm btn-outline-primary" [disabled]="supplierForm.invalid">
             <i class="bi bi-pencil-square"></i> Guardar Cambios
           </button>
+          <a class="btn btn-secondary ms-2" routerLink="/proveedores">Cancelar</a>
         </div>
       </form>
     </div>

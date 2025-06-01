@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ClientService } from '../../../services/client.service';
 import { Client } from '../../../models/client.model';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-client-edit',
@@ -40,12 +41,19 @@ export class ClientEditComponent {
   }
 
   onSubmit(): void {
-    if (this.clientForm.valid) {
-      const updatedClient = this.clientForm.value;
-      this.clientService.updateClient(this.clientId, updatedClient).subscribe(() => {
+  if (this.clientForm.valid) {
+    const updatedClient = this.clientForm.value;
+    this.clientService.updateClient(this.clientId, updatedClient).subscribe(() => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Cliente actualizado',
+        text: 'El cliente se actualizó correctamente.',
+        confirmButtonText: 'Aceptar'
+      }).then(() => {
         this.router.navigate(['/clientes']);
       });
-    }
+    });
   }
+}
   
 }

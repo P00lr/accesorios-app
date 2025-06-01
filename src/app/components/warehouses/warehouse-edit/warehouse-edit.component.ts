@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { WarehouseService } from '../../../services/warehouse.service';
 import { CommonModule } from '@angular/common';
 import { Warehouse } from '../../../models/warehouse.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-warehouse-edit',
@@ -36,11 +37,18 @@ export class WarehouseEditComponent {
   }
 
   onSubmit(): void {
-    if (this.warehouseForm.valid) {
-      const updatedWarehouse = this.warehouseForm.value;
-      this.warehouseService.updateWarehouse(this.warehouseId, updatedWarehouse).subscribe(() => {
+  if (this.warehouseForm.valid) {
+    const updatedWarehouse = this.warehouseForm.value;
+    this.warehouseService.updateWarehouse(this.warehouseId, updatedWarehouse).subscribe(() => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Almacén actualizado',
+        text: 'El almacén se actualizó correctamente.',
+        confirmButtonText: 'Aceptar'
+      }).then(() => {
         this.router.navigate(['/warehouses']);
       });
-    }
+    });
   }
+}
 }
