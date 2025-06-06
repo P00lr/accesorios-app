@@ -5,6 +5,7 @@ import { Page } from '../../../models/page.model';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-adjustment-list',
@@ -16,15 +17,27 @@ export class AdjustmentListComponent {
   adjustments: Adjustment[] = [];
   currentPage = 0;
   totalPages = 0;
+  permissions: string[] = [];
+
 
   constructor(
     private adjustmentService: AdjustmentService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private authService: AuthService
+  ) {
+    this.authService.permissions$.subscribe(perms => {
+        this.permissions = perms;
+      });
+  }
+
 
   ngOnInit(): void {
     this.loadAdjustments(this.currentPage);
   }
+
+  hasPermission(permission: string): boolean {
+      return this.permissions.includes(permission);
+    }
 
   loadAdjustments(page: number): void {
     this.adjustmentService.getAdjustments(page).subscribe({

@@ -1,0 +1,100 @@
+/* Contenedor centrado y con padding */
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  min-height: 80vh;
+  background: linear-gradient(135deg, #e0f2ff, #ffffff);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Tarjeta con sombra y transición hover */
+.report-card {
+  width: 400px;
+  padding: 1.5rem 2rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 20px rgba(0, 123, 255, 0.15);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  background: white;
+}
+
+.report-card:hover {
+  box-shadow: 0 16px 32px rgba(0, 123, 255, 0.3);
+  transform: translateY(-4px);
+}
+
+.title {
+  font-weight: 700;
+  color: #0d47a1;
+  text-align: center;
+  margin-bottom: 1.2rem;
+  letter-spacing: 1px;
+}
+
+/* Formularios y campos */
+.report-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  opacity: 0;
+  animation: fadeIn 0.6s forwards;
+}
+
+/* Animación de fadeIn */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* Animación en los inputs para enfoque */
+.animated-input .mat-form-field-flex {
+  transition: box-shadow 0.3s ease;
+  border-radius: 8px;
+}
+
+.animated-input.mat-focused .mat-form-field-flex {
+  box-shadow: 0 0 8px 2px rgba(33, 150, 243, 0.6);
+}
+
+/* Botón con animación y transición */
+.btn-animate {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 42px;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 24px;
+  letter-spacing: 0.5px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-animate:hover:not(:disabled) {
+  background-color: #005bb5;
+  box-shadow: 0 4px 12px rgba(0, 91, 181, 0.5);
+}
+
+.btn-animate:disabled {
+  background-color: #90caf9;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Spinner alineado en botón */
+.spinner-button {
+  margin-left: 8px;
+}
+
+/* Mensaje de error con estilo */
+.error-message {
+  margin-top: 1rem;
+  text-align: center;
+  font-weight: 600;
+  color: #d32f2f;
+  animation: fadeIn 1s ease forwards;
+}

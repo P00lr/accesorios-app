@@ -4,12 +4,14 @@ import { Client } from '../../../models/client.model';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../auth/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-client-list',
   templateUrl: './client-list.component.html',
   styleUrls: ['./client-list.component.css'],
-  imports: [RouterModule]
+  imports: [RouterModule, CommonModule]
 })
 export class ClientListComponent implements OnInit {
 
@@ -19,7 +21,21 @@ export class ClientListComponent implements OnInit {
   isLoading = true;
   error: string | null = null;
 
-  constructor(private clientService: ClientService, private router: Router) { }
+  permissions: string[] = [];
+
+
+  constructor(
+    private clientService: ClientService,
+    private router: Router,
+    private authService: AuthService
+  ) { 
+    this.authService.permissions$.subscribe(perms => {
+        this.permissions = perms;
+      });
+  }
+  hasPermission(permission: string): boolean {
+      return this.permissions.includes(permission);
+    }
 
   ngOnInit(): void {
     this.loadClients(this.currentPage);

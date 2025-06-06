@@ -2,7 +2,9 @@
   <div class="card shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center bg-dark text-white">
       <h5 class="mb-0">Lista de Traspasos</h5>
-      <a routerLink="/transfers/create" class="btn btn-light btn-sm">
+      <a 
+        *ngIf="hasPermission('CREAR_TRASPASO')" 
+      routerLink="/transfers/create" class="btn btn-light btn-sm">
         <i class="bi bi-plus-circle"></i> Crear Traspaso
       </a>
     </div>
@@ -26,10 +28,14 @@
               <td>{{ transfer.userName }}</td>
               <td>
                 <div class="d-flex flex-row gap-2 justify-content-center">
-                  <button class="btn btn-sm btn-outline-info" (click)="viewDetails(transfer.id)">
+                  <button 
+                  *ngIf="hasPermission('VER_TRASPASO')" 
+                  class="btn btn-sm btn-outline-info" (click)="viewDetails(transfer.id)">
                     Ver Detalles
                   </button>
-                  <button class="btn btn-sm btn-outline-danger" (click)="deleteTransfer(transfer.id)">
+                  <button 
+                  *ngIf="hasPermission('ELIMINAR_TRASPASO')" 
+                  class="btn btn-sm btn-outline-danger" (click)="deleteTransfer(transfer.id)">
                     <i class="bi bi-trash"></i> Eliminar
                   </button>
                 </div>

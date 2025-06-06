@@ -4,6 +4,7 @@ import { CategoryService } from '../../../services/category.service';
 import { CommonModule } from '@angular/common';
 import { Category } from '../../../models/category.model';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-category-list',
@@ -16,8 +17,22 @@ export class CategoryListComponent implements OnInit {
   categories: Category[] = [];
   currentPage = 0;
   totalPages = 0;
+  permissions: string[] = [];
 
-  constructor(private categoryService: CategoryService, private router: Router) { }
+
+  constructor(
+      private categoryService: CategoryService,
+      private router: Router,
+      private authService: AuthService
+    ) { 
+    this.authService.permissions$.subscribe(perms => {
+        this.permissions = perms;
+      });
+
+  }
+  hasPermission(permission: string): boolean {
+      return this.permissions.includes(permission);
+    }
 
   ngOnInit(): void {
     this.loadCategories(this.currentPage);

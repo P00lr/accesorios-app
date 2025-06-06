@@ -3,8 +3,8 @@ import { Warehouse } from '../../../models/warehouse.model';
 import { WarehouseService } from '../../../services/warehouse.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { Observable, catchError, of } from 'rxjs';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-warehouse-list',
@@ -20,13 +20,25 @@ export class WarehouseListComponent implements OnInit {
   currentPage = 0;
   totalPages = 0;
 
+  permissions: string[] = [];
+
+
   constructor(
     private warehouseService: WarehouseService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private authService: AuthService
+  ) { 
+    this.authService.permissions$.subscribe(perms => {
+        this.permissions = perms;
+      });
+  }
 
   ngOnInit(): void {
     this.loadWarehouses(this.currentPage);
+  }
+
+  hasPermission(permission: string): boolean {
+      return this.permissions.includes(permission);
   }
 
   loadWarehouses(page: number): void {

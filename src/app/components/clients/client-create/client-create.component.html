@@ -1,16 +1,15 @@
-<div class="container mt-5">
+<div class="container mt-5 form-card-container">
   <div class="row justify-content-center">
-    <div class="col-md-10">
-      <div class="card shadow-sm border-0">
-        <div class="card-header bg-dark text-white">
+    <div class="col-lg-8 col-md-10 col-sm-12">
+      <div class="card form-card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-dark text-white rounded-top-4">
           <h5 class="mb-0">Crear Cliente</h5>
         </div>
-        <div class="card-body">
+        <div class="card-body p-4">
           <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
-            <div class="row">
-
+            <div class="row g-3">
               <!-- Nombre -->
-              <div class="col-md-6 mb-3">
+              <div class="col-md-6">
                 <div class="form-floating">
                   <input id="name" type="text" class="form-control" placeholder="Nombre" formControlName="name" />
                   <label for="name">Nombre</label>
@@ -18,46 +17,41 @@
               </div>
 
               <!-- Username -->
-              <div class="col-md-6 mb-3">
+              <div class="col-md-6">
                 <div class="form-floating">
-                  <input id="username" type="text" class="form-control" placeholder="Username"
-                    formControlName="username" />
+                  <input id="username" type="text" class="form-control" placeholder="Username" formControlName="username" />
                   <label for="username">Username</label>
                 </div>
               </div>
 
               <!-- Password -->
-              <div class="col-md-6 mb-3">
+              <div class="col-md-6">
                 <div class="form-floating">
-                  <input id="password" type="password" class="form-control" placeholder="Contraseña"
-                    formControlName="password" />
+                  <input id="password" type="password" class="form-control" placeholder="Contraseña" formControlName="password" />
                   <label for="password">Contraseña</label>
                 </div>
               </div>
 
               <!-- Email -->
-              <div class="col-md-6 mb-3">
+              <div class="col-md-6">
                 <div class="form-floating">
-                  <input id="email" type="email" class="form-control" placeholder="Correo electrónico"
-                    formControlName="email" />
+                  <input id="email" type="email" class="form-control" placeholder="Correo electrónico" formControlName="email" />
                   <label for="email">Correo electrónico</label>
                 </div>
               </div>
 
               <!-- Fecha de Nacimiento -->
-              <div class="col-md-6 mb-3">
+              <div class="col-md-6">
                 <div class="form-floating">
-                  <input id="fechaNacimiento" type="date" class="form-control" placeholder="Fecha de nacimiento"
-                    formControlName="fechaNacimiento" />
+                  <input id="fechaNacimiento" type="date" class="form-control" placeholder="Fecha de nacimiento" formControlName="fechaNacimiento" />
                   <label for="fechaNacimiento">Fecha de nacimiento</label>
                 </div>
               </div>
 
               <!-- Tema Preferido -->
-              <div class="col-md-6 mb-3">
+              <div class="col-md-6">
                 <div class="form-floating">
-                  <select id="preferredTheme" class="form-select" formControlName="preferredTheme"
-                    aria-label="Tema preferido">
+                  <select id="preferredTheme" class="form-select" formControlName="preferredTheme" aria-label="Tema preferido">
                     <option value="light">Claro</option>
                     <option value="dark">Oscuro</option>
                   </select>
@@ -66,30 +60,25 @@
               </div>
 
               <!-- Checkbox: Tema automático -->
-              <div class="col-12 mb-3">
+              <div class="col-12">
                 <div class="form-check">
-                  <input type="checkbox" id="autoThemeByHour" class="form-check-input"
-                    formControlName="autoThemeByHour" />
+                  <input type="checkbox" id="autoThemeByHour" class="form-check-input" formControlName="autoThemeByHour" />
                   <label for="autoThemeByHour" class="form-check-label">Tema automático por hora</label>
                 </div>
               </div>
 
-              <!-- Botón -->
-              <div class="d-flex justify-content-between mt-4">
-                <a routerLink="/clientes" class="btn btn-outline-secondary">
+              <!-- Botones -->
+              <div class="col-12 d-flex justify-content-between mt-4">
+                <a routerLink="/clientes" class="btn btn-outline-secondary btn-lg px-4">
                   <i class="bi bi-arrow-left"></i> Volver
                 </a>
-
-                <button type="submit" class="btn btn-outline-primary btn-sm">
+                <button type="submit" class="btn btn-primary btn-lg px-4">
                   <i class="bi bi-save"></i> Guardar cambios
                 </button>
               </div>
-
             </div>
           </form>
-
         </div>
-
       </div>
     </div>
   </div>

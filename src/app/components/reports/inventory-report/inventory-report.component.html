@@ -1,1 +1,86 @@
-<p>inventory-report works!</p>
+<div class="report-container">
+  <mat-card class="filter-card">
+    <mat-card-title>📦 Reporte de Inventario</mat-card-title>
+    <mat-card-content>
+      <form (ngSubmit)="generateReport()" class="filter-form">
+        <div class="form-grid">
+
+          <!-- Almacén -->
+          <div class="filter-group">
+            <mat-form-field appearance="outline" class="filter-field">
+              <mat-label>Agregar almacén</mat-label>
+              <input matInput placeholder="Buscar almacén" [formControl]="warehouseInput" [matAutocomplete]="autoWarehouse" />
+              <mat-autocomplete #autoWarehouse="matAutocomplete"
+                (optionSelected)="addItem($event.option.value, warehouseControl); warehouseInput.setValue('')">
+                <mat-option *ngFor="let warehouse of filteredWarehouses$ | async" [value]="warehouse">
+                  {{ warehouse.name }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <div class="chip-container">
+              <span *ngFor="let warehouse of warehouseControl.value" class="chip">
+                {{ warehouse.name }}
+                <mat-icon (click)="removeItem(warehouse, warehouseControl)">cancel</mat-icon>
+              </span>
+            </div>
+          </div>
+
+          <!-- Accesorio -->
+          <div class="filter-group">
+            <mat-form-field appearance="outline" class="filter-field">
+              <mat-label>Agregar accesorio</mat-label>
+              <input matInput placeholder="Buscar accesorio" [formControl]="accessoryInput" [matAutocomplete]="autoAccessory" />
+              <mat-autocomplete #autoAccessory="matAutocomplete"
+                (optionSelected)="addItem($event.option.value, accessoryControl); accessoryInput.setValue('')">
+                <mat-option *ngFor="let accessory of filteredAccessories$ | async" [value]="accessory">
+                  {{ accessory.name }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <div class="chip-container">
+              <span *ngFor="let accessory of accessoryControl.value" class="chip">
+                {{ accessory.name }}
+                <mat-icon (click)="removeItem(accessory, accessoryControl)">cancel</mat-icon>
+              </span>
+            </div>
+          </div>
+
+          <!-- Categoría -->
+          <div class="filter-group">
+            <mat-form-field appearance="outline" class="filter-field">
+              <mat-label>Agregar categoría</mat-label>
+              <input matInput placeholder="Buscar categoría" [formControl]="categoryInput" [matAutocomplete]="autoCategory" />
+              <mat-autocomplete #autoCategory="matAutocomplete"
+                (optionSelected)="addItem($event.option.value, categoryControl); categoryInput.setValue('')">
+                <mat-option *ngFor="let category of filteredCategories$ | async" [value]="category">
+                  {{ category.name }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <div class="chip-container">
+              <span *ngFor="let category of categoryControl.value" class="chip">
+                {{ category.name }}
+                <mat-icon (click)="removeItem(category, categoryControl)">cancel</mat-icon>
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="button-group">
+          <button mat-raised-button color="primary" type="submit">Generar Reporte</button>
+          <button mat-raised-button color="accent" type="button" (click)="downloadReport()">Descargar PDF</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <div *ngIf="pdfSrc" class="pdf-preview">
+    <h3>📄 Previsualización del Reporte</h3>
+    <ngx-extended-pdf-viewer [src]="pdfSrc" useBrowserLocale="true" height="700px" backgroundColor="#f5f5f5">
+    </ngx-extended-pdf-viewer>
+  </div>
+</div>

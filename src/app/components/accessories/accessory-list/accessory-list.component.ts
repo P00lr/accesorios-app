@@ -4,6 +4,7 @@ import { AccessoryService } from '../../../services/accessory.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-accessory-list',
@@ -19,10 +20,21 @@ export class AccessoryListComponent implements OnInit{
   currentPage = 0;
   totalPages = 0;
 
+  permissions: string[] = [];
+
+
   constructor(
     private accessoryService: AccessoryService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private authService: AuthService
+  ) {
+    this.authService.permissions$.subscribe(perms => {
+        this.permissions = perms;
+      });
+  }
+  hasPermission(permission: string): boolean {
+      return this.permissions.includes(permission);
+    }
 
   ngOnInit(): void {
     this.loadAccessories(this.currentPage);

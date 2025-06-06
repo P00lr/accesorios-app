@@ -47,97 +47,350 @@ import { AssignPermissionsToRoleComponent } from './components/permissions/assig
 import { AssignPermissionsToUserComponent } from './components/permissions/assign-permissions-to-user/assign-permissions-to-user.component';
 import { PermissionEditComponent } from './components/permissions/permission-edit/permission-edit.component';
 import { RoleEditComponent } from './components/roles/role-edit/role-edit.component';
+import { LoginComponent } from './auth/login/login.component';
+import { authGuard } from './auth/auth.guard';
+import { permissionGuard } from './auth/permission.guard';
+import { InventoryReportComponent } from './components/reports/inventory-report/inventory-report.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'catalog-accessories', pathMatch: 'full' },
 
-  //CATALOG
-  { path: 'catalog-accessories', component: CatalogComponent},
+  // Login / Registro (públicos)
+  { path: 'login', component: LoginComponent },
 
-  //CART
-  //CATALOG
-  { path: 'cart', component: CartComponent},
+  // Públicas
+  { path: 'catalog-accessories', component: CatalogComponent },
+  { path: 'cart', component: CartComponent },
 
-  //CLIENT
-  { path: 'clientes/detail/:id', component: ClientDetailComponent },
-  { path: 'clientes', component: ClientListComponent },
-  { path: 'clientes/create', component: ClientCreateComponent },
-  { path: 'clientes/edit/:id', component: ClientEditComponent },
-  //SUPPLIER
-  { path: 'proveedores', component: SupplierListComponent },
-  { path: 'proveedores/edit/:id', component: SupplierEditComponent },
-  { path: 'proveedores/create', component: SupplierCreateComponent },
-  //CATEGORIES
-  { path: 'categories/detail/:id', component: CategoryDetailComponent },
-  { path: 'categories', component: CategoryListComponent },
-  { path: 'categories/create', component: CategoryCreateComponent },
-  { path: 'categories/edit/:id', component: CategoryEditComponent },
+  //ojo redirecciona a Catalog
+  { path: 'sales/create', component: CatalogComponent,
+        //canActivate: [permissionGuard]
+  },
+  {
+        path: 'users/create',
+        component: UserCreateComponent,
+        /* canActivate: [permissionGuard],
+        data: { permissions: ['CREAR_USUARIO'] } */
+      },
 
-  //WAREHOUSES
-  { path: 'warehouses/detail/:id', component: WarehouseDetailComponent },
-  { path: 'warehouses', component: WarehouseListComponent },
-  { path: 'warehouses/create', component: WarehouseCreateComponent },
-  { path: 'warehouses/edit/:id', component: WarehouseEditComponent },
+  // Protegidas con authGuard
+  {
+    path: '',
+    canActivate: [authGuard],
+    children: [
+      // CLIENTES
+      {
+        path: 'clientes',
+        component: ClientListComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_CLIENTE'] }
+      },
+      {
+        path: 'clientes/create',
+        component: ClientCreateComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['CREAR_CLIENTE'] }
+      },
+      {
+        path: 'clientes/edit/:id',
+        component: ClientEditComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['EDITAR_CLIENTE'] }
+      },
+      {
+        path: 'clientes/detail/:id',
+        component: ClientDetailComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_CLIENTE'] }
+      },
 
-  //ACCESORIES
-  { path: 'accessories/detail/:id', component: AccessoryDetailComponent },
-  { path: 'accessories', component: AccessoryListComponent },
-  { path: 'accessories/create', component: AccessoryCreateComponent },
-  { path: 'accessories/edit/:id', component: AccessoryEditComponent },
+      //SUPPLIERS
+      {
+        path: 'proveedores',
+        component: SupplierListComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_PROVEEDOR'] }
+      },
+      {
+        path: 'proveedores/create',
+        component: SupplierCreateComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['CREAR_PROVEEDOR'] }
+      },
+      {
+        path: 'proveedores/edit/:id',
+        component: SupplierEditComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['EDITAR_PROVEEDOR'] }
+      },
 
-  //USERS
-  { path: 'users/detail/:id', component: UserDetailComponent },
-  { path: 'users', component: UserListComponent },
-  { path: 'users/create', component: UserCreateComponent },
-  { path: 'users/edit/:id', component: UserEditComponent },
+      //CATEGORIES
+      {
+        path: 'categories',
+        component: CategoryListComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_CATEGORIA'] }
+      },
+      {
+        path: 'categories/create',
+        component: CategoryCreateComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['CREAR_CATEGORIA'] }
+      },
+      {
+        path: 'categories/edit/:id',
+        component: CategoryEditComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['EDITAR_CATEGORIA'] }
+      },
+      {
+        path: 'categories/detail/:id',
+        component: CategoryDetailComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_CATEGORIA'] }
+      },
 
-  //PURCHASES
-  { path: 'purchases/detail/:id', component: PurchaseDetailComponent },
-  { path: 'purchases', component: PurchaseListComponent },
-  { path: 'purchases/create', component: PurchaseCartComponent },
 
-  //SALES
-  { path: 'sales/detail/:id', component: SaleDetailComponent },
-  { path: 'sales', component: SaleListComponent },
-  { path: 'sales/create', component: CatalogComponent },
+      //WAREHOUSES
+      {
+        path: 'warehouses',
+        component: WarehouseListComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_ALMACEN'] }
+      },
+      {
+        path: 'warehouses/create',
+        component: WarehouseCreateComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['CREAR_ALMACEN'] }
+      },
+      {
+        path: 'warehouses/edit/:id',
+        component: WarehouseEditComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['EDITAR_ALMACEN'] }
+      },
+      {
+        path: 'warehouses/detail/:id',
+        component: WarehouseDetailComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_ALMACEN'] }
+      },
 
-  //ADJUSTMENTS
-  { path: 'adjustments/detail/:id', component: AdjustmentDetailComponent },
-  { path: 'adjustments', component: AdjustmentListComponent },
-  { path: 'adjustments/create', component: AdjustmentCreateComponent },
+      //ACCESSORIES
+      {
+        path: 'accessories',
+        component: AccessoryListComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_ACCESORIO'] }
+      },
+      {
+        path: 'accessories/create',
+        component: AccessoryCreateComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['CREAR_ACCESORIO'] }
+      },
+      {
+        path: 'accessories/edit/:id',
+        component: AccessoryEditComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['EDITAR_ACCESORIO'] }
+      },
+      {
+        path: 'accessories/detail/:id',
+        component: AccessoryDetailComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_ACCESORIO'] }
+      },
 
-  //TRANSFERS
-  { path: 'transfers/detail/:id', component: TransferDetailComponent },
-  { path: 'transfers', component: TransferListComponent },
-  { path: 'transfers/create', component: TransferCreateComponent },
 
-  //PERMISSIONS
-  //{ path: 'permissions/detail/:id', component: PermissionListComponent },
-  { path: 'permissions', component: PermissionListComponent },
-  { path: 'permissions/create', component: PermissionCreateComponent },
-  { path: 'permissions/edit/:id', component: PermissionEditComponent },
-  { path: 'assign/permissions-to-role', component: AssignPermissionsToRoleComponent },
-  { path: 'assign/permissions-to-user', component: AssignPermissionsToUserComponent },
+      // USERS
+      {
+        path: 'users',
+        component: UserListComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_USUARIO'] }
+      },
+      /* {
+        path: 'users/create',
+        component: UserCreateComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['CREAR_USUARIO'] }
+      }, */
+      {
+        path: 'users/edit/:id',
+        component: UserEditComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['EDITAR_USUARIO'] }
+      },
+      {
+        path: 'users/detail/:id',
+        component: UserDetailComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_USUARIO'] }
+      },
 
-  //ROLES
-  { path: 'roles/edit/:id', component: RoleEditComponent },
-  { path: 'roles', component: RoleListComponent },
-  { path: 'roles-with-permissions', component: ListRoleWithPermissionsComponent },
-  { path: 'roles/create', component: RoleCreateComponent },
 
-  //--------------REPORTES-------------------
-  //SALES
-  //{ path: 'sale-report/detail/:id', component: TransferDetailComponent },
-  { path: 'sales-report', component: SaleReportComponent },
-  //{ path: 'transfers/create', component: TransferCreateComponent },
+      // PURCHASES
+      {
+        path: 'purchases',
+        component: PurchaseListComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_COMPRA'] }
+      },
+      {
+        path: 'purchases/create',
+        component: PurchaseCartComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['CREAR_COMPRA'] }
+      },
+      {
+        path: 'purchases/detail/:id',
+        component: PurchaseDetailComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_COMPRA'] }
+      },
 
-  //---------------DASHBOARD
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'roles-with-permissions', component: ListRoleWithPermissionsComponent },
-  { path: 'roles/create', component: RoleCreateComponent },
+      // SALES
+      {
+        path: 'sales',
+        component: SaleListComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_VENTA'] }
+      },
+      
+      {
+        path: 'sales/detail/:id',
+        component: SaleDetailComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_VENTA'] }
+      },
+      //ADJUSTMENS
+      {
+        path: 'adjustments',
+        component: AdjustmentListComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_AJUSTE'] }
+      },
+      {
+        path: 'adjustments/create',
+        component: AdjustmentCreateComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['CREAR_AJUSTE'] }
+      },
+      {
+        path: 'adjustments/detail/:id',
+        component: AdjustmentDetailComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_AJUSTE'] }
+      },
+      //TRANSFERS
+      {
+        path: 'transfers',
+        component: TransferListComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_TRASPASO'] }
+      },
+      {
+        path: 'transfers/create',
+        component: TransferCreateComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['CREAR_TRASPASO'] }
+      },
+      {
+        path: 'transfers/detail/:id',
+        component: TransferDetailComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_TRASPASO'] }
+      },
 
-  //---------------HOME
-  { path: 'home', component: HomeComponent },
-  { path: 'roles-with-permissions', component: ListRoleWithPermissionsComponent },
-  { path: 'roles/create', component: RoleCreateComponent },
+
+      // PERMISSIONS
+      {
+        path: 'permissions',
+        component: PermissionListComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_PERMISO'] }
+      },
+      {
+        path: 'permissions/create',
+        component: PermissionCreateComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['CREAR_PERMISO'] }
+      },
+      {
+        path: 'permissions/edit/:id',
+        component: PermissionEditComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['EDITAR_PERMISO'] }
+      },
+
+      {
+        path: 'assign/permissions-to-role',
+        component: AssignPermissionsToRoleComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['ASIGNAR_PERMISOS_A_ROL'] }
+      },
+      {
+        path: 'assign/permissions-to-user',
+        component: AssignPermissionsToUserComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['ASIGNAR_PERMISOS_A_USER'] }
+      },
+
+
+      // ROLES
+      {
+        path: 'roles',
+        component: RoleListComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_ROL'] }
+      },
+      {
+        path: 'roles/create',
+        component: RoleCreateComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['CREAR_ROL'] }
+      },
+      {
+        path: 'roles/edit/:id',
+        component: RoleEditComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['EDITAR_ROL'] }
+      },
+
+      {
+        path: 'roles-with-permissions',
+        component: ListRoleWithPermissionsComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['VER_ROL'] }
+      },
+
+      // REPORTES
+      { 
+        path: 'sales-report',
+        component: SaleReportComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['REPORTE_VENTA'] }
+      },
+      { 
+        path: 'warehouses-report',
+        component: InventoryReportComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['REPORTE_ALMACEN'] }
+      },
+
+      // DASHBOARD
+      { 
+        path: 'dashboard', 
+        component: DashboardComponent,
+        canActivate: [permissionGuard],
+        data: { permissions: ['DASHBOARD'] }
+        
+      },
+
+      // HOME
+      { path: 'home', component: HomeComponent }
+    ]
+  }
 ];

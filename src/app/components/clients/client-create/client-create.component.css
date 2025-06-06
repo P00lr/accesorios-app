@@ -1,0 +1,115 @@
+/* Contenedor para centrar vertical y horizontalmente */
+.form-card-container {
+  min-height: 80vh; /* Altura mínima para centrar vertical */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Card personalizado */
+.form-card {
+  background: linear-gradient(135deg, #f7f9fc 0%, #e3eaf7 100%);
+  border-radius: 1.25rem;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.12),
+    0 8px 30px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem 2rem;
+  transition: box-shadow 0.3s ease;
+  max-width: 600px;
+  margin: auto;
+}
+
+.form-card:hover {
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.18),
+    0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* Card header con borde redondeado y fondo oscuro */
+.card-header {
+  border-radius: 1.25rem 1.25rem 0 0;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+/* Inputs y selects, igual que antes para comodidad */
+.form-control, .form-select {
+  height: 48px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ced4da;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #2048ca;
+  box-shadow: 0 0 8px rgba(32, 72, 202, 0.4);
+  outline: none;
+}
+
+/* Botones con bordes redondeados y animación */
+.btn-lg {
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 0.6rem;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #2048ca;
+  border-color: #2048ca;
+}
+
+.btn-primary:hover {
+  background-color: #1a3eb5;
+  border-color: #1a3eb5;
+  box-shadow: 0 4px 10px rgba(26, 62, 181, 0.6);
+}
+
+.btn-outline-secondary {
+  color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-outline-secondary:hover {
+  color: #2048ca;
+  border-color: #2048ca;
+  background-color: #e9f0ff;
+  box-shadow: 0 4px 10px rgba(32, 72, 202, 0.3);
+}
+
+/* Checkbox tamaño y estilo */
+.form-check-input {
+  width: 20px;
+  height: 20px;
+  margin-top: 0.3rem;
+  cursor: pointer;
+  border-radius: 0.3rem;
+  border: 1px solid #ced4da;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.form-check-input:checked {
+  background-color: #2048ca;
+  border-color: #2048ca;
+}
+
+.form-check-label {
+  font-size: 1rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Espaciado general entre filas */
+.row.g-3 > [class^="col-"] {
+  margin-bottom: 1rem;
+}
+
+/* Responsive para pantallas chicas */
+@media (max-width: 576px) {
+  .btn-lg {
+    font-size: 1rem;
+    padding: 0.5rem 1.25rem;
+  }
+}

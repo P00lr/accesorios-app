@@ -4,6 +4,7 @@ import { PermissionService } from '../../../services/permission.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-permission-list',
@@ -16,7 +17,20 @@ export class PermissionListComponent {
   currentPage: number = 0;
   totalPages: number = 0;
 
-  constructor(private permissionService: PermissionService) {}
+  permissionss: string[] = [];//tiene doble ss al final para diferenciarse
+  
+
+  constructor(
+    private permissionService: PermissionService,
+    private authService: AuthService
+  ) {
+    this.authService.permissions$.subscribe(perms => {
+        this.permissionss = perms;
+      });
+  }
+  hasPermission(permission: string): boolean {
+      return this.permissionss.includes(permission);
+    }
 
   ngOnInit(): void {
     this.loadPermissions(this.currentPage);

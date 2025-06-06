@@ -2,7 +2,9 @@
   <div class="card shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center bg-dark text-white">
       <h5 class="mb-0">Lista de Compras</h5>
-      <a routerLink="/purchases/create" class="btn btn-light btn-sm">
+      <a 
+        *ngIf="hasPermission('CREAR_COMPRA')" 
+      routerLink="/purchases/create" class="btn btn-light btn-sm">
         <i class="bi bi-plus-circle"></i> Crear Compras
       </a>
     </div>
@@ -14,8 +16,8 @@
           <th>Monto Total</th>
           <th>Cantidad Total</th>
           <th>Fecha de Compra</th>
-          <th>ID Proveedor</th>
-          <th>ID Usuario</th>
+          <th>Proveedor</th>
+          <th>Usuario</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -25,14 +27,18 @@
           <td>{{ purchase.totalAmount | currency:'Bs ' }}</td>
           <td>{{ purchase.totalQuantity }}</td>
           <td>{{ purchase.purchaseDate | date:'medium' }}</td>
-          <td>{{ purchase.supplierId }}</td>
-          <td>{{ purchase.userId }}</td>
+          <td>{{ purchase.supplierName }}</td>
+          <td>{{ purchase.userName }}</td>
           <td>
             <div class="d-flex flex-row gap-2 justify-content-center">
-                <button class="btn btn-sm btn-outline-info" (click)="viewDetails(purchase.id)">
+                <button 
+                *ngIf="hasPermission('VER_COMPRA')" 
+                class="btn btn-sm btn-outline-info" (click)="viewDetails(purchase.id)">
                     Ver Detalles
                 </button>
-                <button class="btn btn-sm btn-outline-danger" (click)="deletePurchase(purchase.id)">
+                <button 
+                *ngIf="hasPermission('ELIMINAR_COMPRA')" 
+                class="btn btn-sm btn-outline-danger" (click)="deletePurchase(purchase.id)">
                     <i class="bi bi-trash"></i> Eliminar
                 </button>
                 </div>

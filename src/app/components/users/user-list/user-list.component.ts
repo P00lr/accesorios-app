@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { User } from '../../../models/user.model';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-user-list',
@@ -17,14 +18,25 @@ export class UserListComponent {
   totalPages = 0;
   isLoading = true;
   error: string | null = null;
+  permissions: string[] = [];
+
 
   constructor(
     private userService: UserService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private authService: AuthService
+  ) { 
+    this.authService.permissions$.subscribe(perms => {
+        this.permissions = perms;
+      });
+  }
 
   ngOnInit(): void {
     this.loadUsers(this.currentPage);
+  }
+
+  hasPermission(permission: string): boolean {
+      return this.permissions.includes(permission);
   }
 
   loadUsers(page: number): void {

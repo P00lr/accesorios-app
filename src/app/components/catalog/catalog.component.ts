@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { AccessoryService } from '../../services/accessory.service';
 import { AccessoryCatalog } from '../../models/accessory-catalog.model';
 import { CommonModule } from '@angular/common';
-import { Accessory } from '../../models/accessory.model';
 import { CartService } from '../../services/cart.service';
 
 @Component({
@@ -13,7 +12,6 @@ import { CartService } from '../../services/cart.service';
 })
 export class CatalogComponent {
 
-  
   clickedButtons = new Set<number>();
 
   accessories: AccessoryCatalog[] = [];
@@ -73,6 +71,4 @@ export class CatalogComponent {
       this.clickedButtons.delete(accessory.id);
     }, 400);
   }
-
-
 }

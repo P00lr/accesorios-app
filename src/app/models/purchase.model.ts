@@ -3,6 +3,6 @@ export interface Purchase {
   totalAmount: number;
   totalQuantity: number;
   purchaseDate: string; // usualmente fecha en ISO string
-  supplierId: number;
-  userId: number;
+  supplierName: string;
+  userName: string;
 }

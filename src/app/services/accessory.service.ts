@@ -27,6 +27,12 @@ export class AccessoryService {
     return this.http.get<Page<AccessoryCatalog>>(`${this.apiUrl}/page/catalog/${page}`);
   }
 
+  getAllAccessories(): Observable<Accessory[]> {
+    return this.http.get<Accessory[]>(`${this.apiUrl}`).pipe(
+      tap((response) => this.setAccesoriesToLocalStorage(response))
+    );
+  }
+
 
   setAccesoriesToLocalStorage(accesories: Accessory[]): void {
     localStorage.setItem('accesories', JSON.stringify(accesories));

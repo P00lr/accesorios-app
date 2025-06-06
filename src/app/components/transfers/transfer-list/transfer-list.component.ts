@@ -5,6 +5,7 @@ import { TransferService } from '../../../services/transfer.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-transfer-list',
@@ -19,14 +20,24 @@ export class TransferListComponent {
 
   loading = false;
   errorMessage = '';
+  permissions: string[] = [];
+
 
   constructor(
     private transferService: TransferService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private authService: AuthService
+  ) {
+    this.authService.permissions$.subscribe(perms => {
+        this.permissions = perms;
+      });
+  }
 
   ngOnInit(): void {
     this.loadTransfers(this.currentPage);
+  }
+  hasPermission(permission: string): boolean {
+      return this.permissions.includes(permission);
   }
 
   loadTransfers(page: number): void {

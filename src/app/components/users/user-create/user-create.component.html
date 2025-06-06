@@ -1,59 +1,72 @@
-<div class="container mt-4">
-    <div class="card shadow-sm">
-        <div class="card-header bg-dark text-white">
-            <h5 class="mb-0">Crear Nuevo Usuario</h5>
-        </div>
+<div class="col-12 d-flex justify-content-center">
+  <div class="register-card-wrapper">
+    <div class="card register-card shadow-sm border-0 rounded-4">
 
-        <div class="card-body">
-            <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <div class="card-header bg-dark text-white rounded-top-4">
+        <h5 class="mb-0">Regístrate</h5>
+      </div>
 
-                <div class="mb-3">
-                    <label for="name" class="form-label">Nombre</label>
-                    <input type="text" id="name" class="form-control" formControlName="name" />
-                    <div *ngIf="userForm.get('name')?.invalid && userForm.get('name')?.touched"
-                        class="text-danger">
-                        El nombre es obligatorio. 
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="username" class="form-label">Usuario</label>
-                    <input type="text" id="username" class="form-control" formControlName="username" />
-                    <div *ngIf="userForm.get('username')?.invalid && userForm.get('username')?.touched"
-                        class="text-danger">
-                        El usuario es obligatorio.
-                    </div>
-                </div>
+      <div class="card-body p-4">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
 
-                <div class="mb-3">
-                    <label for="email" class="form-label">Correo</label>
-                    <input type="email" id="email" class="form-control" formControlName="email" />
-                    <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched" class="text-danger">
-                        Correo inválido u obligatorio.
-                    </div>
-                </div>
+          <!-- Nombre -->
+          <div class="mb-3">
+            <label for="name" class="form-label">Nombre</label>
+            <input type="text" id="name" class="form-control" formControlName="name" />
+            <div *ngIf="userForm.get('name')?.invalid && userForm.get('name')?.touched" class="text-danger small mt-1">
+              El nombre es obligatorio.
+            </div>
+          </div>
 
-                <div class="mb-3">
-                    <label for="password" class="form-label">Contraseña</label>
-                    <input type="password" id="password" class="form-control" formControlName="password" />
-                    <div *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched"
-                        class="text-danger">
-                        La contraseña es obligatoria.
-                    </div>
-                </div>
+          <!-- Usuario -->
+          <div class="mb-3">
+            <label for="username" class="form-label">Usuario</label>
+            <input type="text" id="username" class="form-control" formControlName="username" />
+            <div *ngIf="userForm.get('username')?.invalid && userForm.get('username')?.touched"
+              class="text-danger small mt-1">
+              El usuario es obligatorio.
+            </div>
+          </div>
 
-                <div class="form-check mb-3">
-                    <input type="checkbox" id="enable" class="form-check-input" formControlName="enable" />
-                    <label for="enable" class="form-check-label">¿Usuario habilitado?</label>
-                </div>
+          <!-- Correo -->
+          <div class="mb-3">
+            <label for="email" class="form-label">Correo</label>
+            <input type="email" id="email" class="form-control" formControlName="email" />
+            <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched"
+              class="text-danger small mt-1">
+              Correo inválido u obligatorio.
+            </div>
+          </div>
 
-                <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">
-                    Crear
-                </button>
+          <!-- Contraseña -->
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" id="password" class="form-control" formControlName="password" />
+            <div *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched"
+              class="text-danger small mt-1">
+              La contraseña es obligatoria.
+            </div>
+          </div>
 
-                <div *ngIf="errorMessage" class="alert alert-danger mt-3">
-                    {{ errorMessage }}
-                </div>
-            </form>
-        </div>
+          <!-- Botón -->
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary btn-lg" [disabled]="userForm.invalid">
+              Crear cuenta
+            </button>
+          </div>
+
+          <!-- Mensaje de error -->
+          <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+            {{ errorMessage }}
+          </div>
+
+        </form>
+        <<div class="d-grid">
+          <a class="btn btn-outline-primary btn-lg" routerLink="/login" role="button" style="text-align: center;">
+            Iniciar sesión
+          </a>
+      </div>
     </div>
+  </div>
+</div>
 </div>

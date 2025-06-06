@@ -13,34 +13,39 @@
                 <label for="name" class="form-label">Nombre</label>
                 <input type="text" id="name" class="form-control" [(ngModel)]="accessory.name" name="name" required />
               </div>
-  
+
               <div class="col-md-6 mb-3">
                 <label for="price" class="form-label">Precio</label>
                 <input type="number" id="price" class="form-control" [(ngModel)]="accessory.price" name="price"
                   required />
               </div>
-  
+
               <div class="col-md-6 mb-3">
                 <label for="description" class="form-label">Descripción</label>
                 <textarea id="description" class="form-control" [(ngModel)]="accessory.description"
                   name="description"></textarea>
               </div>
-  
+
               <div class="col-md-6 mb-3">
                 <label for="brand" class="form-label">Marca</label>
                 <input type="text" id="brand" class="form-control" [(ngModel)]="accessory.brand" name="brand" />
               </div>
-  
+
               <div class="col-md-6 mb-3">
                 <label for="model" class="form-label">Modelo</label>
                 <input type="text" id="model" class="form-control" [(ngModel)]="accessory.model" name="model" />
               </div>
-  
-              <div class="col-md-6 mb-3">
-                <label for="categoryId" class="form-label">ID de Categoría</label>
-                <input type="number" id="categoryId" class="form-control" [(ngModel)]="accessory.categoryId"
-                  name="categoryId" required />
-              </div>
+
+              <mat-form-field class="w-100" appearance="fill">
+                <mat-label>Categoría</mat-label>
+                <input type="text" matInput [formControl]="categoryControl" [matAutocomplete]="auto" required>
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onCategorySelected($event.option.value)">
+                  <mat-option *ngFor="let category of filteredCategories | async" [value]="category.name">
+                    {{ category.name }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+
 
             </div>
 

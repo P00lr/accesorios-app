@@ -2,7 +2,10 @@
   <div class="card shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center bg-dark text-white">
       <h5 class="mb-0">Lista de Ajustes</h5>
-      <a routerLink="/adjustments/create" class="btn btn-light btn-sm">
+      <a
+        *ngIf="hasPermission('CREAR_AJUSTE')" 
+        routerLink="/adjustments/create" 
+        class="btn btn-light btn-sm">
         <i class="bi bi-plus-circle"></i> Crear Ajuste
       </a>
     </div>
@@ -28,10 +31,15 @@
               <td>{{ adjustment.totalQuantity }}</td>
               <td>
                 <div class="d-flex flex-row gap-2 justify-content-center">
-                    <button class="btn btn-sm btn-outline-info" (click)="viewDetails(adjustment.id)">
-                    Ver Detalles
+                    <button 
+                      *ngIf="hasPermission('VER_AJUSTE')" 
+                      class="btn btn-sm btn-outline-info" (click)="viewDetails(adjustment.id)">
+                      Ver Detalles
                     </button>
-                    <button class="btn btn-sm btn-outline-danger" (click)="deleteAdjustmen(adjustment.id)">
+                    <button
+                      *ngIf="hasPermission('ELIMINAR_AJUSTE')" 
+                      class="btn btn-sm btn-outline-danger" 
+                      (click)="deleteAdjustmen(adjustment.id)">
                     <i class="bi bi-trash"></i> Eliminar
                     </button>
                 </div>

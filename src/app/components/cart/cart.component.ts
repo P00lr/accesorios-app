@@ -7,6 +7,8 @@ import { CreateSaleDetail } from '../../models/create-sale-detail.model';
 import { CreateSale } from '../../models/create-sale.model';
 import { SaleService } from '../../services/sale.service';
 import { CartItem } from '../../models/cart-items.model';
+import { AuthService } from '../../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -15,19 +17,36 @@ import { CartItem } from '../../models/cart-items.model';
   styleUrl: './cart.component.css'
 })
 export class CartComponent implements OnInit {
+
+  isDarkMode = true;
+
   cartItems$: Observable<CartItem[]>;
   totalAmount: number = 0;
   totalItems: number = 0;
+  showQr: boolean = false;
+  qrConfirmCallback?: () => void;
 
-  // Aquí define clientId y userId (puedes cambiar los valores estáticos por inputs o autenticación)
-  clientId: number = 2;
-  userId: number = 17;
 
-  constructor(private cartService: CartService, private saleService: SaleService) {
+  userId!: number;
+
+  constructor(
+    private cartService: CartService,
+    private saleService: SaleService,
+    private authService: AuthService,
+    private router: Router // <--- AÑADIDO
+
+
+  ) {
     this.cartItems$ = this.cartService.getCart();
   }
 
   ngOnInit(): void {
+    const userIdFromToken = this.authService.getUserId();
+    if (userIdFromToken !== null) {
+      this.userId = userIdFromToken;
+    } else {
+      console.warn('⚠️ No se pudo obtener el userId desde el token');
+    }
     this.cartItems$.subscribe(cart => {
       this.totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
       this.totalAmount = cart.reduce((acc, item) => acc + item.quantity * item.accessory.price, 0);
@@ -66,6 +85,20 @@ export class CartComponent implements OnInit {
   }
 
   onSubmit(): void {
+    if (!this.authService.isLoggedIn()) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Inicia sesión',
+        text: 'Debes registrarte e iniciar sesión para poder completar el pago.',
+        confirmButtonText: 'Ir al login'
+      }).then(result => {
+        if (result.isConfirmed) {
+          this.router.navigate(['/login']);
+        }
+      });
+      return;
+    }
+
     const cartItems = this.cartService.getCartItems();
 
     if (cartItems.length === 0) {
@@ -93,19 +126,32 @@ export class CartComponent implements OnInit {
         cancelButtonText: 'Cancelar'
       }).then(result => {
         if (result.isConfirmed) {
-          // Ajustar automáticamente las cantidades
           itemsConProblema.forEach(item => {
             item.quantity = item.accessory.stock;
           });
 
-          this.procesarVenta(cartItems);
+          this.mostrarQR(() => this.procesarVenta(cartItems));
         }
       });
 
       return;
     }
 
-    this.procesarVenta(cartItems);
+    this.mostrarQR(() => this.procesarVenta(cartItems));
+  }
+
+  mostrarQR(callback: () => void): void {
+    Swal.fire({
+      title: 'Escanea el QR para completar el pago',
+      html: `<img src="/qr_pago.png" alt="Código QR" style="max-width: 250px; margin-top: 10px;">`,
+      confirmButtonText: 'He pagado',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar'
+    }).then(result => {
+      if (result.isConfirmed) {
+        callback(); // Procesa la venta después del "pago"
+      }
+    });
   }
 
   private procesarVenta(cartItems: any[]): void {
@@ -115,7 +161,6 @@ export class CartComponent implements OnInit {
     }));
 
     const sale: CreateSale = {
-      clientId: this.clientId,
       userId: this.userId,
       saleDetails: saleDetails
     };
@@ -140,6 +185,14 @@ export class CartComponent implements OnInit {
         });
       }
     });
+  }
+
+  confirmarPago(): void {
+    if (this.qrConfirmCallback) {
+      this.qrConfirmCallback();
+      this.showQr = false;
+      this.qrConfirmCallback = undefined;
+    }
   }
 
 

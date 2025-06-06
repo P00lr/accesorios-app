@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { WarehouseService } from '../../../services/warehouse.service';
 import { Router, RouterModule } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-warehouse-create',
@@ -27,14 +28,37 @@ export class WarehouseCreateComponent {
   }
 
   onSubmit(): void {
-    if (this.warehouseForm.invalid) return;
-
-    this.warehouseService.createWarehouse(this.warehouseForm.value).subscribe({
-      next: () => this.router.navigate(['/warehouses']),
-      error: (err) => {
-        console.error('Error al crear cliente:', err);
-        this.errorMessage = 'Hubo un error al crear el cliente';
-      }
+  if (this.warehouseForm.invalid) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Formulario inválido',
+      text: 'Por favor, completa todos los campos requeridos.',
+      confirmButtonText: 'Entendido'
     });
+    return;
   }
+
+  this.warehouseService.createWarehouse(this.warehouseForm.value).subscribe({
+    next: () => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Almacén creado',
+        text: 'El almacén ha sido registrado correctamente.',
+        confirmButtonText: 'OK'
+      }).then(() => {
+        this.router.navigate(['/warehouses']);
+      });
+    },
+    error: (err) => {
+      console.error('Error al crear almacén:', err);
+      this.errorMessage = 'Hubo un error al crear el almacén';
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un problema al registrar el almacén.',
+        confirmButtonText: 'Cerrar'
+      });
+    }
+  });
+}
 }

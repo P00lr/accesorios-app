@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-sale-list',
@@ -19,15 +20,25 @@ export class SaleListComponent {
   totalPages = 0;
   loading = true;
   error: string | null = null;
+  permissions: string[] = [];
+
 
   constructor(
     private saleService: SaleService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private authService: AuthService
+  ) { 
+    this.authService.permissions$.subscribe(perms => {
+        this.permissions = perms;
+      });
+  }
 
   ngOnInit(): void {
     this.loadSales(this.currentPage);
   }
+  hasPermission(permission: string): boolean {
+      return this.permissions.includes(permission);
+    }
 
   loadSales(page: number): void {
     this.loading = true;

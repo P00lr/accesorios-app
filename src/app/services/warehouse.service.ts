@@ -18,6 +18,12 @@ export class WarehouseService {
     );
   }
 
+  getAllWarehouses(): Observable<Warehouse[]> {
+    return this.http.get<Warehouse[]>(`${this.apiUrl}`).pipe(
+      tap((respose) => this.setWarehousesToLocalStorage(respose))
+    );
+  }
+
   getWarehouseDetails(): Observable<WarehouseDetail[]> {
     return this.http.get<WarehouseDetail[]>(`${this.apiUrl}/details`);
   }
@@ -42,5 +48,4 @@ export class WarehouseService {
   deleteWarehouse(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
-
 }

@@ -1,0 +1,123 @@
+.report-container {
+  padding: 1rem;
+}
+
+.filter-card {
+  padding: 1rem;
+}
+
+.filter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-field {
+  width: 100%;
+}
+
+.chip-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  background-color: #e0e0e0;
+  padding: 4px 8px;
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.chip mat-icon {
+  font-size: 16px;
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.pdf-preview {
+  margin-top: 2rem;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+/* Animación suave al aparecer (fade + slide up) */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.filter-card,
+.filter-group,
+.chip,
+.button-group,
+.pdf-preview {
+  animation: fadeInUp 0.4s ease both;
+}
+
+/* Para que no todas las secciones aparezcan al mismo tiempo */
+.filter-group:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.filter-group:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.filter-group:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.button-group {
+  animation-delay: 0.4s;
+}
+
+.pdf-preview {
+  animation-delay: 0.5s;
+}
+
+/* Transición suave en los chips */
+.chip {
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.chip:hover {
+  background-color: #d6d6d6;
+  transform: scale(1.05);
+}
+
+/* Transiciones en los botones */
+button {
+  transition: transform 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+}

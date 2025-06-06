@@ -2,7 +2,10 @@
   <div class="card shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center bg-dark text-white">
       <h5 class="mb-0">Lista de Accesorios</h5>
-      <a routerLink="/accessories/create" class="btn btn-light btn-sm">
+      <a 
+        *ngIf="hasPermission('CREAR_ACCESORIO')" 
+        routerLink="/accessories/create" 
+        class="btn btn-light btn-sm">
         <i class="bi bi-plus-circle"></i> Crear Accesorio
       </a>
     </div>
@@ -28,15 +31,26 @@
               <td>{{ accessory.categoryName }}</td>
               <td>
                 <div class="d-flex flex-row gap-2 justify-content-center">
-                  <button class="btn btn-sm btn-outline-info" (click)="viewDetails(accessory.id)">
+                  <button
+                    *ngIf="hasPermission('VER_ACCESORIO')"  
+                    class="btn btn-sm btn-outline-info" 
+                    (click)="viewDetails(accessory.id)">
                     Ver Detalles
                   </button>
-                  <a [routerLink]="['/accessories/edit', accessory.id]" class="btn btn-sm btn-outline-primary">
+                  <a 
+                    *ngIf="hasPermission('EDITAR_ACCESORIO')" 
+                    [routerLink]="['/accessories/edit', accessory.id]"
+                    class="btn btn-sm btn-outline-primary">
                     <i class="bi bi-pencil-square"></i> Editar
                   </a>
-                  <button class="btn btn-sm btn-outline-danger" (click)="deleteAccessory(accessory.id)">
+
+                  <button 
+                    *ngIf="hasPermission('ELIMINAR_ACCESORIO')" 
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="deleteAccessory(accessory.id)">
                     <i class="bi bi-trash"></i> Eliminar
                   </button>
+
                 </div>
               </td>
             </tr>
@@ -47,13 +61,15 @@
 
     <!-- Navegación de páginas -->
     <div class="card-footer d-flex justify-content-between align-items-center px-3 py-2">
-      <button class="btn btn-sm btn-outline-secondary" [disabled]="currentPage === 0" (click)="goToPage(currentPage - 1)">
+      <button class="btn btn-sm btn-outline-secondary" [disabled]="currentPage === 0"
+        (click)="goToPage(currentPage - 1)">
         <i class="bi bi-chevron-left"></i> Anterior
       </button>
 
       <span>Página {{ currentPage + 1 }} de {{ totalPages }}</span>
 
-      <button class="btn btn-sm btn-outline-secondary" [disabled]="currentPage + 1 >= totalPages" (click)="goToPage(currentPage + 1)">
+      <button class="btn btn-sm btn-outline-secondary" [disabled]="currentPage + 1 >= totalPages"
+        (click)="goToPage(currentPage + 1)">
         Siguiente <i class="bi bi-chevron-right"></i>
       </button>
     </div>

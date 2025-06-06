@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-purchase-list',
@@ -19,15 +20,26 @@ export class PurchaseListComponent {
   totalPages = 0;
   isLoading = false;
   error: string | null = null;
+  permissions: string[] = [];
+
 
   constructor(
     private purchaseService: PurchaseService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private authService: AuthService
+  ) {
+    this.authService.permissions$.subscribe(perms => {
+        this.permissions = perms;
+      });
+   }
 
   ngOnInit(): void {
     this.loadPurchases(this.currentPage);
   }
+
+  hasPermission(permission: string): boolean {
+      return this.permissions.includes(permission);
+    }
 
   loadPurchases(page: number): void {
     this.isLoading = true;

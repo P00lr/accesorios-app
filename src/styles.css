@@ -1,7 +1,58 @@
-/* You can add global styles to this file, and also import other style files */
-body {
-  padding-top: 70px; /* Ajusta según la altura de tu navbar */
+
+/* Tema Niños */
+.theme-kids {
+  --bg-color: #ffe4f1;           /* rosado claro */
+  --text-color: #4d004d;         /* morado oscuro */
+  --primary-color: #29888b;      /* rosa brillante */
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* Tema Jóvenes */
+.theme-teens {
+  --bg-color: #f0f8ff;           /* azul muy claro */
+  --text-color: #0a0a23;         /* azul muy oscuro */
+  --primary-color: #00bcd4;      /* cian */
+}
+
+/* Tema Adultos */
+.theme-adults {
+  --bg-color: #fdfdfd;           /* blanco casi puro */
+  --text-color: #333333;         /* gris oscuro */
+  --primary-color: #3f51b5;      /* azul indigo */
+}
+
+/* Tema Modo Oscuro - Variables para el modo dark */
+.theme-dark {
+  --bg-color: #121212;           /* Fondo muy oscuro */
+  --text-color: #e0e0e0;         /* Texto claro */
+  --primary-color: #1164b3;      /* Color principal morado */
+  --card-border-color: rgba(255, 255, 255, 0.3); /* Borde blanco semi-transparente para cards */
+  --table-bg-color: #1e1e1e;     /* Fondo oscuro para tablas */
+  --table-border-color: rgba(255, 255, 255, 0.2); /* Borde blanco suave para tablas */
+}
+
+/* Aplicar variables a elementos base */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-top: 70px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+/* === Estilos para la tabla en modo oscuro === */
+.theme-dark .table {
+  background-color: var(--table-bg-color); /* Fondo oscuro para tabla */
+  color: var(--text-color);                /* Texto claro */
+}
+
+.theme-dark .table th,
+.theme-dark .table td {
+  border: 1px solid var(--table-border-color); /* Borde blanco semi-transparente */
+}
+
+/* Filas alternas más oscuras para modo oscuro */
+.theme-dark .table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.05);
+}

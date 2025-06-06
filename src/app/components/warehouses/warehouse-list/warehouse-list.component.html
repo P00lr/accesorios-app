@@ -2,7 +2,9 @@
   <div class="card shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center bg-dark text-white">
       <h2 class="mb-0">Lista de Almacenes</h2>
-      <a class="btn btn-light btn-sm" routerLink="/warehouses/create">
+      <a 
+        *ngIf="hasPermission('CREAR_ALMACEN')" 
+      class="btn btn-light btn-sm" routerLink="/warehouses/create">
         <i class="bi bi-plus-circle"></i> Crear Almacen
       </a>
     </div>
@@ -28,10 +30,14 @@
           <!-- <button class="btn btn-sm btn-outline-info" [routerLink]="['/warehouses/detail', warehouse.id]">
             Ver Detalles
           </button> -->
-          <a [routerLink]="['/warehouses/edit', warehouse.id]" class="btn btn-sm btn-outline-primary">
+          <a 
+        *ngIf="hasPermission('EDITAR_ALMACEN')" 
+          [routerLink]="['/warehouses/edit', warehouse.id]" class="btn btn-sm btn-outline-primary">
             <i class="bi bi-pencil-square"></i> Editar
           </a>
-          <button class="btn btn-sm btn-outline-danger" (click)="deleteWarehouse(warehouse.id)">
+          <button 
+        *ngIf="hasPermission('ELIMINAR_ALMACEN')" 
+          class="btn btn-sm btn-outline-danger" (click)="deleteWarehouse(warehouse.id)">
             <i class="bi bi-trash"></i> Eliminar
           </button>
         </div>

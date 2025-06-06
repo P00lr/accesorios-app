@@ -3,6 +3,7 @@ import { Role } from '../../../models/role.model';
 import { RoleService } from '../../../services/role.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-role-list',
@@ -12,12 +13,24 @@ import { RouterModule } from '@angular/router';
 })
 export class RoleListComponent {
   roles: Role[] = [];
+  permissions: string[] = [];
 
-  constructor(private roleService: RoleService) {}
+
+  constructor(
+    private roleService: RoleService,
+    private authService: AuthService
+  ) {
+    this.authService.permissions$.subscribe(perms => {
+        this.permissions = perms;
+      });
+  }
 
   ngOnInit(): void {
     this.loadRoles();
   }
+  hasPermission(permission: string): boolean {
+      return this.permissions.includes(permission);
+    }
 
   loadRoles(): void {
     this.roleService.getPermissions(0).subscribe({

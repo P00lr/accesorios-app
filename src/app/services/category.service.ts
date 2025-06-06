@@ -9,7 +9,7 @@ import { Page } from '../models/page.model';
 })
 export class CategoryService {
 
-  private apiUrl = 'http://localhost:8080/api/categories'; // Ruta de la API
+  private apiUrl = 'http://localhost:8080/api/categories';
 
   constructor(private http: HttpClient) { }
 
@@ -17,6 +17,9 @@ export class CategoryService {
     return this.http.get<Page<Category>>(`${this.apiUrl}/page/${page}`).pipe(
       tap((response) => this.setClientsToLocalStorage(response.content))
     );
+  }
+  getAllCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(`${this.apiUrl}`);
   }
 
   setClientsToLocalStorage(categories: Category[]): void {

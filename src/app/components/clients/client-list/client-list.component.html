@@ -2,7 +2,9 @@
   <div class="card shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center bg-dark text-white">
       <h5 class="mb-0">Lista de Clientes</h5>
-      <a routerLink="/clientes/create" class="btn btn-light btn-sm">
+      <a 
+        *ngIf="hasPermission('CREAR_CLIENTE')" 
+      routerLink="/clientes/create" class="btn btn-light btn-sm">
         <i class="bi bi-plus-circle"></i> Crear Cliente
       </a>
     </div>
@@ -28,13 +30,20 @@
               <td>{{ client.email }}</td>
               <td>
                 <div class="d-flex flex-row gap-2 justify-content-center">
-                  <button class="btn btn-sm btn-outline-info" (click)="viewDetails(client.id)">
+                  <button 
+                  *ngIf="hasPermission('VER_CLIENTE')" 
+                  class="btn btn-sm btn-outline-info" (click)="viewDetails(client.id)">
                     Ver Detalles
                   </button>
-                  <a [routerLink]="['/clientes/edit', client.id]" class="btn btn-sm btn-outline-primary">
+                  <a 
+                  *ngIf="hasPermission('EDITAR_CLIENTE')" 
+
+                  [routerLink]="['/clientes/edit', client.id]" class="btn btn-sm btn-outline-primary">
                     <i class="bi bi-pencil-square"></i> Editar
                   </a>
-                  <button class="btn btn-sm btn-outline-danger" (click)="deleteClient(client.id)">
+                  <button 
+                  *ngIf="hasPermission('ELIMINAR_CLIENTE')" 
+                  class="btn btn-sm btn-outline-danger" (click)="deleteClient(client.id)">
                     <i class="bi bi-trash"></i> Eliminar
                   </button>
                 </div>

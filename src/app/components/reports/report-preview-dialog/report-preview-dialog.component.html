@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Previsualización del Reporte</h2>
+<mat-dialog-content>
+  <iframe
+    *ngIf="data.blob"
+    [src]="pdfUrl"
+    width="100%"
+    height="600px"
+    style="border:none;"
+  ></iframe>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onClose()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="onDownload()">Descargar PDF</button>
+</mat-dialog-actions>

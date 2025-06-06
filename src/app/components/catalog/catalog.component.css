@@ -1,56 +1,17 @@
+/* === Tarjetas del catálogo === */
 .card {
-  background-color: #ffffff; /* Fondo blanco como el cuerpo de la página */
-  color: #212529; /* Texto oscuro */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid #dee2e6; /* Borde gris claro para definir la tarjeta */
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Botón verde moderno, success */
-.btn-add-cart {
-  background-color: #2048ca; /* Bootstrap success */
-  color: #ffffff;
-  border: none;
-  transition: background-color 0.3s ease;
-}
 
-.btn-add-cart:hover {
-  background-color: #157347; /* Hover más oscuro */
-  color: #ffffff;
-}
-
-/* Animación para botón */
-.add-to-cart-btn {
-  transition: transform 0.2s ease, background-color 0.3s ease;
-  position: relative;
-  overflow: visible;
-}
-
-.add-to-cart-btn:active {
-  transform: scale(0.95);
-  background-color: #9fd1eecc; /* versión más oscura del verde */
-}
-
-/* Animación para ícono carrito */
-.icon-cart {
-  display: inline-block;
-  transition: transform 0.3s ease;
-}
-
-.add-to-cart-btn.clicked .icon-cart {
-  animation: bounce 0.4s forwards;
-}
-
-/* Keyframes para rebote */
-@keyframes bounce {
-  0%   { transform: translateY(0); }
-  30%  { transform: translateY(-10px); }
-  50%  { transform: translateY(0); }
-  70%  { transform: translateY(-5px); }
-  100% { transform: translateY(0); }
-}

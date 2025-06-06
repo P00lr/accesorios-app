@@ -35,15 +35,20 @@
         <h5>Total ({{ totalItems }} items):{{ totalAmount.toFixed(2) }} Bs</h5>
       </div>
 
-      <div class="d-flex justify-content-end my-3">
-        <div class="d-flex justify-content-end mt-3">
-          <button class="btn btn-success" (click)="onSubmit()" [disabled]="totalItems === 0">
-            Pagar
-          </button>
-        </div>
-
-
+      <div class="d-flex justify-content-end mt-3">
+        <button class="btn btn-success" (click)="onSubmit()" [disabled]="totalItems === 0">
+          Pagar
+        </button>
       </div>
+      <div *ngIf="showQr" class="text-center mt-4">
+        <h5>Escanea este código QR para completar tu pago:</h5>
+        <img src="assets/img/qr_pago.png" alt="Código QR de pago" class="img-fluid" style="max-width: 250px;">
+        <div class="mt-3">
+          <button class="btn btn-primary" (click)="confirmarPago()">Ya escaneé el QR</button>
+        </div>
+      </div>
+
+
 
     </div>
   </ng-container>

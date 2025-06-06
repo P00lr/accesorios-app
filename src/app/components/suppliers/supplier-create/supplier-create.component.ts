@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterModule } from '@angular/router';
 import { SupplierService } from '../../../services/supplier.service';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-supplier-create',
@@ -29,14 +30,36 @@ export class SupplierCreateComponent implements OnInit {
     });
   }
 
-  // Función para manejar el envío del formulario
   onSubmit(): void {
-    if (this.supplierForm.valid) {
-      // Envía el nuevo proveedor al servicio
-      this.supplierService.createSupplier(this.supplierForm.value).subscribe(() => {
-        // Redirige a la lista de proveedores después de la creación exitosa
-        this.router.navigate(['/proveedores']);
-      });
-    }
+  if (this.supplierForm.valid) {
+    this.supplierService.createSupplier(this.supplierForm.value).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Proveedor creado',
+          text: 'El proveedor ha sido registrado correctamente.',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          this.router.navigate(['/proveedores']);
+        });
+      },
+      error: (err) => {
+        console.error('Error al crear proveedor:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un problema al registrar el proveedor.',
+          confirmButtonText: 'Cerrar'
+        });
+      }
+    });
+  } else {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Formulario inválido',
+      text: 'Por favor, completa todos los campos requeridos.',
+      confirmButtonText: 'Entendido'
+    });
   }
+}
 }

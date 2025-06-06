@@ -1,4 +1,6 @@
 <div class="container py-4">
+
+
   <h2 class="mb-4 text-center">Catálogo de Accesorios</h2>
 
   <div *ngIf="loading" class="text-center">Cargando accesorios...</div>
@@ -19,11 +21,9 @@
               </span>
             </p>
           </div>
-          <button class="btn btn-primary add-to-cart-btn" (click)="addToCart(accessory)">
+          <button class="btn btn-primary" (click)="addToCart(accessory)">
             <i class="bi bi-cart-plus me-1 icon-cart"></i> Agregar al carrito
           </button>
-
-
         </div>
       </div>
     </div>

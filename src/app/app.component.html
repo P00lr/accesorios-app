@@ -1,24 +1,22 @@
-<!-- Navbar fijo arriba -->
-<app-navbar />
 
-<!-- Contenedor general con sidebar fijo y contenido scrollable -->
+<app-navbar></app-navbar>
+
 <div class="d-flex">
-  
-  <!-- Sidebar fijo -->
+  <!-- Mostrar sidebar solo si el observable devuelve true -->
   <app-sidebar
+    *ngIf="showSidebar$ | async"
     class="bg-dark text-white"
     style="width: 250px; position: fixed; top: 56px; bottom: 0; left: 0; overflow-y: auto;"
   ></app-sidebar>
 
-  <!-- Contenido principal (margen izquierdo para no tapar el sidebar) -->
+  <!-- Contenido principal con o sin margen dependiendo del sidebar -->
   <div
-    class="flex-grow-1 p-4"
-    style="margin-left: 250px; padding-top: 56px; min-height: calc(100vh - 56px);"
+    class="flex-grow-1 p-4" 
+    [style.marginLeft]="(showSidebar$ | async) ? '250px' : '0'"
+    style="padding-top: 56px; min-height: calc(100vh - 56px);"
   >
     <router-outlet></router-outlet>
   </div>
-
 </div>
 
-<!-- Footer fijo opcional abajo -->
 <app-footer />

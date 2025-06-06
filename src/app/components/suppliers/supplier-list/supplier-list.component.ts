@@ -3,17 +3,27 @@ import { Supplier } from '../../../models/supplier.model';
 import { SupplierService } from '../../../services/supplier.service';
 import { RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../auth/auth.service';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-supplier-list',
-  imports: [RouterModule],
+  imports: [RouterModule, CommonModule],
   templateUrl: './supplier-list.component.html',
   styleUrl: './supplier-list.component.css'
 })
 export class SupplierListComponent {
+  permissions: string[] = [];
 
-  constructor(private supplierService: SupplierService) { }
+  constructor(
+    private supplierService: SupplierService,
+    private authService: AuthService
+  ) {
+    this.authService.permissions$.subscribe(perms => {
+        this.permissions = perms;
+      });
+   }
 
   suppliers: Supplier[] = [];
   currentPage = 0;
@@ -22,6 +32,10 @@ export class SupplierListComponent {
 
   ngOnInit(): void {
     this.loadSuppliers(this.currentPage);
+  }
+
+  hasPermission(permission: string): boolean {
+      return this.permissions.includes(permission);
   }
 
   loadSuppliers(page: number): void {

@@ -23,7 +23,6 @@
               <th>Cantidad</th>
               <th>Fecha</th>
               <th>Cliente</th>
-              <th>Usuario</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -33,14 +32,17 @@
               <td>{{ sale.totalAmount | number: '1.2-2' }} Bs</td>
               <td>{{ sale.totalQuantity }}</td>
               <td>{{ sale.saleDate | date:'short' }}</td>
-              <td>{{ sale.clientId }}</td>
-              <td>{{ sale.userId }}</td>
+              <td>{{ sale.clientName }}</td>
               <td>
                 <div class="d-flex flex-row gap-2 justify-content-center">
-                    <button class="btn btn-sm btn-outline-info" (click)="viewDetails(sale.id)">
+                    <button 
+                    *ngIf="hasPermission('VER_VENTA')" 
+                    class="btn btn-sm btn-outline-info" (click)="viewDetails(sale.id)">
                     Ver Detalles
                     </button>
-                    <button class="btn btn-sm btn-outline-danger" (click)="deletePurchase(sale.id)">
+                    <button 
+                    *ngIf="hasPermission('ELIMINAR_VENTA')" 
+                    class="btn btn-sm btn-outline-danger" (click)="deletePurchase(sale.id)">
                     <i class="bi bi-trash"></i> Eliminar
                     </button>
                 </div>
