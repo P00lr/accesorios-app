@@ -62,16 +62,12 @@
 
 
           <!-- Botón agregar -->
-          <button
-            class="btn btn-primary w-100"
-            (click)="agregarItem()"
-            [disabled]="
+          <button class="btn btn-primary w-100" (click)="agregarItem()" [disabled]="
               !selectedAccessory ||
               !quantity ||
               quantity <= 0 ||
               quantity > selectedAccessory.stock
-            "
-          >
+            ">
             Agregar a transferencia
           </button>
 
@@ -97,7 +93,9 @@
               <tbody>
                 <tr *ngFor="let item of transferItems; let i = index">
                   <td>{{ item.accessoryName }}</td>
-                  <td>{{ item.quantity }}</td>
+                  <td>
+                    <input type="number" class="form-control" [(ngModel)]="item.quantity" min="1" />
+                  </td>
                   <td class="text-center">
                     <button class="btn btn-sm btn-danger" (click)="eliminarItem(i)" aria-label="Eliminar">
                       &times;

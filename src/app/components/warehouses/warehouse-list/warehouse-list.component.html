@@ -1,5 +1,5 @@
 <div class="container mt-4">
-  <div class="card shadow-sm">
+  <div class="card custom-card shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center bg-dark text-white">
       <h2 class="mb-0">Lista de Almacenes</h2>
       <a 
@@ -12,38 +12,40 @@
   <div class alert alert-info *ngIf="warehouses.length == 0">
     La lista esta vacia
   </div>
-  <table *ngIf="warehouses.length > 0" class="table table-bordered table-striped">
-    <thead class="table-light">
-      <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Dirección</th>
-        <th class="text-center">Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let warehouse of warehouses">
-        <td>{{ warehouse.id }}</td>
-        <td>{{ warehouse.name }}</td>
-        <td>{{ warehouse.address }}</td>
+  <table *ngIf="warehouses.length > 0" class="table table-bordered table-hover mb-0 custom-list-table">
+  <thead class="table-light">
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Dirección</th>
+      <th class="text-center">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let warehouse of warehouses">
+      <td>{{ warehouse.id }}</td>
+      <td>{{ warehouse.name }}</td>
+      <td>{{ warehouse.address }}</td>
+      <td>
         <div class="d-flex flex-row gap-2 justify-content-center">
-          <!-- <button class="btn btn-sm btn-outline-info" [routerLink]="['/warehouses/detail', warehouse.id]">
-            Ver Detalles
-          </button> -->
           <a 
-        *ngIf="hasPermission('EDITAR_ALMACEN')" 
-          [routerLink]="['/warehouses/edit', warehouse.id]" class="btn btn-sm btn-outline-primary">
+            *ngIf="hasPermission('EDITAR_ALMACEN')" 
+            [routerLink]="['/warehouses/edit', warehouse.id]" 
+            class="btn btn-sm btn-outline-primary">
             <i class="bi bi-pencil-square"></i> Editar
           </a>
           <button 
-        *ngIf="hasPermission('ELIMINAR_ALMACEN')" 
-          class="btn btn-sm btn-outline-danger" (click)="deleteWarehouse(warehouse.id)">
+            *ngIf="hasPermission('ELIMINAR_ALMACEN')" 
+            class="btn btn-sm btn-outline-danger" 
+            (click)="deleteWarehouse(warehouse.id)">
             <i class="bi bi-trash"></i> Eliminar
           </button>
         </div>
-      </tr>
-    </tbody>
-  </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
   <div class="card-footer d-flex justify-content-between align-items-center px-3 py-2">
     <button class="btn btn-sm btn-outline-secondary" [disabled]="currentPage === 0" (click)="goToPage(currentPage - 1)">
       <i class="bi bi-chevron-left"></i> Anterior

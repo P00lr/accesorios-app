@@ -4,7 +4,7 @@
   justify-content: center;
   padding: 2rem;
   min-height: 80vh;
-  background: linear-gradient(135deg, #e0f2ff, #ffffff);
+  background: linear-gradient(135deg, #343a3f, #757373);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -15,17 +15,17 @@
   border-radius: 16px;
   box-shadow: 0 10px 20px rgba(0, 123, 255, 0.15);
   transition: box-shadow 0.3s ease, transform 0.3s ease;
-  background: white;
+  background: rgb(173, 166, 166);
 }
 
 .report-card:hover {
   box-shadow: 0 16px 32px rgba(0, 123, 255, 0.3);
   transform: translateY(-4px);
 }
-
+  
 .title {
   font-weight: 700;
-  color: #0d47a1;
+  color: #e4e8ec;
   text-align: center;
   margin-bottom: 1.2rem;
   letter-spacing: 1px;

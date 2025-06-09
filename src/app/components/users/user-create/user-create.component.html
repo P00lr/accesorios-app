@@ -42,11 +42,16 @@
           <div class="mb-3">
             <label for="password" class="form-label">Contraseña</label>
             <input type="password" id="password" class="form-control" formControlName="password" />
-            <div *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched"
-              class="text-danger small mt-1">
-              La contraseña es obligatoria.
+
+            <div *ngIf="userForm.get('password')?.touched" class="text-danger small mt-2">
+              <div [ngClass]="{ 'text-success': hasMinLength }">• Mínimo 8 caracteres</div>
+              <div [ngClass]="{ 'text-success': hasUpperCase }">• Una letra mayúscula</div>
+              <div [ngClass]="{ 'text-success': hasLowerCase }">• Una letra minúscula</div>
+              <div [ngClass]="{ 'text-success': hasNumber }">• Un número</div>
+              <div [ngClass]="{ 'text-success': hasSpecialChar }">• Un carácter especial (&#64;$!%*?&...)</div>
             </div>
           </div>
+
 
           <!-- Botón -->
           <div class="d-grid">
@@ -61,12 +66,10 @@
           </div>
 
         </form>
-        <<div class="d-grid">
-          <a class="btn btn-outline-primary btn-lg" routerLink="/login" role="button" style="text-align: center;">
-            Iniciar sesión
-          </a>
+        <p class="mt-3">
+          ¿Ya tienes una cuenta? <a routerLink="/login">Inicia session aqui</a>
+        </p>
       </div>
     </div>
   </div>
-</div>
 </div>

@@ -151,7 +151,7 @@ export class TransferCreateComponent implements OnInit {
   eliminarItem(index: number): void {
     Swal.fire({
       title: '¿Estás seguro?',
-      text: "¡No podrás revertir esta acción!",
+      text: "¡Se eliminara de la lista de transferencias!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',

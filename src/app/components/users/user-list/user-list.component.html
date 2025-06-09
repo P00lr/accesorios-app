@@ -1,5 +1,5 @@
 <div class="container mt-4">
-  <div class="card shadow-sm">
+  <div class="card custom-card shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center bg-dark text-white">
       <h5 class="mb-0">Lista de Usuarios</h5>
       <a 
@@ -14,7 +14,7 @@
 
     <div *ngIf="error" class="alert alert-danger mt-2 text-center">{{ error }}</div>
 
-    <table *ngIf="users.length > 0 && !isLoading" class="table table-bordered table-hover">
+    <table *ngIf="users.length > 0 && !isLoading" class="table table-bordered table-hover mb-0 custom-list-table">
       <thead class="table-light">
         <tr>
           <th>ID</th>

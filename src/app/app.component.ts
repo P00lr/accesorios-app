@@ -46,5 +46,11 @@ export class AppComponent implements OnInit {
   toggleTheme() {
     this.isDarkMode = !this.isDarkMode;
   }
+
+  businessSearchResults: any[] = [];
+
+  onSearchResultsChanged(results: any[]) {
+    this.businessSearchResults = results;
+  }
 }
 

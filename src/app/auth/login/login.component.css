@@ -3,7 +3,9 @@
   margin: 60px auto;
   padding: 20px;
   border-radius: 12px;
-  background: white;
+  background-color: var(--card-bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .error {

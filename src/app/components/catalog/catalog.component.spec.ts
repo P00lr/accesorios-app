@@ -6,6 +6,7 @@ describe('CatalogComponent', () => {
   let component: CatalogComponent;
   let fixture: ComponentFixture<CatalogComponent>;
 
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CatalogComponent]

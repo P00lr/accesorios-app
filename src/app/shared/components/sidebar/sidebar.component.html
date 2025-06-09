@@ -2,150 +2,148 @@
 <div class="sidebar bg-dark text-white position-fixed" style="width: 250px; height: 100vh; overflow-y: auto;">
   <div class="p-3">
     <!-- Módulos principales -->
-    <h6 class="text-secondary text-uppercase fw-bold small mt-3">Módulos</h6>
-    <ul class="nav flex-column mb-4">
-      <li 
-      *ngIf="hasPermission('DASHBOARD')" 
-      class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link text-white d-flex align-items-center" routerLink="/dashboard">
-          <i class="bi bi-house-door me-2"></i> Dashboard
-        </a>
-      </li>
-      <!-- <li *ngIf="hasPermission('VER_CLIENTE')" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link text-white d-flex align-items-center" routerLink="/clientes">
-          <i class="bi bi-people-fill me-2"></i> Clientes
-        </a>
-      </li> -->
-      <li *ngIf="hasPermission('VER_PROVEEDOR')" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link text-white d-flex align-items-center" routerLink="/proveedores">
-          <i class="bi bi-truck me-2"></i> Proveedores
-        </a>
-      </li>
-      <li *ngIf="hasPermission('VER_CATEGORIA')" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link text-white d-flex align-items-center" routerLink="/categories">
-          <i class="bi bi-tags me-2"></i> Categorías
-        </a>
-      </li>
-      <li *ngIf="hasPermission('VER_ACCESORIO')" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link text-white d-flex align-items-center" routerLink="/accessories">
-          <i class="bi bi-boxes me-2"></i> Accesorios
-        </a>
-      </li>
+    <div *ngIf="hasAnyModulePermission()">
+      <h6 class="text-secondary text-uppercase fw-bold small mt-3">Módulos</h6>
+      <ul class="nav flex-column mb-4">
+        <li *ngIf="hasPermission('DASHBOARD')" class="nav-item" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link text-white d-flex align-items-center" routerLink="/dashboard">
+            <i class="bi bi-house-door me-2"></i> Dashboard
+          </a>
+        </li>
+        <li *ngIf="hasPermission('VER_PROVEEDOR')" class="nav-item" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link text-white d-flex align-items-center" routerLink="/proveedores">
+            <i class="bi bi-truck me-2"></i> Proveedores
+          </a>
+        </li>
+        <li *ngIf="hasPermission('VER_CATEGORIA')" class="nav-item" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link text-white d-flex align-items-center" routerLink="/categories">
+            <i class="bi bi-tags me-2"></i> Categorías
+          </a>
+        </li>
+        <li *ngIf="hasPermission('VER_ACCESORIO')" class="nav-item" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link text-white d-flex align-items-center" routerLink="/accessories">
+            <i class="bi bi-boxes me-2"></i> Accesorios
+          </a>
+        </li>
+      </ul>
+    </div>
 
-      <!-- <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link text-white d-flex align-items-center" routerLink="/catalog-accessories">
-          <i class="bi bi-bag-check-fill me-2"></i> Catálogo
-        </a>
-      </li> -->
-    </ul>
 
 
     <!-- Gestión de -->
-    <h6 class="text-secondary text-uppercase fw-bold small">Gestión de</h6>
-    <ul class="nav flex-column mb-4">
-      <li *ngIf="hasPermission('VER_ALMACEN')" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link text-white d-flex align-items-center" routerLink="/warehouses">
-          <i class="bi bi-building me-2"></i> Almacén
-        </a>
-      </li>
-      <li *ngIf="hasPermission('VER_COMPRA')" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link text-white d-flex align-items-center" routerLink="/purchases">
-          <i class="bi bi-cart me-2"></i> Compras
-        </a>
-      </li>
-      <li *ngIf="hasPermission('VER_VENTA')" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link text-white d-flex align-items-center" routerLink="/sales">
-          <i class="bi bi-cash me-2"></i> Ventas
-        </a>
-      </li>
-      <!-- <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link text-white d-flex align-items-center" routerLink="/pagos">
-          <i class="bi bi-credit-card me-2"></i> Pagos
-        </a>
-      </li> -->
+    <div *ngIf="hasAnyGestionPermission()">
+      <h6 class="text-secondary text-uppercase fw-bold small">Gestión de</h6>
+      <ul class="nav flex-column mb-4">
+        <li *ngIf="hasPermission('VER_ALMACEN')" class="nav-item" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link text-white d-flex align-items-center" routerLink="/warehouses">
+            <i class="bi bi-building me-2"></i> Almacén
+          </a>
+        </li>
+        <li *ngIf="hasPermission('VER_COMPRA')" class="nav-item" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link text-white d-flex align-items-center" routerLink="/purchases">
+            <i class="bi bi-cart me-2"></i> Compras
+          </a>
+        </li>
+        <li *ngIf="hasPermission('VER_VENTA')" class="nav-item" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link text-white d-flex align-items-center" routerLink="/sales">
+            <i class="bi bi-cash me-2"></i> Ventas
+          </a>
+        </li>
+      </ul>
+    </div>
 
-    </ul>
     <!-- Inventario -->
-    <h6 class="text-secondary text-uppercase fw-bold small">Inventario</h6>
-    <ul class="nav flex-column mb-4">
-      <li *ngIf="hasPermission('VER_AJUSTE')" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link text-white d-flex align-items-center" routerLink="/adjustments">
-          <i class="bi bi-pencil-square me-2"></i> Ajustes
-        </a>
-      </li>
-      <li *ngIf="hasPermission('VER_TRASPASO')" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link text-white d-flex align-items-center" routerLink="/transfers">
-          <i class="bi bi-arrow-left-right me-2"></i> Traspasos
-        </a>
-      </li>
+<div *ngIf="hasAnyInventarioPermission()">
+  <h6 class="text-secondary text-uppercase fw-bold small">Inventario</h6>
+  <ul class="nav flex-column mb-4">
+    <li *ngIf="hasPermission('VER_AJUSTE')" class="nav-item" routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }">
+      <a class="nav-link text-white d-flex align-items-center" routerLink="/adjustments">
+        <i class="bi bi-pencil-square me-2"></i> Ajustes
+      </a>
+    </li>
+    <li *ngIf="hasPermission('VER_TRASPASO')" class="nav-item" routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }">
+      <a class="nav-link text-white d-flex align-items-center" routerLink="/transfers">
+        <i class="bi bi-arrow-left-right me-2"></i> Traspasos
+      </a>
+    </li>
+  </ul>
+</div>
 
-    </ul>
 
 
     <!-- Reportes -->
-    <h6 class="text-secondary text-uppercase fw-bold small">Reportes</h6>
-    <ul class="nav flex-column mb-4">
-      <li
-        *ngIf="hasPermission('REPORTE_VENTA')" 
-        class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link text-white d-flex align-items-center" routerLink="sales-report">
-          <i class="bi bi-bar-chart-line me-2"></i> Ventas
-        </a>
-      </li>
-      <li 
-        *ngIf="hasPermission('REPORTE_ALMACEN')" 
-        class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link text-white d-flex align-items-center" routerLink="/warehouses-report">
-          <i class="bi bi-box-seam me-2"></i> Inventario
-        </a>
-      </li>
+<div *ngIf="hasAnyReportePermission()">
+  <h6 class="text-secondary text-uppercase fw-bold small">Reportes</h6>
+  <ul class="nav flex-column mb-4">
+    <li *ngIf="hasPermission('REPORTE_VENTA')" class="nav-item" routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }">
+      <a class="nav-link text-white d-flex align-items-center" routerLink="/sales-report">
+        <i class="bi bi-bar-chart-line me-2"></i> Ventas
+      </a>
+    </li>
+    <li *ngIf="hasPermission('REPORTE_ALMACEN')" class="nav-item" routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }">
+      <a class="nav-link text-white d-flex align-items-center" routerLink="/warehouses-report">
+        <i class="bi bi-box-seam me-2"></i> Inventario
+      </a>
+    </li>
+  </ul>
+</div>
 
-    </ul>
+  <!-- Configuración -->
+<div *ngIf="hasAnyConfiguracionPermission()">
+  <h6 class="text-secondary text-uppercase fw-bold small">Configuración</h6>
+  <ul class="nav flex-column">
 
-    <!-- Configuración -->
-    <h6 class="text-secondary text-uppercase fw-bold small">Configuración</h6>
-    <ul class="nav flex-column">
+    <!-- Usuarios -->
+    <li *ngIf="hasPermission('VER_USUARIO')" class="nav-item" routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }">
+      <a class="nav-link text-white d-flex align-items-center" routerLink="/users">
+        <i class="bi bi-person-gear me-2"></i> Usuarios
+      </a>
+    </li>
 
-      <!-- Usuarios -->
-      <li *ngIf="hasPermission('VER_USUARIO')" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link text-white d-flex align-items-center" routerLink="/users">
-          <i class="bi bi-person-gear me-2"></i> Usuarios
-        </a>
-      </li>
-      
-      <!-- Permisos -->
-      <li *ngIf="hasPermission('VER_PERMISO')" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link text-white d-flex align-items-center" routerLink="/permissions">
-          <i class="bi bi-lock me-2"></i> Permisos
-        </a>
-      </li>
-      
-      <!-- Roles -->
-      <li *ngIf="hasPermission('VER_ROL')" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link text-white d-flex align-items-center" routerLink="/roles-with-permissions">
-          <i class="bi bi-shield-lock me-2"></i> Roles
-        </a>
-      </li>
+    <!-- Permisos -->
+    <li *ngIf="hasPermission('VER_PERMISO')" class="nav-item" routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }">
+      <a class="nav-link text-white d-flex align-items-center" routerLink="/permissions">
+        <i class="bi bi-lock me-2"></i> Permisos
+      </a>
+    </li>
 
-
-      <!-- <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+    <!-- Roles -->
+    <li *ngIf="hasPermission('VER_ROL')" class="nav-item" routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }">
+      <a class="nav-link text-white d-flex align-items-center" routerLink="/roles-with-permissions">
+        <i class="bi bi-shield-lock me-2"></i> Roles
+      </a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link text-white d-flex align-items-center" routerLink="/ajustes">
-          <i class="bi bi-gear me-2"></i> Ajustes
-        </a>
-      </li>
- -->
-
-      <!-- solo son espacias para que no este pegado al final de la pagina-->
-      <li class="nav-item">
-        <a class="nav-link text-white d-flex align-items-center" routerLink="/ajustes">
-    
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link text-white d-flex align-items-center" routerLink="/ajustes">
         </a>
       </li>
-    </ul>
-  </div>
+      <li class="nav-item">
+        <a class="nav-link text-white d-flex align-items-center" routerLink="/ajustes">
+        </a>
+      </li><li class="nav-item">
+        <a class="nav-link text-white d-flex align-items-center" routerLink="/ajustes">
+        </a>
+      </li>
+  </ul>
+</div>
+
 
 </div>

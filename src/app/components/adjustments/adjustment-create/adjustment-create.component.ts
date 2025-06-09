@@ -62,7 +62,7 @@ export class AdjustmentCreateComponent implements OnInit {
   itemDescription: string = '';
   userId: number = 1; // fijo por ahora
 
-  adjustmentItems: { accessoryId: number; accessoryName: string; quantity: number , itemDescription: string}[] = [];
+  adjustmentItems: { accessoryId: number; accessoryName: string; quantity: number, itemDescription: string }[] = [];
 
   constructor(
     private warehouseService: WarehouseService,
@@ -147,8 +147,29 @@ export class AdjustmentCreateComponent implements OnInit {
   }
 
   eliminarItem(index: number): void {
-    this.adjustmentItems.splice(index, 1);
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Este ítem se eliminará del ajuste.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.adjustmentItems.splice(index, 1);
+        Swal.fire({
+          icon: 'success',
+          title: 'Eliminado',
+          text: 'El ítem fue eliminado correctamente.',
+          timer: 1300,
+          showConfirmButton: false
+        });
+      }
+    });
   }
+
 
   guardarAjuste(): void {
     if (!this.selectedWarehouse || this.adjustmentItems.length === 0) {

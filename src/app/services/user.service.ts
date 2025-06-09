@@ -43,8 +43,14 @@ export class UserService {
 
   // Actualizar cliente
   updateUser(id: number, userData: User): Observable<User> {
+    console.log('📤 Enviando datos al backend para actualizar usuario:', {
+      id,
+      userData
+    });
+
     return this.http.put<User>(`${this.apiUrl}/${id}`, userData);
   }
+
 
   deleteUser(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);

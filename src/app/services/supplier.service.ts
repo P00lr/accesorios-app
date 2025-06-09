@@ -9,7 +9,7 @@ import { Page } from '../models/page.model';
 })
 export class SupplierService {
 
-  private apiUrl = 'http://localhost:8080/api/suppliers';  // URL ajustada para proveedores
+  private apiUrl = 'http://localhost:8080/api/suppliers';
 
   constructor(private http: HttpClient) { }
 
@@ -20,7 +20,12 @@ export class SupplierService {
     );
   }
 
-  // Guardar proveedores en localStorage (si es necesario)
+  getAllSuppliers(): Observable<Supplier[]> {
+    return this.http.get<Supplier[]>(`${this.apiUrl}`).pipe(
+      tap((response) => this.setSuppliersToLocalStorage(response))
+    );
+  }
+
   setSuppliersToLocalStorage(suppliers: Supplier[]): void {
     localStorage.setItem('suppliers', JSON.stringify(suppliers));
   }

@@ -22,4 +22,31 @@ export class SidebarComponent {
   hasPermission(permission: string): boolean {
     return this.permissions.includes(permission);
   }
+
+  hasAnyModulePermission(): boolean {
+  const permissions = ['DASHBOARD', 'VER_PROVEEDOR', 'VER_CATEGORIA', 'VER_ACCESORIO'];
+  return permissions.some(p => this.hasPermission(p));
+}
+
+hasAnyGestionPermission(): boolean {
+  const permissions = ['VER_ALMACEN', 'VER_COMPRA', 'VER_VENTA'];
+  return permissions.some(p => this.hasPermission(p));
+}
+
+hasAnyInventarioPermission(): boolean {
+  const permissions = ['VER_AJUSTE', 'VER_TRASPASO'];
+  return permissions.some(p => this.hasPermission(p));
+}
+
+hasAnyReportePermission(): boolean {
+  const permissions = ['REPORTE_VENTA', 'REPORTE_ALMACEN'];
+  return permissions.some(p => this.hasPermission(p));
+}
+
+hasAnyConfiguracionPermission(): boolean {
+  const permissions = ['VER_USUARIO', 'VER_PERMISO', 'VER_ROL'];
+  return permissions.some(p => this.hasPermission(p));
+}
+
+
 }

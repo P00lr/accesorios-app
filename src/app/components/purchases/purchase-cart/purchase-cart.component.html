@@ -4,6 +4,17 @@
   <div class="row">
     <!-- Formulario -->
     <div class="col-md-6">
+      <!-- Campo Proveedor -->
+      <mat-form-field class="w-100 mb-3" appearance="fill">
+        <mat-label>Proveedor</mat-label>
+        <input type="text" matInput [formControl]="supplierControl" [matAutocomplete]="supplierAuto" />
+        <mat-autocomplete #supplierAuto="matAutocomplete" (optionSelected)="onSupplierSelected($event.option.value)">
+          <mat-option *ngFor="let supplier of filteredSuppliers$ | async" [value]="supplier.name">
+            {{ supplier.name }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
       <div class="mb-3">
         <label class="form-label">Seleccionar Almacén</label>
         <select class="form-select" [(ngModel)]="selectedWarehouseId">
@@ -42,26 +53,36 @@
     </div>
 
     <!-- Carrito -->
-    <div class="col-md-6">
-      <h4>Carrito</h4>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Accesorio</th>
-            <th>Cantidad</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of cart">
-            <td>{{ item.accessoryName }}</td>
-            <td>{{ item.quantity }}</td>
-          </tr>
-        </tbody>
-      </table>
+<div class="col-md-6">
+  <h4>Carrito</h4>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Accesorio</th>
+        <th>Cantidad</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of cart; let i = index">
+        <td>{{ item.accessoryName }}</td>
+        <td>
+          <input type="number" class="form-control" [(ngModel)]="item.quantity" min="1" />
+        </td>
+        <td>
+          <button class="btn btn-danger btn-sm" (click)="eliminarDelCarrito(i)">
+            <i class="bi bi-trash"></i> Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-      <button class="btn btn-success" (click)="registrarCompra()" [disabled]="!cart.length">
-        Confirmar Compra
-      </button>
-    </div>
+  <button class="btn btn-success" (click)="registrarCompra()" [disabled]="!cart.length">
+    Confirmar Compra
+  </button>
+</div>
+
+
   </div>
 </div>

@@ -1,9 +1,10 @@
-<div class="container my-4">
+<div class="container my-4 cart-animate">
   <h2>Carrito de Compras</h2>
 
   <ng-container *ngIf="cartItems$ | async as cartItems">
     <div *ngIf="cartItems.length > 0; else emptyCart">
-      <table class="table table-striped align-middle">
+      <table class="custom-table align-middle">
+
         <thead>
           <tr>
             <th>Accesorio</th>

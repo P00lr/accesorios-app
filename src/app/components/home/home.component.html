@@ -1,59 +1,112 @@
-<div class="dashboard-container">
-  <!-- Bienvenida -->
-  <div class="welcome-section">
-    <h2>Bienvenido al Panel del Rincón del Celular</h2>
-    <p>Gestiona tu inventario, ventas y usuarios desde un solo lugar.</p>
+<div class="container">
+
+  <!-- 1. Hero Section -->
+  <div class="text-center mb-5 fade-in">
+    <h1 class="display-4 fw-bold">Bienvenido a El Rincón del Celular</h1>
+    <p class="lead text-muted">Tu tienda confiable de accesorios para celulares y dispositivos móviles</p>
+    <a routerLink="/catalog-accessories" class="btn btn-primary btn-lg mt-3">
+      Ver nuestro catálogo <i class="bi bi-box-seam ms-2"></i>
+    </a>
   </div>
 
-  <!-- Tarjetas resumen -->
-  <div class="summary-cards">
-    <div class="card card-blue">
-      <div class="card-content">
-        <div>
-          <h4>Clientes</h4>
-          <p>8</p>
-        </div>
-        <i class="bi bi-people-fill icon"></i>
-      </div>
-    </div>
+  <!-- 2. ¿Quiénes Somos? -->
+  <section id="quienes-somos" class="mb-5 fade-in fade-in-delay-1">
+    <h2 class="text-center mb-3">¿Quiénes Somos?</h2>
+    <p class="text-muted text-center">
+      Somos una tienda especializada en accesorios para celulares, brindando calidad, confianza y atención personalizada desde 2020. 
+      Nuestro objetivo es facilitarte productos útiles y modernos para tu dispositivo.
+    </p>
+  </section>
 
-    <div class="card card-green">
-      <div class="card-content">
-        <div>
-          <h4>Ventas</h4>
-          <p>47,500 Bs</p>
-        </div>
-        <i class="bi bi-cash-coin icon"></i>
-      </div>
+  <!-- 3. Características destacadas -->
+  <div class="row text-center mb-5 fade-in fade-in-delay-2">
+    <div class="col-md-4 mb-4">
+      <i class="bi bi-truck display-4 text-primary mb-3"></i>
+      <h4>Envío rápido y seguro</h4>
+      <p class="text-muted">Recibe tus pedidos en tiempo récord y en perfecto estado.</p>
     </div>
+    <div class="col-md-4 mb-4">
+      <i class="bi bi-shield-lock display-4 text-primary mb-3"></i>
+      <h4>Pago seguro</h4>
+      <p class="text-muted">Tu información y pagos siempre protegidos con nuestro sistema.</p>
+    </div>
+    <div class="col-md-4 mb-4">
+      <i class="bi bi-people-fill display-4 text-primary mb-3"></i>
+      <h4>Atención personalizada</h4>
+      <p class="text-muted">Nuestro equipo está listo para ayudarte en todo momento.</p>
+    </div>
+  </div>
 
-    <div class="card card-yellow">
-      <div class="card-content">
-        <div>
-          <h4>Accesorios</h4>
-          <p>10</p>
-        </div>
-        <i class="bi bi-box-seam icon"></i>
+  <!-- 4. Horario de Atención -->
+  <section id="horario" class="mb-5 text-center fade-in fade-in-delay-1">
+    <h2 class="mb-3">Horario de Atención</h2>
+    <p class="text-muted">Lunes a Sábado: 9:00 AM - 7:00 PM<br>Domingos: Cerrado</p>
+  </section>
+
+  <!-- 5. Ubicación -->
+  <section id="ubicacion" class="mb-5 text-center fade-in fade-in-delay-2">
+    <h2 class="mb-3">¿Dónde Estamos?</h2>
+    <p class="text-muted">📍 C. 16 de Julio 153, Montero, Bolivia</p>
+    <div class="ratio ratio-16x9">
+<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d6396.870658129501!2d-63.25567784325559!3d-17.345943797591644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses-419!2sus!4v1749378258711!5m2!1ses-419!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>    </div>
+  </section>
+
+  <!-- 6. Políticas de cambio -->
+  <section id="politicas" class="mb-5 fade-in fade-in-delay-3">
+    <h2 class="text-center mb-3">Políticas de Cambio</h2>
+    <ul class="text-muted">
+      <li>Los cambios se realizan en un plazo máximo de 7 días con boleta o factura.</li>
+      <li>No se aceptan cambios por mal uso del producto.</li>
+      <li>El producto debe estar en condiciones originales y sin uso.</li>
+    </ul>
+  </section>
+
+  <!-- 7. Testimonios -->
+  <div class="theme-card p-5 rounded shadow-sm mb-5 fade-in">
+
+    <h3 class="text-center mb-4">Lo que dicen nuestros clientes</h3>
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <blockquote class="blockquote text-center">
+          <p class="mb-3">“Excelente atención y productos de calidad. Recomendado 100%”</p>
+          <footer class="blockquote-footer">Ana Martínez</footer>
+        </blockquote>
+      </div>
+      <div class="col-md-4 mb-4">
+        <blockquote class="blockquote text-center">
+          <p class="mb-3">“Envíos rápidos y siempre llegan bien empaquetados. Muy contento.”</p>
+          <footer class="blockquote-footer">Carlos Gómez</footer>
+        </blockquote>
+      </div>
+      <div class="col-md-4 mb-4">
+        <blockquote class="blockquote text-center">
+          <p class="mb-3">“Gran variedad de accesorios y precios justos. Volveré a comprar.”</p>
+          <footer class="blockquote-footer">Lucía Pérez</footer>
+        </blockquote>
       </div>
     </div>
   </div>
 
-  <!-- Acciones rápidas -->
-  <div class="quick-actions">
-    <h3>Acciones rápidas</h3>
-    <div class="actions-grid">
-      <a routerLink="/clientes/create" class="action-button blue">
-        <i class="bi bi-person-plus"></i> Nuevo Cliente
+  <!-- 8. Contacto -->
+  <section id="contacto" class="mb-5 text-center fade-in">
+    <h2 class="mb-3">Contáctanos</h2>
+    <p class="text-muted">📞 WhatsApp: +591 76543210<br>✉️ Email: contacto&#64;rincondelcelular.com</p>
+  </section>
+
+  <!-- 9. Redes Sociales -->
+  <section id="redes" class="mb-5 text-center fade-in">
+    <h2 class="mb-3">Síguenos en redes</h2>
+    <div class="d-flex justify-content-center gap-3 fs-3">
+      <a href="https://facebook.com" target="_blank" class="text-decoration-none text-primary">
+        <i class="bi bi-facebook"></i>
       </a>
-      <a routerLink="/sales/create" class="action-button green">
-        <i class="bi bi-cart-plus"></i> Nueva Venta
+      <a href="https://instagram.com" target="_blank" class="text-decoration-none text-danger">
+        <i class="bi bi-instagram"></i>
       </a>
-      <a routerLink="/accessories" class="action-button yellow">
-        <i class="bi bi-box"></i> Ver Accesorios
-      </a>
-      <a routerLink="/sales-report" class="action-button dark">
-        <i class="bi bi-bar-chart-line"></i> Reportes
+      <a href="https://tiktok.com" target="_blank" class="text-decoration-none text-dark">
+        <i class="bi bi-tiktok"></i>
       </a>
     </div>
-  </div>
+  </section>
+
 </div>

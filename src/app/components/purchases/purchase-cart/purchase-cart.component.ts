@@ -11,6 +11,8 @@ import { MatInputModule } from '@angular/material/input';
 import { Observable, startWith, map } from 'rxjs';
 import { AccessoryService } from '../../../services/accessory.service';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../auth/auth.service';
+import { SupplierService } from '../../../services/supplier.service';
 
 @Component({
   selector: 'app-purchase-cart',
@@ -33,56 +35,66 @@ export class PurchaseCartComponent implements OnInit {
 
   selectedWarehouseId: number | null = null;
   accessoryControl = new FormControl('');
+  supplierControl = new FormControl('');
   filteredAccessories$: Observable<WarehouseDetail[]> = new Observable();
+  filteredSuppliers$: Observable<{ id: number; name: string }[]> = new Observable();
 
   selectedAccessoryName: string = '';
   quantity: number | null = null;
+  selectedSupplierId: number | null = null;
+
+  suppliers: { id: number; name: string }[] = [];
 
   cart: { accessoryId: number; accessoryName: string; quantity: number }[] = [];
-
 
   constructor(
     private warehouseService: WarehouseService,
     private purchaseService: PurchaseService,
-    private accessoriesServices: AccessoryService
-  ) { }
+    private accessoriesServices: AccessoryService,
+    private authService: AuthService,
+    private supplierService: SupplierService
+  ) {}
 
   ngOnInit(): void {
-    // Cargar almacenes
     this.warehouseService.getWarehouses(0).subscribe((page) => {
       this.warehouses = page.content;
     });
 
-    // Cargar todos los WarehouseDetails (contienen accessory + warehouse info)
-    this.warehouseService.getWarehouseDetails().subscribe((details) => {
-      this.warehouseDetails = details;
-      // Asignamos todos los warehouseDetails a accessoryOptions para autocompletado
-      this.accessoryOptions = details;
-
-      // Aquí cargas todos los accesorios desde la base de datos con AccessoryService
-      this.accessoriesServices.getAccesories(0).subscribe((page) => {
-        // Mapea los accesorios a WarehouseDetail para que encaje con accessoryOptions
-        this.accessoryOptions = page.content.map(accessory => ({
-          id: accessory.id,                  // usar id del accesorio para warehouseDetailId provisional
-          warehouseId: 0,                   // valor dummy porque no depende de almacén
-          warehouseName: '',
-          accessoryId: accessory.id,
-          accessoryName: accessory.name,
-          stock: 0,                        // no tienes stock aquí, pon 0 o ajusta si tienes otro dato
-          state: 'AVAILABLE'
-        }));
-      });
-
-      // Inicializar el filtro para el autocompletado
-      this.filteredAccessories$ = this.accessoryControl.valueChanges.pipe(
+    this.supplierService.getSuppliers(0).subscribe((page) => {
+      this.suppliers = page.content;
+      this.filteredSuppliers$ = this.supplierControl.valueChanges.pipe(
         startWith(''),
         map(value => {
           const filterValue = value?.toLowerCase() || '';
-          return this.accessoryOptions.filter(option =>
-            option.accessoryName.toLowerCase().includes(filterValue)
-          );
+          return this.suppliers.filter(s => s.name.toLowerCase().includes(filterValue));
         })
       );
+    });
+
+    this.warehouseService.getWarehouseDetails().subscribe((details) => {
+      this.warehouseDetails = details;
+
+      this.accessoriesServices.getAccesories(0).subscribe((page) => {
+        this.accessoryOptions = page.content.map(accessory => ({
+          id: accessory.id,
+          warehouseId: 0,
+          warehouseName: '',
+          accessoryId: accessory.id,
+          accessoryName: accessory.name,
+          stock: 0,
+          state: 'AVAILABLE'
+        }));
+
+        this.filteredAccessories$ = this.accessoryControl.valueChanges.pipe(
+          startWith(''),
+          map(value => {
+            const filterValue = value?.toLowerCase() || '';
+            return this.accessoryOptions.filter(option =>
+              option.accessoryName.toLowerCase().includes(filterValue)
+            );
+          })
+        );
+      });
     });
   }
 
@@ -90,12 +102,17 @@ export class PurchaseCartComponent implements OnInit {
     this.selectedAccessoryName = name;
   }
 
+  onSupplierSelected(name: string): void {
+    const selected = this.suppliers.find(s => s.name === name);
+    this.selectedSupplierId = selected?.id || null;
+  }
+
   agregarAlCarrito(): void {
     const detail = this.accessoryOptions.find(acc => acc.accessoryName === this.selectedAccessoryName);
     if (!detail) return;
 
     this.cart.push({
-      accessoryId: detail.accessoryId, // ← si viene anidado
+      accessoryId: detail.accessoryId,
       accessoryName: detail.accessoryName,
       quantity: this.quantity!,
     });
@@ -105,50 +122,57 @@ export class PurchaseCartComponent implements OnInit {
     this.quantity = null;
   }
 
-
   registrarCompra(): void {
-  if (!this.selectedWarehouseId) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Almacén no seleccionado',
-      text: 'Selecciona un almacén antes de registrar la compra',
+    const userId = this.authService.getUserId();
+    if (!this.selectedWarehouseId || !userId || !this.selectedSupplierId) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Selecciona almacén, proveedor y asegúrate de estar autenticado.',
+      });
+      return;
+    }
+
+    const payload: CreatePurchase = {
+      supplierId: this.selectedSupplierId,
+      userId: userId,
+      warehouseId: this.selectedWarehouseId,
+      purchaseDetails: this.cart.map(item => ({
+        accessoryId: item.accessoryId,
+        quantityType: item.quantity,
+      })),
+    };
+
+    this.purchaseService.createPurchase(payload).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: '¡Compra registrada!',
+          text: 'La compra se registró correctamente.',
+          showConfirmButton: false,
+          timer: 1450
+        });
+        this.cart = [];
+        this.supplierControl.setValue('');
+        this.selectedSupplierId = null;
+      },
+      error: (error) => {
+        console.error(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ocurrió un error al registrar la compra.',
+        });
+      }
     });
-    return;
   }
 
-  const payload: CreatePurchase = {
-    supplierId: 1,
-    userId: 2,
-    warehouseId: this.selectedWarehouseId,
-    purchaseDetails: this.cart.map(item => ({
-      accessoryId: item.accessoryId,
-      quantityType: item.quantity,
-    })),
-  };
-
-  this.purchaseService.createPurchase(payload).subscribe({
-    next: () => {
-      Swal.fire({
-        icon: 'success',
-        title: '¡Compra registrada!',
-        showConfirmButton:false,
-        timer: 1450,
-        text: 'La compra se registró correctamente.',
-      });
-      this.cart = [];
-    },
-    error: (error) => {
-      console.error(error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Ocurrió un error al registrar la compra.',
-      });
-    }
-  });
+  eliminarDelCarrito(index: number): void {
+  this.cart.splice(index, 1);
 }
 
 }
+
 
 
 

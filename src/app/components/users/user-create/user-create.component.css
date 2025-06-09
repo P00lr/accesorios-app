@@ -1,7 +1,7 @@
 /* Centrado vertical del formulario */
 .register-card-wrapper {
-  width: 100%;
-  max-width: 700px; /* Ajusta el ancho máximo aquí */
+  width: 40%;
+  max-width: 500px; /* Ajusta el ancho máximo aquí */
 }
 
 

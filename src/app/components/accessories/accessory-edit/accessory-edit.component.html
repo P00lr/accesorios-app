@@ -1,33 +1,33 @@
 <div class="container mt-4">
-  <div class="card shadow-sm">
-    <div class="card-header bg-primary text-white">
+  <div class="card custom-card shadow-sm">
+    <div class="card-header bg-dark text-white">
       <h5 class="mb-0">Editar Accesorio</h5>
     </div>
     <div class="card-body" *ngIf="!isLoading; else loading">
       <form (ngSubmit)="onSubmit()">
         <div class="mb-3">
           <label>Nombre</label>
-          <input type="text" class="form-control" [(ngModel)]="accessory.name" name="name" required />
+          <input type="text" class="form-control input-gray" [(ngModel)]="accessory.name" name="name" required />
         </div>
 
         <div class="mb-3">
           <label>Precio</label>
-          <input type="number" class="form-control" [(ngModel)]="accessory.price" name="price" required />
+          <input type="number" class="form-control input-gray" [(ngModel)]="accessory.price" name="price" required />
         </div>
 
         <div class="mb-3">
           <label>Descripción</label>
-          <textarea class="form-control" [(ngModel)]="accessory.description" name="description" rows="3"></textarea>
+          <textarea class="form-control input-gray" [(ngModel)]="accessory.description" name="description" rows="3"></textarea>
         </div>
 
         <div class="mb-3">
           <label>Marca</label>
-          <input type="text" class="form-control" [(ngModel)]="accessory.brand" name="brand" />
+          <input type="text" class="form-control input-gray" [(ngModel)]="accessory.brand" name="brand" />
         </div>
 
         <div class="mb-3">
           <label>Modelo</label>
-          <input type="text" class="form-control" [(ngModel)]="accessory.model" name="model" />
+          <input type="text" class="form-control input-gray" [(ngModel)]="accessory.model" name="model" />
         </div>
 
         <div class="mb-3">
@@ -40,7 +40,7 @@
           </select>
         </div>
 
-        <button type="submit" class="btn btn-success">Actualizar</button>
+        <button type="submit" class="btn btn-primary">Actualizar</button>
         <a class="btn btn-secondary ms-2" routerLink="/accessories">Cancelar</a>
 
         <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>

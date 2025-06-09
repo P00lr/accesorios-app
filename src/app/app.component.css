@@ -1,0 +1,9 @@
+app-footer {
+  width: 100%;
+  background-color: #282d31;
+  text-align: center;
+  padding: 0rem 0rem; /* más delgado y con algo de margen horizontal */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

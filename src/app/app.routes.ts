@@ -57,10 +57,12 @@ export const routes: Routes = [
 
   // Login / Registro (públicos)
   { path: 'login', component: LoginComponent },
+  { path: 'users/edit/:id', component: UserEditComponent},
 
   // Públicas
   { path: 'catalog-accessories', component: CatalogComponent },
   { path: 'cart', component: CartComponent },
+  { path: 'home', component: HomeComponent },
 
   //ojo redirecciona a Catalog
   { path: 'sales/create', component: CatalogComponent,
@@ -217,12 +219,7 @@ export const routes: Routes = [
         canActivate: [permissionGuard],
         data: { permissions: ['CREAR_USUARIO'] }
       }, */
-      {
-        path: 'users/edit/:id',
-        component: UserEditComponent,
-        canActivate: [permissionGuard],
-        data: { permissions: ['EDITAR_USUARIO'] }
-      },
+      
       {
         path: 'users/detail/:id',
         component: UserDetailComponent,
@@ -389,8 +386,7 @@ export const routes: Routes = [
         
       },
 
-      // HOME
-      { path: 'home', component: HomeComponent }
+     
     ]
   }
 ];
