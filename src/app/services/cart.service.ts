@@ -29,14 +29,14 @@ export class CartService {
   }
 
   addToCart(accessory: AccessoryCatalog, quantity: number = 1) {
-  const existingItem = this.cartItems.find(item => item.accessory.id === accessory.id);
-  if (existingItem) {
-    existingItem.quantity += quantity;
-  } else {
-    this.cartItems.push({ accessory, quantity });
+    const existingItem = this.cartItems.find(item => item.accessory.id === accessory.id);
+    if (existingItem) {
+      existingItem.quantity += quantity;
+    } else {
+      this.cartItems.push({ accessory, quantity });
+    }
+    this.updateCart();
   }
-  this.updateCart();
-}
 
 
   removeFromCart(accessoryId: number) {

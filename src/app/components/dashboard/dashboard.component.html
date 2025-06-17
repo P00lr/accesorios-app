@@ -1,33 +1,211 @@
-<div class="dashboard-container">
-  <div class="stat-grid">
-    <div class="stat-card" *ngIf="data">
-      <h5>Clientes</h5>
-      <p class="stat-number blue">{{ data.totalClientes }}</p>
-    </div>
+<div *ngIf="isLoading" class="loading">
+  <mat-progress-spinner mode="indeterminate" color="primary"></mat-progress-spinner>
+</div>
 
-    <div class="stat-card">
-      <h5>Ventas</h5>
-      <p class="stat-number green">{{ data.totalVentas }}</p>
-    </div>
+<div *ngIf="!isLoading && dashboardData" class="dashboard-container">
 
-    <div class="stat-card">
-      <h5>Compras</h5>
-      <p class="stat-number yellow">{{ data.totalCompras }}</p>
-    </div>
+  <!-- Totals Section -->
+  <h2>Resumen General</h2>
 
-    <div class="stat-card">
-      <h5>Stock total</h5>
-      <p class="stat-number cyan">{{ data.productosEnStock }}</p>
-    </div>
+  <!-- Grupo de Ventas -->
+  <div class="row-group">
+    <mat-card class="card">
+      <mat-card-title>Ventas del mes</mat-card-title>
+      <mat-card-content>{{ dashboardData.totals.monthlySales | currency:'Bs' }}</mat-card-content>
+    </mat-card>
 
-    <div class="stat-card">
-      <h5>Stock bajo</h5>
-      <p class="stat-number red">{{ data.productosBajosStock }}</p>
-    </div>
-
-    <div class="stat-card">
-      <h5>Ganancias del mes</h5>
-      <p class="stat-number green">{{ data.gananciasMes | number:'1.0-0' }} Bs</p>
-    </div>
+    <mat-card class="card">
+      <mat-card-title>Unidades vendidas</mat-card-title>
+      <mat-card-content>{{ dashboardData.totals.unitsSold }}</mat-card-content>
+    </mat-card>
   </div>
+
+  <!-- Grupo de Compras -->
+  <div class="row-group">
+    <mat-card class="card">
+      <mat-card-title>Compras del mes</mat-card-title>
+      <mat-card-content>{{ dashboardData.totals.monthlyPurchases | currency:'Bs' }}</mat-card-content>
+    </mat-card>
+
+    <mat-card class="card">
+      <mat-card-title>Unidades compradas</mat-card-title>
+      <mat-card-content>{{ dashboardData.totals.unitsPurchased }}</mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <!-- Grupo Accesorios y Usuarios -->
+  <div class="row-group">
+    <mat-card class="card">
+      <mat-card-title>Accesorios</mat-card-title>
+      <mat-card-content>{{ dashboardData.totals.accessories }}</mat-card-content>
+    </mat-card>
+
+    <mat-card class="card">
+      <mat-card-title>Usuarios</mat-card-title>
+      <mat-card-content>{{ dashboardData.totals.users }}</mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <!-- Sales Summary -->
+  <h2>Resumen de ventas</h2>
+  <div class="card-grid">
+    <mat-card class="card">
+      <mat-card-title>Ventas hoy</mat-card-title>
+      <mat-card-content>{{ dashboardData.salesSummary.today }}</mat-card-content>
+    </mat-card>
+
+    <mat-card class="card">
+      <mat-card-title>Ventas esta semana</mat-card-title>
+      <mat-card-content>{{ dashboardData.salesSummary.week }}</mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <!-- Low Stock Section -->
+  <h2 class="section-title">Accesorios Con Stock Bajo</h2>
+
+  <!-- Filtro de stock bajo -->
+  <mat-card class="stock-filter-card">
+    <mat-form-field appearance="outline" class="stock-input">
+      <mat-label>Stock mínimo</mat-label>
+      <input matInput type="number" [(ngModel)]="lowStockThreshold" (keydown.enter)="fetchLowStockItems()" />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="fetchLowStockItems()">Buscar</button>
+  </mat-card>
+
+
+
+  <div *ngIf="lowStockItems.length > 0; else noLowStock">
+    <table mat-table [dataSource]="lowStockItems" class="mat-elevation-z2 low-stock-table">
+
+      <!-- ID Column -->
+      <ng-container matColumnDef="accessoryId">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let item"> {{ item.accessoryId }} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+        <td mat-cell *matCellDef="let item"> {{ item.name }} </td>
+      </ng-container>
+
+      <!-- Stock Column -->
+      <ng-container matColumnDef="stock">
+        <th mat-header-cell *matHeaderCellDef> Stock </th>
+        <td mat-cell *matCellDef="let item"> {{ item.stock }} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['accessoryId', 'name', 'stock']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['accessoryId', 'name', 'stock'];"></tr>
+    </table>
+
+    <mat-paginator [length]="lowStockPage?.totalElements || 0" [pageSize]="size" [pageSizeOptions]="[5, 10, 15]"
+      [pageIndex]="page" showFirstLastButtons (page)="changePage($event)">
+    </mat-paginator>
+
+  </div>
+
+  <ng-template #noLowStock>
+    <p>No hay accesorios con stock bajo.</p>
+  </ng-template>
+
+  <mat-divider></mat-divider>
+
+  <div class="section-container">
+
+    <h2>Accesorios mas vendidos</h2>
+
+    <div class="filter-row">
+      <mat-form-field appearance="fill" class="filter-field">
+        <mat-label>Fecha inicio</mat-label>
+        <input matInput [matDatepicker]="pickerStart" [formControl]="startDate" />
+        <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+        <mat-datepicker #pickerStart></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="filter-field">
+        <mat-label>Fecha fin</mat-label>
+        <input matInput [matDatepicker]="pickerEnd" [formControl]="endDate" />
+        <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+        <mat-datepicker #pickerEnd></mat-datepicker>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" (click)="onFilterApply()">Aplicar</button>
+      <button mat-button (click)="onFilterClear()">Limpiar</button>
+    </div>
+
+    <div *ngIf="isLoading" class="loading">
+      <mat-progress-spinner mode="indeterminate" color="primary"></mat-progress-spinner>
+    </div>
+
+    <mat-table [dataSource]="topSellingAccessories" *ngIf="!isLoading && topSellingAccessories.length > 0"
+      class="mat-elevation-z8">
+
+      <ng-container matColumnDef="accessoryName">
+        <mat-header-cell *matHeaderCellDef>Accesorio</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{ element.accessoryName }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="quantitySold">
+        <mat-header-cell *matHeaderCellDef>Cantidad Vendida</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{ element.quantitySold }}</mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="['accessoryName', 'quantitySold']"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: ['accessoryName', 'quantitySold'];"></mat-row>
+    </mat-table>
+
+    <p *ngIf="!isLoadingSelling && topSellingAccessories.length === 0">No se encontraron accesorios.</p>
+
+    <mat-paginator [length]="pageData.totalElements || 0" [pageIndex]="pageIndex" [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)">
+    </mat-paginator>
+
+    <p class="error-msg" *ngIf="errorMsg">{{ errorMsg }}</p>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <mat-card class="dashboard-section">
+    <h2>Clientes más frecuentes</h2>
+
+    <mat-progress-bar *ngIf="isLoadingCustomers" mode="indeterminate"></mat-progress-bar>
+    <mat-error *ngIf="errorMsgCustomers">{{ errorMsgCustomers }}</mat-error>
+
+    <table mat-table [dataSource]="topCustomers" class="mat-elevation-z2" *ngIf="topCustomers.length > 0">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Cliente </th>
+        <td mat-cell *matCellDef="let customer"> {{ customer.name }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef> Correo </th>
+        <td mat-cell *matCellDef="let customer"> {{ customer.email }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="totalAmount">
+        <th mat-header-cell *matHeaderCellDef> Monto Total (Bs) </th>
+        <td mat-cell *matCellDef="let customer"> {{ customer.totalAmount | number:'1.2-2' }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="salesCount">
+        <th mat-header-cell *matHeaderCellDef> Ventas </th>
+        <td mat-cell *matCellDef="let customer"> {{ customer.salesCount }} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['name', 'email', 'totalAmount', 'salesCount']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['name', 'email', 'totalAmount', 'salesCount']"></tr>
+    </table>
+
+    <mat-paginator [length]="pageDataCustomers.totalElements || 0" [pageIndex]="pageIndexCustomers"
+      [pageSize]="pageSizeCustomers" [pageSizeOptions]="[5, 10, 15]" (page)="onPageChangeCustomers($event)">
+    </mat-paginator>
+  </mat-card>
+
 </div>

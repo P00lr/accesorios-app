@@ -11,7 +11,7 @@ import { assignPermissionsToUser } from '../models/assingPermissionsToUser.model
 })
 export class PermissionService {
 
-  private apiUrl: string = 'http://localhost:8080/api/permissions';
+  private apiUrl: string = 'https://backend-api-gestion-accesorios.onrender.com/api/permissions';
 
 
 

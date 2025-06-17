@@ -11,7 +11,7 @@ import { GetTransfer } from '../models/get-transfer.model';
 })
 export class TransferService {
 
-  private apiUrl = 'http://localhost:8080/api/transfers';
+  private apiUrl = 'https://backend-api-gestion-accesorios.onrender.com/api/transfers';
 
   constructor(private http: HttpClient) { }
 

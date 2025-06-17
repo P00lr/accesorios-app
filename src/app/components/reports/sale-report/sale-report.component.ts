@@ -9,6 +9,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import Swal from 'sweetalert2';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-sale-report',
@@ -20,7 +22,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatFormFieldModule,
     MatLabel,
     MatInputModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatIcon
   ],
   templateUrl: './sale-report.component.html',
   styleUrl: './sale-report.component.css'
@@ -32,6 +35,9 @@ export class SaleReportComponent {
 
   pdfBlob: Blob | null = null;
 
+  emailInput = '';
+  emailRecipients: string[] = [];
+
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
@@ -39,8 +45,11 @@ export class SaleReportComponent {
   ) {
     this.reportForm = this.fb.group({
       from: ['', Validators.required],
-      to: ['', Validators.required]
+      to: ['', Validators.required],
+      subject: ['Reporte de Ventas', Validators.required],
+      body: ['Adjunto el reporte solicitado.', Validators.required]
     });
+
   }
 
   openPreview() {
@@ -55,7 +64,7 @@ export class SaleReportComponent {
       .set('from', new Date(from).toISOString())
       .set('to', new Date(to).toISOString());
 
-    this.http.get('http://localhost:8080/api/sales/report', {
+    this.http.get('https://backend-api-gestion-accesorios.onrender.com/api/sales/report', {
       params,
       responseType: 'blob'
     }).subscribe({
@@ -81,5 +90,66 @@ export class SaleReportComponent {
       saveAs(this.pdfBlob, 'reporte_ventas.pdf');
     }
   }
+
+  addEmail(): void {
+    const email = this.emailInput.trim();
+    if (email && !this.emailRecipients.includes(email)) {
+      this.emailRecipients.push(email);
+    }
+    this.emailInput = '';
+  }
+
+  removeEmail(email: string): void {
+    this.emailRecipients = this.emailRecipients.filter(e => e !== email);
+  }
+
+  sendByEmail(): void {
+    if (this.reportForm.invalid) {
+      Swal.fire('❌ Fechas requeridas', 'Selecciona un rango de fechas válido.', 'warning');
+      return;
+    }
+
+    if (this.emailRecipients.length === 0) {
+      Swal.fire('❌ Correos requeridos', 'Agrega al menos un correo electrónico.', 'warning');
+      return;
+    }
+
+    const { from, to, subject, body } = this.reportForm.value;
+    const inicio = new Date(from).toISOString();
+    const fin = new Date(to).toISOString();
+
+    const requests = this.emailRecipients.map(destinatario =>
+      this.http.post('https://backend-api-gestion-accesorios.onrender.com/api/email/sale', null, {
+        params: {
+          destinatario,
+          inicio,
+          fin,
+          asunto: subject,
+          mensaje: body
+        },
+        responseType: 'text'
+      }).toPromise()
+    );
+
+    this.loading = true;
+    Promise.all(requests)
+      .then(() => {
+        this.loading = false;
+        Swal.fire('📧 Éxito', 'Reportes enviados correctamente.', 'success');
+      })
+      .catch(err => {
+        this.loading = false;
+        console.error(err);
+        Swal.fire('❌ Error', err?.error || 'Ocurrió un error al enviar uno o más correos.', 'error');
+      });
+  }
+
+  handleEmailEnter(event: Event): void {
+    event.preventDefault(); // funciona aunque sea Event
+    this.addEmail();
+  }
+
+
+
 }
 

@@ -53,7 +53,7 @@ export class PurchaseCartComponent implements OnInit {
     private accessoriesServices: AccessoryService,
     private authService: AuthService,
     private supplierService: SupplierService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.warehouseService.getWarehouses(0).subscribe((page) => {
@@ -74,8 +74,8 @@ export class PurchaseCartComponent implements OnInit {
     this.warehouseService.getWarehouseDetails().subscribe((details) => {
       this.warehouseDetails = details;
 
-      this.accessoriesServices.getAccesories(0).subscribe((page) => {
-        this.accessoryOptions = page.content.map(accessory => ({
+      this.accessoriesServices.getAllAccessories().subscribe((accessories) => {
+        this.accessoryOptions = accessories.map(accessory => ({
           id: accessory.id,
           warehouseId: 0,
           warehouseName: '',
@@ -95,6 +95,7 @@ export class PurchaseCartComponent implements OnInit {
           })
         );
       });
+
     });
   }
 
@@ -168,8 +169,8 @@ export class PurchaseCartComponent implements OnInit {
   }
 
   eliminarDelCarrito(index: number): void {
-  this.cart.splice(index, 1);
-}
+    this.cart.splice(index, 1);
+  }
 
 }
 

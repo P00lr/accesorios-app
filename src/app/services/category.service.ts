@@ -9,7 +9,7 @@ import { Page } from '../models/page.model';
 })
 export class CategoryService {
 
-  private apiUrl = 'http://localhost:8080/api/categories';
+  private apiUrl = 'https://backend-api-gestion-accesorios.onrender.com/api/categories';
 
   constructor(private http: HttpClient) { }
 

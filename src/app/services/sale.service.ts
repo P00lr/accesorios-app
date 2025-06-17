@@ -11,7 +11,7 @@ import { GetSale } from '../models/get-sale.model';
 })
 export class SaleService {
 
-  private apiUrl = 'http://localhost:8080/api/sales';
+  private apiUrl = 'https://backend-api-gestion-accesorios.onrender.com/api/sales';
 
   constructor(private http: HttpClient) { }
 

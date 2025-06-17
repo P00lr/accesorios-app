@@ -11,7 +11,7 @@ import { GetAdjustment } from '../models/get-adjustmen.modl';
 })
 export class AdjustmentService {
 
-  private apiUrl = 'http://localhost:8080/api/adjustments';
+  private apiUrl = 'https://backend-api-gestion-accesorios.onrender.com/api/adjustments';
 
   constructor(private http: HttpClient) { }
 

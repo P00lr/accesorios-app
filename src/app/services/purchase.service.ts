@@ -11,7 +11,7 @@ import { GetPurchase } from '../models/get-purchase.model';
 })
 export class PurchaseService {
 
-  private apiUrl = 'http://localhost:8080/api/purchases';
+  private apiUrl = 'https://backend-api-gestion-accesorios.onrender.com/api/purchases';
 
   constructor(private http: HttpClient) { }
 

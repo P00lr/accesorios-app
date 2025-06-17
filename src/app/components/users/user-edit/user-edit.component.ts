@@ -102,7 +102,6 @@ export class UserEditComponent {
         title: 'Contraseña actualizada correctamente',
         icon: 'success',
         timer: 2000,
-        /* timerProgressBar: true, */
         showConfirmButton: false,
         position: 'top',
         didClose: () => {
@@ -116,7 +115,6 @@ export class UserEditComponent {
         icon: 'error',
         title: 'Oops...',
         text: err.error || 'Algo salió mal al actualizar la contraseña.',
-        /* footer: '<a href="#">¿Necesitas ayuda?</a>', */
         position: 'top'
       });
     }

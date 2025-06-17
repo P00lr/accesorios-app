@@ -17,6 +17,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
+import { UserService } from '../../../services/user.service';
+import { AuthService } from '../../../auth/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-inventory-report',
@@ -59,11 +62,21 @@ export class InventoryReportComponent implements OnInit {
   filteredAccessories$!: Observable<Accessory[]>;
   filteredCategories$!: Observable<Category[]>;
 
+  emailRecipients: string[] = [];
+  emailInput: string = '';
+
+  emailSubject: string = 'Reporte de Inventario Detallado';
+  emailMessage: string = 'Adjunto encontrarás el reporte de inventario solicitado.';
+
+
+
   constructor(
     private warehouseService: WarehouseService,
     private accessoryService: AccessoryService,
     private categoryService: CategoryService,
-    private http: HttpClient
+    private http: HttpClient,
+    private userService: UserService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -136,7 +149,7 @@ export class InventoryReportComponent implements OnInit {
   generateReport(): void {
     const params = this.buildParams();
 
-    this.http.get('http://localhost:8080/api/warehouses/report', {
+    this.http.get('https://backend-api-gestion-accesorios.onrender.com/api/warehouses/report', {
       params,
       responseType: 'blob'
     }).subscribe(blob => {
@@ -151,7 +164,7 @@ export class InventoryReportComponent implements OnInit {
   downloadReport(): void {
     const params = this.buildParams();
 
-    this.http.get('http://localhost:8080/api/warehouses/report', {
+    this.http.get('https://backend-api-gestion-accesorios.onrender.com/api/warehouses/report', {
       params,
       responseType: 'blob'
     }).subscribe(blob => {
@@ -196,6 +209,86 @@ export class InventoryReportComponent implements OnInit {
     inputElem.value = '';
     this.categoryInput.setValue('');
   }
+
+  addEmail(): void {
+    const email = this.emailInput.trim();
+    if (email && !this.emailRecipients.includes(email)) {
+      this.emailRecipients.push(email);
+    }
+    this.emailInput = '';
+  }
+
+  removeEmail(email: string): void {
+    this.emailRecipients = this.emailRecipients.filter(e => e !== email);
+  }
+
+  sendReport(): void {
+    if (this.emailRecipients.length === 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: '⚠️ Sin destinatarios',
+        text: 'Debes agregar al menos un correo electrónico antes de enviar el reporte.',
+      });
+      return;
+    }
+
+    const userId = this.authService.getUserId();
+    if (userId === null) {
+      Swal.fire({
+        icon: 'error',
+        title: '❌ Error',
+        text: 'No se pudo obtener el ID del usuario.',
+      });
+      return;
+    }
+
+    this.userService.getUserById(userId).subscribe({
+      next: (user) => {
+        const payload = {
+          destinatarios: this.emailRecipients,
+          warehouseIds: this.warehouseControl.value.map(w => w.id),
+          accessoryIds: this.accessoryControl.value.map(a => a.id),
+          categoryIds: this.categoryControl.value.map(c => c.id),
+          generadoPor: user.email,
+          asunto: this.emailSubject,
+          mensaje: this.emailMessage
+        };
+
+        this.http.post('https://backend-api-gestion-accesorios.onrender.com/api/email/inventory', payload)
+          .subscribe({
+            next: () => {
+              Swal.fire({
+                icon: 'success',
+                title: '📧 Enviado',
+                text: 'Reporte enviado correctamente por correo electrónico.',
+              });
+            },
+            error: (err) => {
+              Swal.fire({
+                icon: 'error',
+                title: '❌ Error al enviar',
+                text: err?.error || 'Ocurrió un error inesperado al enviar el correo.',
+              });
+            }
+          });
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: '❌ Error',
+          text: 'No se pudo obtener la información del usuario.',
+        });
+      }
+    });
+  }
+
+  onEmailEnter(event: Event): void {
+    event.preventDefault();  // Evita que se dispare el submit del form
+    this.addEmail();
+  }
+
+
+
 
 }
 

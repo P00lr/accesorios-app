@@ -10,7 +10,7 @@ import { RoleWithPermissions } from '../models/role-with-permissions.model';
 })
 export class RoleService {
 
-  private apiUrl: string = 'http://localhost:8080/api/roles';
+  private apiUrl: string = 'https://backend-api-gestion-accesorios.onrender.com/api/roles';
 
 
   constructor(private http: HttpClient) { }

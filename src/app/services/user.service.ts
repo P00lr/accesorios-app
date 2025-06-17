@@ -10,7 +10,7 @@ import { UserWihtPermissions } from '../models/user-with-permissions.model';
 })
 export class UserService {
 
-  private apiUrl = 'http://localhost:8080/api/users';
+  private apiUrl = 'https://backend-api-gestion-accesorios.onrender.com/api/users';
 
   constructor(private http: HttpClient) { }
 

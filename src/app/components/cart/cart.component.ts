@@ -33,7 +33,7 @@ export class CartComponent implements OnInit {
     private cartService: CartService,
     private saleService: SaleService,
     private authService: AuthService,
-    private router: Router // <--- AÑADIDO
+    private router: Router
 
 
   ) {

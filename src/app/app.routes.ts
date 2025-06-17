@@ -63,17 +63,11 @@ export const routes: Routes = [
   { path: 'catalog-accessories', component: CatalogComponent },
   { path: 'cart', component: CartComponent },
   { path: 'home', component: HomeComponent },
-
+  { path: 'users/create', component: UserCreateComponent},
+  
   //ojo redirecciona a Catalog
-  { path: 'sales/create', component: CatalogComponent,
-        //canActivate: [permissionGuard]
-  },
-  {
-        path: 'users/create',
-        component: UserCreateComponent,
-        /* canActivate: [permissionGuard],
-        data: { permissions: ['CREAR_USUARIO'] } */
-      },
+  { path: 'sales/create', component: CatalogComponent },
+  
 
   // Protegidas con authGuard
   {
@@ -213,12 +207,6 @@ export const routes: Routes = [
         canActivate: [permissionGuard],
         data: { permissions: ['VER_USUARIO'] }
       },
-      /* {
-        path: 'users/create',
-        component: UserCreateComponent,
-        canActivate: [permissionGuard],
-        data: { permissions: ['CREAR_USUARIO'] }
-      }, */
       
       {
         path: 'users/detail/:id',
@@ -382,7 +370,7 @@ export const routes: Routes = [
         path: 'dashboard', 
         component: DashboardComponent,
         canActivate: [permissionGuard],
-        data: { permissions: ['DASHBOARD'] }
+        data: { permissions: ['VER_DASHBOARD'] }
         
       },
 

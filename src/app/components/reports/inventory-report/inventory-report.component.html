@@ -9,7 +9,8 @@
           <div class="filter-group">
             <mat-form-field appearance="outline" class="filter-field">
               <mat-label>Agregar almacén</mat-label>
-              <input matInput placeholder="Buscar almacén" [formControl]="warehouseInput" [matAutocomplete]="autoWarehouse" />
+              <input matInput placeholder="Buscar almacén" [formControl]="warehouseInput"
+                [matAutocomplete]="autoWarehouse" />
               <mat-autocomplete #autoWarehouse="matAutocomplete"
                 (optionSelected)="addItem($event.option.value, warehouseControl); warehouseInput.setValue('')">
                 <mat-option *ngFor="let warehouse of filteredWarehouses$ | async" [value]="warehouse">
@@ -30,7 +31,8 @@
           <div class="filter-group">
             <mat-form-field appearance="outline" class="filter-field">
               <mat-label>Agregar accesorio</mat-label>
-              <input matInput placeholder="Buscar accesorio" [formControl]="accessoryInput" [matAutocomplete]="autoAccessory" />
+              <input matInput placeholder="Buscar accesorio" [formControl]="accessoryInput"
+                [matAutocomplete]="autoAccessory" />
               <mat-autocomplete #autoAccessory="matAutocomplete"
                 (optionSelected)="addItem($event.option.value, accessoryControl); accessoryInput.setValue('')">
                 <mat-option *ngFor="let accessory of filteredAccessories$ | async" [value]="accessory">
@@ -51,7 +53,8 @@
           <div class="filter-group">
             <mat-form-field appearance="outline" class="filter-field">
               <mat-label>Agregar categoría</mat-label>
-              <input matInput placeholder="Buscar categoría" [formControl]="categoryInput" [matAutocomplete]="autoCategory" />
+              <input matInput placeholder="Buscar categoría" [formControl]="categoryInput"
+                [matAutocomplete]="autoCategory" />
               <mat-autocomplete #autoCategory="matAutocomplete"
                 (optionSelected)="addItem($event.option.value, categoryControl); categoryInput.setValue('')">
                 <mat-option *ngFor="let category of filteredCategories$ | async" [value]="category">
@@ -68,12 +71,47 @@
             </div>
           </div>
 
+
+          <!-- Campo para ingresar correos -->
+          <!-- Correo: Destinatarios -->
+          <div class="filter-group">
+            <mat-form-field appearance="outline" class="filter-field">
+              <mat-label>Agregar destinatario</mat-label>
+              <input matInput placeholder="Correo electrónico" [(ngModel)]="emailInput" name="emailInput"
+                (keydown.enter)="onEmailEnter($event)" />
+
+            </mat-form-field>
+            <div class="chip-container">
+              <span *ngFor="let email of emailRecipients" class="chip">
+                {{ email }}
+                <mat-icon (click)="removeEmail(email)">cancel</mat-icon>
+              </span>
+            </div>
+          </div>
+
+          <!-- Correo: Asunto -->
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Asunto</mat-label>
+            <input matInput [(ngModel)]="emailSubject" placeholder="Asunto del correo" name="emailSubject">
+          </mat-form-field>
+
+          <!-- Correo: Mensaje -->
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Mensaje</mat-label>
+            <textarea matInput [(ngModel)]="emailMessage" placeholder="Mensaje del correo"
+              name="emailMessage"></textarea>
+          </mat-form-field>
+
+
+
         </div>
 
         <div class="button-group">
           <button mat-raised-button color="primary" type="submit">Generar Reporte</button>
           <button mat-raised-button color="accent" type="button" (click)="downloadReport()">Descargar PDF</button>
+          <button mat-raised-button color="warn" type="button" (click)="sendReport()">Enviar por Correo</button>
         </div>
+
       </form>
     </mat-card-content>
   </mat-card>

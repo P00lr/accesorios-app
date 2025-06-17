@@ -55,6 +55,8 @@ export class AccessoryCreateComponent {
     this.categoryService.getAllCategories().subscribe({
       next: (data) => {
         this.categories = data;
+
+        
         this.filteredCategories = this.categoryControl.valueChanges.pipe(
           startWith(''),
           map(value => this._filterCategories(value || ''))

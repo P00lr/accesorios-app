@@ -3,7 +3,7 @@
     <mat-card-title class="title">Reporte de Ventas</mat-card-title>
 
     <form [formGroup]="reportForm" (ngSubmit)="openPreview()" class="report-form" novalidate>
-      
+
       <mat-form-field appearance="fill" class="full-width animated-input">
         <mat-label>Desde</mat-label>
         <input matInput type="date" formControlName="from" required />
@@ -20,22 +20,48 @@
         </mat-error>
       </mat-form-field>
 
-      <button
-        mat-raised-button
-        color="primary"
-        [disabled]="loading || reportForm.invalid"
-        class="btn-animate"
-        type="submit"
-      >
+
+      <!-- Campo para ingresar correos -->
+      <mat-form-field appearance="fill" class="full-width animated-input">
+        <mat-label>Agregar destinatario</mat-label>
+        <input matInput [(ngModel)]="emailInput" [ngModelOptions]="{ standalone: true }" name="emailInput"
+          (keydown.enter)="handleEmailEnter($event)" placeholder="ejemplo@correo.tecnoweb.com" />
+
+
+      </mat-form-field>
+
+      <!-- Chips con correos añadidos -->
+      <div class="chip-container">
+        <span *ngFor="let email of emailRecipients" class="chip">
+          {{ email }}
+          <mat-icon class="remove-icon" (click)="removeEmail(email)">cancel</mat-icon>
+        </span>
+      </div>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Asunto</mat-label>
+        <input matInput formControlName="subject" placeholder="Asunto del correo" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Mensaje</mat-label>
+        <textarea matInput formControlName="body" placeholder="Mensaje del correo"></textarea>
+      </mat-form-field>
+
+
+      <button mat-raised-button color="primary" [disabled]="loading || reportForm.invalid" class="btn-animate"
+        type="submit">
         <span *ngIf="!loading">{{ 'Previsualizar Reporte' }}</span>
-        <mat-progress-spinner
-          *ngIf="loading"
-          diameter="24"
-          mode="indeterminate"
-          color="accent"
-          class="spinner-button"
-        >
+        <mat-progress-spinner *ngIf="loading" diameter="24" mode="indeterminate" color="accent" class="spinner-button">
         </mat-progress-spinner>
+      </button>
+
+      <!-- Botón para enviar reporte por correo -->
+      <button mat-raised-button color="accent" [disabled]="loading || reportForm.invalid" (click)="sendByEmail()"
+        class="btn-animate">
+        <span *ngIf="!loading">Enviar por correo</span>
+        <mat-progress-spinner *ngIf="loading" diameter="24" mode="indeterminate" color="primary"
+          class="spinner-button"></mat-progress-spinner>
       </button>
 
     </form>

@@ -9,7 +9,7 @@ import { WarehouseDetail } from '../models/warehouse-detail-model';
   providedIn: 'root'
 })
 export class WarehouseService {
-  private apiUrl: string = 'http://localhost:8080/api/warehouses';
+  private apiUrl: string = 'https://backend-api-gestion-accesorios.onrender.com/api/warehouses';
   constructor(private http: HttpClient) { }
 
   getWarehouses(page: number): Observable<Page<Warehouse>> {
@@ -48,4 +48,14 @@ export class WarehouseService {
   deleteWarehouse(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  sendInventoryReportByEmail(payload: {
+  destinatarios: string[],
+  warehouseIds: number[],
+  accessoryIds: number[],
+  categoryIds: number[],
+}): Observable<void> {
+  return this.http.post<void>('https://backend-api-gestion-accesorios.onrender.com/api/email/inventory', payload);
+}
+
 }

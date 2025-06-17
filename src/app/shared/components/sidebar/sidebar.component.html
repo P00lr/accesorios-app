@@ -5,7 +5,7 @@
     <div *ngIf="hasAnyModulePermission()">
       <h6 class="text-secondary text-uppercase fw-bold small mt-3">Módulos</h6>
       <ul class="nav flex-column mb-4">
-        <li *ngIf="hasPermission('DASHBOARD')" class="nav-item" routerLinkActive="active"
+        <li *ngIf="hasPermission('VER_DASHBOARD')" class="nav-item" routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }">
           <a class="nav-link text-white d-flex align-items-center" routerLink="/dashboard">
             <i class="bi bi-house-door me-2"></i> Dashboard

@@ -9,7 +9,7 @@ import { Page } from '../models/page.model';
 })
 export class SupplierService {
 
-  private apiUrl = 'http://localhost:8080/api/suppliers';
+  private apiUrl = 'https://backend-api-gestion-accesorios.onrender.com/api/suppliers';
 
   constructor(private http: HttpClient) { }
 

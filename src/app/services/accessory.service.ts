@@ -11,7 +11,7 @@ import { AccessoryCatalog } from '../models/accessory-catalog.model';
 })
 export class AccessoryService {
 
-  private apiUrl = 'http://localhost:8080/api/accessories';
+  private apiUrl = 'https://backend-api-gestion-accesorios.onrender.com/api/accessories';
 
   constructor(private http: HttpClient) { }
 

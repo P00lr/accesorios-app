@@ -7,7 +7,7 @@ import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:8080/login';
+  private apiUrl = 'https://backend-api-gestion-accesorios.onrender.com/login';
 
   private permissionsSubject = new BehaviorSubject<string[]>([]);
   permissions$ = this.permissionsSubject.asObservable();
