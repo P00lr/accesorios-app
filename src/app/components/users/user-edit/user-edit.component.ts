@@ -5,6 +5,7 @@ import { UserService } from '../../../services/user.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2'
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-user-edit',
@@ -32,11 +33,18 @@ export class UserEditComponent {
     newPassword: ''
   };
 
+  permissions: string[] = [];
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService
-  ) { }
+    private userService: UserService,
+    private authService: AuthService
+  ) {
+    this.authService.permissions$.subscribe(perms => {
+        this.permissions = perms;
+      });
+   }
 
   ngOnInit(): void {
     this.userId = Number(this.route.snapshot.paramMap.get('id'));
@@ -51,6 +59,9 @@ export class UserEditComponent {
         this.isLoading = false;
       }
     });
+  }
+  hasPermission(permission: string): boolean {
+      return this.permissions.includes(permission);
   }
 
   onSubmit(): void {

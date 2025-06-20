@@ -58,12 +58,12 @@ export const routes: Routes = [
   // Login / Registro (públicos)
   { path: 'login', component: LoginComponent },
   { path: 'users/edit/:id', component: UserEditComponent},
+  { path: 'users/create', component: UserCreateComponent},
 
   // Públicas
   { path: 'catalog-accessories', component: CatalogComponent },
   { path: 'cart', component: CartComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'users/create', component: UserCreateComponent},
   
   //ojo redirecciona a Catalog
   { path: 'sales/create', component: CatalogComponent },

@@ -94,6 +94,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  //stock bajo
   fetchLowStockItems(pageIndex: number = 0, pageSize: number = 5): void {
     this.dashboardService.getLowStockItems(this.lowStockThreshold, pageIndex, pageSize)
       .subscribe(response => {
@@ -109,7 +110,7 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  //top selling accessories
+  //los accesorios mas comprados
   fetchTopSellingAccessories(pageIndex: number = this.pageIndex, pageSize: number = this.pageSize): void {
     this.isLoadingSelling = true;
     this.errorMsg = '';

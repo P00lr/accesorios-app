@@ -44,12 +44,12 @@ export class AuthService {
         authorities = parsed.map((a: any) => a.authority);
       }
 
-      console.log('✅ Permisos extraídos del JWT:', authorities);
+      //console.log('✅ Permisos extraídos del JWT:', authorities);
       this.permissionsSubject.next(authorities);
       localStorage.setItem('permissions', JSON.stringify(authorities));
 
     } catch (e) {
-      console.error('❌ Error al extraer permisos del token:', e);
+      console.error('Error al extraer permisos del token:', e);
     }
   }
 
@@ -96,7 +96,7 @@ export class AuthService {
       const payload = JSON.parse(atob(payloadBase64));
       return payload.sub || null;
     } catch (error) {
-      console.error('❌ Error al extraer el username del token:', error);
+      console.error('Error al extraer el username del token:', error);
       return null;
     }
   }
@@ -111,7 +111,7 @@ export class AuthService {
       const payload = JSON.parse(atob(payloadBase64));
       return payload.userId ?? null;
     } catch (error) {
-      console.error('❌ Error al extraer el userId del token:', error);
+      console.error('Error al extraer el userId del token:', error);
       return null;
     }
   }

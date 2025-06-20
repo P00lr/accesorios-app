@@ -2,9 +2,7 @@
   <div class="card custom-card shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center bg-dark text-white">
       <h5 class="mb-0">Lista de Usuarios</h5>
-      <a 
-        *ngIf="hasPermission('CREAR_USUARIO')" 
-      routerLink="/users/create" class="btn btn-light btn-sm">
+      <a *ngIf="hasPermission('CREAR_USUARIO')" routerLink="/users/create" class="btn btn-light btn-sm">
         <i class="bi bi-plus-circle"></i> Crear Usuarios
       </a>
     </div>
@@ -33,29 +31,25 @@
           <td>{{ user.email }}</td>
           <td>
             <span [class.text-success]="!!user.enabled" [class.text-danger]="!user.enabled">
-                {{ !!user.enabled ? 'Sí' : 'No' }}
+              {{ !!user.enabled ? 'Sí' : 'No' }}
             </span>
-        </td>
+          </td>
 
           <td>
             <div class="d-flex flex-row gap-2 justify-content-center">
-                  <button 
-        *ngIf="hasPermission('VER_USUARIO')" 
-                  class="btn btn-sm btn-outline-info" (click)="viewDetails(user.id)">
-                    Ver Detalles
-                  </button>
-                  <a 
-        *ngIf="hasPermission('EDITAR_USUARIO')" 
-                  [routerLink]="['/users/edit', user.id]" class="btn btn-sm btn-outline-primary">
-                    <i class="bi bi-pencil-square"></i> Editar
-                  </a>
-                  <button 
-        *ngIf="hasPermission('ELIMINAR_USUARIO')" 
-                  
-                  class="btn btn-sm btn-outline-danger" (click)="deleteUser(user.id)">
-                    <i class="bi bi-trash"></i> Eliminar
-                  </button>
-                </div>
+              <!-- <button *ngIf="hasPermission('VER_USUARIO')" class="btn btn-sm btn-outline-info"
+                (click)="viewDetails(user.id)">
+                Ver Detalles
+              </button> -->
+              <a *ngIf="hasPermission('EDITAR_USUARIO')" [routerLink]="['/users/edit', user.id]"
+                class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-pencil-square"></i> Editar
+              </a>
+              <button *ngIf="hasPermission('ELIMINAR_USUARIO')" class="btn btn-sm btn-outline-danger"
+                (click)="deleteUser(user.id)">
+                <i class="bi bi-trash"></i> Eliminar
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -63,13 +57,15 @@
 
     <!-- Paginación -->
     <div *ngIf="totalPages > 1 && !isLoading" class="d-flex justify-content-between align-items-center mt-3 p-2">
-      <button class="btn btn-outline-secondary btn-sm" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 0">
+      <button class="btn btn-outline-secondary btn-sm" (click)="goToPage(currentPage - 1)"
+        [disabled]="currentPage === 0">
         Anterior
       </button>
 
       <span>Página {{ currentPage + 1 }} de {{ totalPages }}</span>
 
-      <button class="btn btn-outline-secondary btn-sm" (click)="goToPage(currentPage + 1)" [disabled]="currentPage >= totalPages - 1">
+      <button class="btn btn-outline-secondary btn-sm" (click)="goToPage(currentPage + 1)"
+        [disabled]="currentPage >= totalPages - 1">
         Siguiente
       </button>
     </div>

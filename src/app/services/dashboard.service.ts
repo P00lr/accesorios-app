@@ -29,7 +29,7 @@ export class DashboardService {
     return this.http.get<Page<LowStockItem>>(`${this.apiUrl}/low-stock`, { params });
   }
 
-  // Este ya lo tienes, solo modifícalo:
+  //los que mas compran
   getTopSellingAccessories(startDate?: Date, endDate?: Date, page: number = 0, size: number = 5): Observable<Page<TopSellingAccessory>> {
     let params = new HttpParams()
       .set('page', page)

@@ -24,7 +24,7 @@
               <input type="email" id="email" class="form-control input-gray" [(ngModel)]="user.email" name="email" required />
             </div>
 
-            <div class="mb-3 form-check">
+            <div *ngIf="hasPermission('VER_USUARIO')" class="mb-3 form-check">
               <input type="checkbox" class="form-check-input" id="enabled" [(ngModel)]="user.enabled" name="enabled" />
               <label for="enabled" class="form-check-label">Habilitado</label>
             </div>
